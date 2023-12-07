@@ -1,6 +1,6 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-CREATE TABLE user (
+CREATE TABLE users (
     user_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
     name VARCHAR(255) NOT NULL,    role VARCHAR(255),
     email VARCHAR(255) UNIQUE NOT NULL,
@@ -51,13 +51,13 @@ ALTER TABLE course
     ADD FOREIGN KEY (course_detail_id) REFERENCES course_detail(course_detail_id);
 
 ALTER TABLE question
-    ADD FOREIGN KEY (user_id) REFERENCES user(user_id);
+    ADD FOREIGN KEY (user_id) REFERENCES users(user_id);
 
 ALTER TABLE attendance
     ADD FOREIGN KEY (student_id) REFERENCES student(student_id);
 
 ALTER TABLE session
-    ADD FOREIGN KEY (trainer_admin_id) REFERENCES user(user_id);
+    ADD FOREIGN KEY (trainer_admin_id) REFERENCES users(user_id);
 
 ALTER TABLE attendance
     ADD FOREIGN KEY (course_id) REFERENCES course(course_id);
