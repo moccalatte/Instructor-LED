@@ -5,7 +5,7 @@ import (
 )
 
 type Question struct {
-    QuestionsID uuid.UUID `json:"questions_id"`
+    QuestionID uuid.UUID `json:"question_id"`
     UserID      uuid.UUID `json:"user_id"`
     Questionary string    `json:"questionary"`
     Status      bool      `json:"status"`
