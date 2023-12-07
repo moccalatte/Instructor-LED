@@ -5,11 +5,11 @@ import (
 )
 
 type Attendance struct {
-    AttendanceID    uuid.UUID `db:"attendance_id"`
-    StudentID       uuid.UUID `db:"student_id"`
-    CourseID        uuid.UUID `db:"course_id"`
-    TrainerAdminID  uuid.UUID `db:"trainer_admin_id"`
-    Status          bool      `db:"status"`
-    IsDeleted       bool      `db:"is_deleted"`
+    AttendanceID    uuid.UUID `json:"attendance_id"`
+    StudentID       uuid.UUID `json:"student_id"`
+    CourseID        uuid.UUID `json:"course_id"`
+    TrainerAdminID  uuid.UUID `json:"trainer_admin_id"`
+    Status          bool      `json:"status"`
+    IsDeleted       bool      `json:"is_deleted"`
 }
 

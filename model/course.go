@@ -5,15 +5,15 @@ import (
 )
 
 type Course struct {
-    CourseID      uuid.UUID `db:"course_id"`
-    CourseName    string    `db:"course_name"`
-    CourseDetailID uuid.UUID `db:"course_detail_id"`
-    IsDeleted     bool      `db:"is_deleted"`
+    CourseID      uuid.UUID `json:"course_id"`
+    CourseName    string    `json:"course_name"`
+    CourseDetailID uuid.UUID `json:"course_detail_id"`
+    IsDeleted     bool      `json:"is_deleted"`
 }
 
 type CourseDetail struct {
-    CourseDetailID uuid.UUID `db:"course_detail_id"`
-    Chapter       string    `db:"chapter"`
-    CourseID      uuid.UUID `db:"course_id"`
-    IsDeleted     bool      `db:"is_deleted"`
+    CourseDetailID uuid.UUID `json:"course_detail_id"`
+    Chapter       string    `json:"chapter"`
+    CourseID      uuid.UUID `json:"course_id"`
+    IsDeleted     bool      `json:"is_deleted"`
 }

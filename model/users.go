@@ -5,10 +5,10 @@ import (
 )
 
 type Users struct {
-    UserID     uuid.UUID `db:"user_id"`
-    Name       string    `db:"name"`
-    Role       string    `db:"role"`
-    Email      string    `db:"email"`
-    Password   string    `db:"password"`
-    IsDeleted  bool      `db:"is_deleted"`
+    UserID     uuid.UUID `json:"user_id"`
+    Name       string    `json:"name"`
+    Role       string    `json:"role"`
+    Email      string    `json:"email"`
+    Password   string    `json:"password"`
+    IsDeleted  bool      `json:"is_deleted"`
 }

@@ -6,16 +6,16 @@ import (
 )
 
 type Student struct {
-    StudentID  uuid.UUID `db:"student_id"`
-    Fullname   string    `db:"fullname"`
-    Shortname  string    `db:"shortname"`
-    BirthDate  time.Time `db:"birth_date"`
-    BirthPlace string    `db:"birth_place"`
-    Address    string    `db:"address"`
-    Education  string    `db:"education"`
-    Institution string  `db:"institution"`
-    Job        string    `db:"job"`
-    Email      string    `db:"email"`
-    Password   string    `db:"password"`
-    IsDeleted  bool      `db:"is_deleted"`
+    StudentID  uuid.UUID `json:"student_id"`
+    Fullname   string    `json:"fullname"`
+    Shortname  string    `json:"shortname"`
+    BirthDate  time.Time `json:"birth_date"`
+    BirthPlace string    `json:"birth_place"`
+    Address    string    `json:"address"`
+    Education  string    `json:"education"`
+    Institution string  `json:"institution"`
+    Job        string    `json:"job"`
+    Email      string    `json:"email"`
+    Password   string    `json:"password"`
+    IsDeleted  bool      `json:"is_deleted"`
 }
