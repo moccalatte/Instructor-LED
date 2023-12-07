@@ -2,6 +2,7 @@ package repository
 
 import (
 	"database/sql"
+	"fmt"
 
 	"final-project-kelompok-1/model"
 	"final-project-kelompok-1/utils/common"
@@ -9,9 +10,9 @@ import (
 
 type CourseRepository interface {
 	Create(payload model.Course) (model.Course, error)
-	GetById(id int) (model.Course, error)
-	Update(payload model.Course, id int) (model.Course, error)
-	Delete(id int) (model.Course, error)
+	GetById(id string) (model.Course, error)
+	Update(payload model.Course, id string) (model.Course, error)
+	Delete(id string) (model.Course, error)
 }
 
 type courseRepository struct {
@@ -19,12 +20,15 @@ type courseRepository struct {
 }
 
 func (c *courseRepository) Create(payload model.Course) (model.Course, error) {
+	fmt.Print(payload.CourseName, "DATAMASUK")
 	tx, err := c.db.Begin()
 	if err != nil {
 		return model.Course{}, err
 	}
+	fmt.Print(payload.CourseName, "DATAMASUK")
 
 	var course model.Course
+
 	err = tx.QueryRow(common.CreateCourse,
 		payload.CourseName,
 		payload.CourseDetailID,
@@ -35,6 +39,10 @@ func (c *courseRepository) Create(payload model.Course) (model.Course, error) {
 		&course.CourseDetailID,
 		&course.IsDeleted,
 	)
+	fmt.Print(course.CourseName, "DATANYAMANA")
+	fmt.Print(course.CourseDetailID)
+	fmt.Print(err)
+
 	if err != nil {
 		return model.Course{}, tx.Rollback()
 	}
@@ -45,7 +53,7 @@ func (c *courseRepository) Create(payload model.Course) (model.Course, error) {
 	return course, nil
 }
 
-func (c *courseRepository) GetById(id int) (model.Course, error) {
+func (c *courseRepository) GetById(id string) (model.Course, error) {
 	var course model.Course
 	err := c.db.QueryRow(common.GetCourseById, id).Scan(
 		&course.CourseID,
@@ -59,7 +67,7 @@ func (c *courseRepository) GetById(id int) (model.Course, error) {
 	return course, nil
 }
 
-func (c *courseRepository) Update(payload model.Course, id int) (model.Course, error) {
+func (c *courseRepository) Update(payload model.Course, id string) (model.Course, error) {
 	tx, err := c.db.Begin()
 	if err != nil {
 		return model.Course{}, err
@@ -91,7 +99,7 @@ func (c *courseRepository) Update(payload model.Course, id int) (model.Course, e
 	return course, nil
 }
 
-func (c *courseRepository) Delete(id int) (model.Course, error) {
+func (c *courseRepository) Delete(id string) (model.Course, error) {
 	tx, err := c.db.Begin()
 	if err != nil {
 		return model.Course{}, err
@@ -121,6 +129,6 @@ func (c *courseRepository) Delete(id int) (model.Course, error) {
 	return course, nil
 }
 
-func NewRoleRepository(db *sql.DB) CourseRepository {
+func NewCourseRepository(db *sql.DB) CourseRepository {
 	return &courseRepository{db: db}
 }

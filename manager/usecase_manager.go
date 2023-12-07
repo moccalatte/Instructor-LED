@@ -4,8 +4,8 @@ import "final-project-kelompok-1/usecase"
 
 type UseCaseManager interface {
 	StudentUseCase() usecase.StudentUseCase
-	AdminTrainerUseCase() usecase.AdminTrainerUseCase
-	RoleUseCase() usecase.RoleUseCase
+	UserUseCase() usecase.UserUseCase
+	CourseCase() usecase.CourseUseCase
 }
 
 type useCaseManager struct {
@@ -16,12 +16,12 @@ func (u *useCaseManager) StudentUseCase() usecase.StudentUseCase {
 	return usecase.NewStudentUseCase(u.repo.StudentRepo())
 }
 
-func (u *useCaseManager) AdminTrainerUseCase() usecase.AdminTrainerUseCase {
-	return usecase.NewAdminTrainerUseCase(u.repo.AdminTrainerRepo())
+func (u *useCaseManager) UserUseCase() usecase.UserUseCase {
+	return usecase.NewUserUseCase(u.repo.UserRepo())
 }
 
-func (u *useCaseManager) RoleUseCase() usecase.RoleUseCase {
-	return usecase.NewRoleUseCase(u.repo.RoleRepo())
+func (u *useCaseManager) CourseCase() usecase.CourseUseCase {
+	return usecase.NewCourseUseCase(u.repo.CourseRepo())
 }
 
 func NewUseCaseManager(repo RepoManager) UseCaseManager {

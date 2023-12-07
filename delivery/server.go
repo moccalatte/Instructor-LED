@@ -18,9 +18,9 @@ type Server struct {
 
 func (s *Server) setupControllers() {
 	rg := s.engine.Group("/api/v1")
-	controller.NewAdminTrainerController(s.uc.AdminTrainerUseCase(), rg).Route()
-	controller.NewRoleController(s.uc.RoleUseCase(), rg).Route()
 	controller.NewStudentController(s.uc.StudentUseCase(), rg).Route()
+	controller.NewCourseController(s.uc.CourseCase(), rg).Route()
+	controller.NewUserController(s.uc.UserUseCase(), rg).Route()
 }
 
 func (s *Server) Run() {

@@ -9,9 +9,9 @@ import (
 
 type UserRepositpry interface {
 	Create(payload model.Users) (model.Users, error)
-	GetById(id int) (model.Users, error)
-	Update(payload model.Users, id int) (model.Users, error)
-	Delete(id int) (model.Users, error)
+	GetById(id string) (model.Users, error)
+	Update(payload model.Users, id string) (model.Users, error)
+	Delete(id string) (model.Users, error)
 }
 
 type userRepository struct {
@@ -39,6 +39,7 @@ func (u *userRepository) Create(payload model.Users) (model.Users, error) {
 		&user.Password,
 		&user.IsDeleted,
 	)
+
 	if err != nil {
 		return model.Users{}, tx.Rollback()
 	}
@@ -50,7 +51,7 @@ func (u *userRepository) Create(payload model.Users) (model.Users, error) {
 
 }
 
-func (u *userRepository) GetById(id int) (model.Users, error) {
+func (u *userRepository) GetById(id string) (model.Users, error) {
 	var user model.Users
 	err := u.db.QueryRow(common.GetUserById, id).Scan(
 		&user.UserID,
@@ -66,7 +67,7 @@ func (u *userRepository) GetById(id int) (model.Users, error) {
 	return user, nil
 }
 
-func (u *userRepository) Update(payload model.Users, id int) (model.Users, error) {
+func (u *userRepository) Update(payload model.Users, id string) (model.Users, error) {
 	tx, err := u.db.Begin()
 	if err != nil {
 		return model.Users{}, err
@@ -104,7 +105,7 @@ func (u *userRepository) Update(payload model.Users, id int) (model.Users, error
 	return user, nil
 }
 
-func (u *userRepository) Delete(id int) (model.Users, error) {
+func (u *userRepository) Delete(id string) (model.Users, error) {
 	tx, err := u.db.Begin()
 	if err != nil {
 		return model.Users{}, err
@@ -138,6 +139,6 @@ func (u *userRepository) Delete(id int) (model.Users, error) {
 	return user, nil
 }
 
-func NewAdminTrainerRepository(db *sql.DB) UserRepositpry {
+func NewUserRepository(db *sql.DB) UserRepositpry {
 	return &userRepository{db: db}
 }

@@ -35,8 +35,8 @@ func (c *Config) readConfig() error {
 	}
 
 	c.DbConfig = DbConfig{
-		Host:     os.Getenv("HOST"),
-		Port:     os.Getenv("PORT"),
+		Host:     os.Getenv("DB_HOST"),
+		Port:     os.Getenv("DB_PORT"),
 		Name:     os.Getenv("DB_NAME"),
 		User:     os.Getenv("USER"),
 		Password: os.Getenv("PASSWORD"),
