@@ -1,8 +1,9 @@
 package dto
 
 type UserRequestDto struct {
-	Name     string `json:"name"`
-	Role     string `json:"role"`
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	Fullname  string `json:"fullname"`
+	Role      string `json:"role"`
+	Email     string `json:"email"`
+	Password  string `json:"password"`
+	IsDeleted bool   `json:"is_deleted"`
 }

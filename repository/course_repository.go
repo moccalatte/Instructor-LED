@@ -31,16 +31,15 @@ func (c *courseRepository) Create(payload model.Course) (model.Course, error) {
 
 	err = tx.QueryRow(common.CreateCourse,
 		payload.CourseName,
-		payload.CourseDetailID,
+
 		true,
 	).Scan(
 		&course.CourseID,
 		&course.CourseName,
-		&course.CourseDetailID,
 		&course.IsDeleted,
 	)
 	fmt.Print(course.CourseName, "DATANYAMANA")
-	fmt.Print(course.CourseDetailID)
+	// fmt.Print(course.CourseDetailID)
 	fmt.Print(err)
 
 	if err != nil {
@@ -58,7 +57,7 @@ func (c *courseRepository) GetById(id string) (model.Course, error) {
 	err := c.db.QueryRow(common.GetCourseById, id).Scan(
 		&course.CourseID,
 		&course.CourseName,
-		&course.CourseDetailID,
+		// &course.CourseDetailID,
 		&course.IsDeleted,
 	)
 	if err != nil {
@@ -81,12 +80,12 @@ func (c *courseRepository) Update(payload model.Course, id string) (model.Course
 	var course model.Course
 	err = tx.QueryRow(common.UpdateCourseById,
 		payload.CourseName,
-		payload.CourseDetailID,
+		// payload.CourseDetailID,
 		true,
 		id).Scan(
 		&course.CourseID,
 		&course.CourseName,
-		&course.CourseDetailID,
+		// &course.CourseDetailID,
 		&course.IsDeleted,
 	)
 	if err != nil {
@@ -116,7 +115,7 @@ func (c *courseRepository) Delete(id string) (model.Course, error) {
 		id).Scan(
 		&course.CourseID,
 		&course.CourseName,
-		&course.CourseDetailID,
+		// &course.CourseDetailID,
 		&course.IsDeleted,
 	)
 	if err != nil {

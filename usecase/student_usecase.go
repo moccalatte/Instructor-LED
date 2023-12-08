@@ -21,7 +21,6 @@ type studentUseCase struct {
 func (s *studentUseCase) AddStudent(payload dto.StudentRequestDto) (model.Student, error) {
 	newStudent := model.Student{
 		Fullname:    payload.Fullname,
-		Shortname:   payload.Shortname,
 		BirthDate:   payload.BirthDate,
 		BirthPlace:  payload.BirthPlace,
 		Address:     payload.Address,
@@ -52,8 +51,8 @@ func (s *studentUseCase) FindStudentByID(id string) (model.Student, error) {
 
 func (s *studentUseCase) UpdateStudent(payload dto.StudentRequestDto, id string) (model.Student, error) {
 	newStudent := model.Student{
-		Fullname:    payload.Fullname,
-		Shortname:   payload.Shortname,
+		Fullname: payload.Fullname,
+
 		BirthDate:   payload.BirthDate,
 		BirthPlace:  payload.BirthPlace,
 		Address:     payload.Address,

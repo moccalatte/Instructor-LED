@@ -1,13 +1,16 @@
 package model
 
-import (
-	"time"
-    "github.com/google/uuid"
-)
+import "time"
 
 type Session struct {
-    SessionID       uuid.UUID `json:"session_id"`
-    Date            time.Time `json:"date"`
-    TrainerAdminID  uuid.UUID `json:"trainer_admin_id"`
-    IsDeleted       bool      `json:"is_deleted"`
+	SessionID   string    `json:"session_id"`
+	Title       string    `json:"title"`
+	Description string    `json:"description"`
+	SessionDate string    `json:"session_date"`
+	SessionTime string    `json:"session_time"`
+	SessionLink string    `json:"session_link"`
+	TrainerID   Users     `json:"trainer_id"`
+	IsDeleted   bool      `json:"is_deleted"`
+	CreatedAt   time.Time `json:"createdAt"`
+	UpdatedAt   time.Time `json:"updatedAt"`
 }

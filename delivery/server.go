@@ -36,8 +36,8 @@ func NewServer() *Server {
 		log.Fatal(err)
 	}
 
-	gin.SetMode(gin.ReleaseMode)
-	engine := gin.New()
+	// gin.SetMode(gin.ReleaseMode)
+	// engine := gin.New()
 
 	infraManager, err := manager.NewInfraManager(cfg)
 	if err != nil {
@@ -46,10 +46,12 @@ func NewServer() *Server {
 
 	repoManager := manager.NewRepoManager(infraManager)
 	useCaseManager := manager.NewUseCaseManager(repoManager)
+	engine := gin.Default()
+	host := fmt.Sprintf(":%s", cfg.ApiPort)
 
 	return &Server{
 		uc:     useCaseManager,
 		engine: engine,
-		host:   fmt.Sprintf(":%s", cfg.ApiPort),
+		host:   host,
 	}
 }

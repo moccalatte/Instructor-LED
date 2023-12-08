@@ -26,7 +26,7 @@ func (s *studentRepository) Create(payload model.Student) (model.Student, error)
 	var student model.Student
 	err = tx.QueryRow(common.CreateStudent,
 		payload.Fullname,
-		payload.Shortname,
+
 		payload.BirthDate,
 		payload.BirthPlace,
 		payload.Address,
@@ -38,7 +38,6 @@ func (s *studentRepository) Create(payload model.Student) (model.Student, error)
 		true).Scan(
 		&student.StudentID,
 		&student.Fullname,
-		&student.Shortname,
 		&student.BirthDate,
 		&student.BirthPlace,
 		&student.Address,
@@ -66,7 +65,6 @@ func (s *studentRepository) GetById(id string) (model.Student, error) {
 	err := s.db.QueryRow(common.GetStudentByid, id).Scan(
 		&student.StudentID,
 		&student.Fullname,
-		&student.Shortname,
 		&student.BirthDate,
 		&student.BirthPlace,
 		&student.Address,
@@ -96,7 +94,6 @@ func (s *studentRepository) Update(payload model.Student, id string) (model.Stud
 	var student model.Student
 	err = tx.QueryRow(common.UpdateStudentbyId,
 		payload.Fullname,
-		payload.Shortname,
 		payload.BirthDate,
 		payload.BirthPlace,
 		payload.Address,
@@ -109,7 +106,6 @@ func (s *studentRepository) Update(payload model.Student, id string) (model.Stud
 		id).Scan(
 		&student.StudentID,
 		&student.Fullname,
-		&student.Shortname,
 		&student.BirthDate,
 		&student.BirthPlace,
 		&student.Address,
@@ -148,7 +144,6 @@ func (s *studentRepository) Delete(id string) (model.Student, error) {
 		id).Scan(
 		&student.StudentID,
 		&student.Fullname,
-		&student.Shortname,
 		&student.BirthDate,
 		&student.BirthPlace,
 		&student.Address,

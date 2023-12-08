@@ -2,6 +2,7 @@ package repository
 
 import (
 	"database/sql"
+	"fmt"
 
 	"final-project-kelompok-1/model"
 	"final-project-kelompok-1/utils/common"
@@ -26,14 +27,14 @@ func (u *userRepository) Create(payload model.Users) (model.Users, error) {
 
 	var user model.Users
 	err = tx.QueryRow(common.CreateUser,
-		payload.Name,
+		payload.Fullname,
 		payload.Role,
 		payload.Email,
 		payload.Password,
-		true,
+		false,
 	).Scan(
 		&user.UserID,
-		&user.Name,
+		&user.Fullname,
 		&user.Role,
 		&user.Email,
 		&user.Password,
@@ -41,6 +42,7 @@ func (u *userRepository) Create(payload model.Users) (model.Users, error) {
 	)
 
 	if err != nil {
+		fmt.Println("Error di Repo user : ", err)
 		return model.Users{}, tx.Rollback()
 	}
 
@@ -55,7 +57,7 @@ func (u *userRepository) GetById(id string) (model.Users, error) {
 	var user model.Users
 	err := u.db.QueryRow(common.GetUserById, id).Scan(
 		&user.UserID,
-		&user.Name,
+		&user.Fullname,
 		&user.Role,
 		&user.Email,
 		&user.Password,
@@ -81,20 +83,21 @@ func (u *userRepository) Update(payload model.Users, id string) (model.Users, er
 
 	var user model.Users
 	err = tx.QueryRow(common.UpdateUser,
-		payload.Name,
+		payload.Fullname,
 		payload.Role,
 		payload.Email,
 		payload.Password,
 		true,
 		id).Scan(
 		&user.UserID,
-		&user.Name,
+		&user.Fullname,
 		&user.Role,
 		&user.Email,
 		&user.Password,
 		&user.IsDeleted,
 	)
 	if err != nil {
+		fmt.Println("Error inserting user di repo : ", err)
 		return model.Users{}, tx.Rollback()
 	}
 
@@ -122,7 +125,7 @@ func (u *userRepository) Delete(id string) (model.Users, error) {
 		false,
 		id).Scan(
 		&user.UserID,
-		&user.Name,
+		&user.Fullname,
 		&user.Role,
 		&user.Email,
 		&user.Password,

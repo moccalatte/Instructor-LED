@@ -21,8 +21,8 @@ type courseUseCase struct {
 func (c *courseUseCase) AddCourse(payload dto.CourseRequestDto) (model.Course, error) {
 	// fmt.Print(payload.CourseName, "USECASE")
 	newCourse := model.Course{
-		CourseName:     payload.CourseName,
-		CourseDetailID: payload.CourseDetailID,
+		CourseName: payload.CourseName,
+		// CourseDetailID: payload.CourseDetailID,
 	}
 	// fmt.Print(newCourse, "USECASEKELUA")``
 
@@ -48,8 +48,8 @@ func (c *courseUseCase) FindCourseByID(id string) (model.Course, error) {
 
 func (c *courseUseCase) UpdateCourse(payload dto.CourseRequestDto, id string) (model.Course, error) {
 	newCourse := model.Course{
-		CourseName:     payload.CourseName,
-		CourseDetailID: payload.CourseDetailID,
+		CourseName: payload.CourseName,
+		// CourseDetailID: payload.CourseDetailID,
 	}
 
 	updatedCourse, err := c.repo.Update(newCourse, id)

@@ -1,13 +1,9 @@
 package dto
 
-import (
-	"time"
-)
-
 type StudentRequestDto struct {
+	StudentID   string    `json:"student_id"`
 	Fullname    string    `json:"fullname"`
-	Shortname   string    `json:"shortname"`
-	BirthDate   time.Time `json:"birth_date"`
+	BirthDate   string    `json:"birth_date"`
 	BirthPlace  string    `json:"birth_place"`
 	Address     string    `json:"address"`
 	Education   string    `json:"education"`

@@ -20,7 +20,7 @@ type userUseCase struct {
 
 func (u *userUseCase) AddUser(payload dto.UserRequestDto) (model.Users, error) {
 	newUser := model.Users{
-		Name:     payload.Name,
+		Fullname: payload.Fullname,
 		Role:     payload.Role,
 		Email:    payload.Role,
 		Password: payload.Password,
@@ -29,6 +29,7 @@ func (u *userUseCase) AddUser(payload dto.UserRequestDto) (model.Users, error) {
 	addedUser, err := u.repo.Create(newUser)
 
 	if err != nil {
+		fmt.Println("Error inserting user di usecase : ", err)
 		return model.Users{}, fmt.Errorf("failed Add User : %s", err.Error())
 	}
 
@@ -40,6 +41,7 @@ func (u *userUseCase) FindUserByID(id string) (model.Users, error) {
 	userWithId, err := u.repo.GetById(id)
 
 	if err != nil {
+		fmt.Println("Error inserting user di usecafe : ", err)
 		return model.Users{}, fmt.Errorf("failed to find data : %s", err.Error())
 	}
 
@@ -49,7 +51,7 @@ func (u *userUseCase) FindUserByID(id string) (model.Users, error) {
 
 func (u *userUseCase) UpdateUser(payload dto.UserRequestDto, id string) (model.Users, error) {
 	newUser := model.Users{
-		Name:     payload.Name,
+		Fullname: payload.Fullname,
 		Role:     payload.Role,
 		Email:    payload.Email,
 		Password: payload.Password,
