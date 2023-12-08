@@ -22,13 +22,14 @@ func (u *userUseCase) AddUser(payload dto.UserRequestDto) (model.Users, error) {
 	newUser := model.Users{
 		Name:     payload.Name,
 		Role:     payload.Role,
-		Email:    payload.Role,
+		Email:    payload.Email,
 		Password: payload.Password,
 	}
 
 	addedUser, err := u.repo.Create(newUser)
 
 	if err != nil {
+		fmt.Println("Gagal Insert karna di usecase: ", err)
 		return model.Users{}, fmt.Errorf("failed Add User : %s", err.Error())
 	}
 

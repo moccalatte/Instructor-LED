@@ -6,6 +6,7 @@ type UseCaseManager interface {
 	StudentUseCase() usecase.StudentUseCase
 	UserUseCase() usecase.UserUseCase
 	CourseCase() usecase.CourseUseCase
+	SessionUseCase() usecase.SessionUseCase
 }
 
 type useCaseManager struct {
@@ -22,6 +23,10 @@ func (u *useCaseManager) UserUseCase() usecase.UserUseCase {
 
 func (u *useCaseManager) CourseCase() usecase.CourseUseCase {
 	return usecase.NewCourseUseCase(u.repo.CourseRepo())
+}
+
+func (u *useCaseManager) SessionUseCase() usecase.SessionUseCase {
+	return usecase.NewSessionUseCase(u.repo.SessionRepo(), u.UserUseCase())
 }
 
 func NewUseCaseManager(repo RepoManager) UseCaseManager {

@@ -2,6 +2,7 @@ package repository
 
 import (
 	"database/sql"
+	"fmt"
 
 	"final-project-kelompok-1/model"
 	"final-project-kelompok-1/utils/common"
@@ -41,6 +42,7 @@ func (u *userRepository) Create(payload model.Users) (model.Users, error) {
 	)
 
 	if err != nil {
+		fmt.Println("Gagal Insert karna di repo: ", err)
 		return model.Users{}, tx.Rollback()
 	}
 

@@ -1,0 +1,96 @@
+{
+	"info": {
+		"_postman_id": "41bab37e-293c-47b2-84ea-739f532d6286",
+		"name": "ENIGMA-INSTRUCTOR LED",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16860631"
+	},
+	"item": [{
+			"name": "User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\" : \"Irfan\",\r\n\t\"role\" : \"Trainer\",\r\n\t\"email\" : \"goasd@gmail.com\",\r\n\t\"password\" : \"123123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/user",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Student",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fullname\" : \"walawe\",\r\n\t\"shortname\" : \"wala\",\r\n\t\"birth_date\" : \"2006-01-02T15:04:05Z07:00.\",\r\n\t\"birth_place\" : \"tangerang\",\r\n\t\"address\" : \"serang\",\r\n\t\"education\" : \"S1\",\r\n\t\"institution\" : \"SMK\",\r\n\t\"job\" : \"IT\",\r\n\t\"email\" : \"wala@gmail.com\",\r\n\t\"password\" : \"123412\",\r\n\t\"is_deleted\" : 0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/student",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"student"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Session",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"date\" :\"2023-12-03\",\r\n  \"trainer_id\" : \"67de39aa-699a-44a6-8ba4-0b29bd4eccc0\",\r\n  \"is_deleted\" : false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/session",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"session"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -21,6 +21,7 @@ func (s *Server) setupControllers() {
 	controller.NewStudentController(s.uc.StudentUseCase(), rg).Route()
 	controller.NewCourseController(s.uc.CourseCase(), rg).Route()
 	controller.NewUserController(s.uc.UserUseCase(), rg).Route()
+	controller.NewSessionController(s.uc.SessionUseCase(), rg).Route()
 }
 
 func (s *Server) Run() {
@@ -36,8 +37,8 @@ func NewServer() *Server {
 		log.Fatal(err)
 	}
 
-	gin.SetMode(gin.ReleaseMode)
-	engine := gin.New()
+	// gin.SetMode(gin.ReleaseMode)
+	// engine := gin.New()
 
 	infraManager, err := manager.NewInfraManager(cfg)
 	if err != nil {
@@ -46,10 +47,12 @@ func NewServer() *Server {
 
 	repoManager := manager.NewRepoManager(infraManager)
 	useCaseManager := manager.NewUseCaseManager(repoManager)
+	engine := gin.Default()
+	host := fmt.Sprintf(":%s", cfg.ApiPort)
 
 	return &Server{
 		uc:     useCaseManager,
 		engine: engine,
-		host:   fmt.Sprintf(":%s", cfg.ApiPort),
+		host:   host,
 	}
 }

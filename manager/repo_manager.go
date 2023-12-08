@@ -6,6 +6,7 @@ type RepoManager interface {
 	StudentRepo() repository.StudentRepository
 	UserRepo() repository.UserRepositpry
 	CourseRepo() repository.CourseRepository
+	SessionRepo() repository.SessionRepository
 }
 
 type repoManager struct {
@@ -22,6 +23,10 @@ func (r *repoManager) UserRepo() repository.UserRepositpry {
 
 func (r *repoManager) CourseRepo() repository.CourseRepository {
 	return repository.NewCourseRepository(r.infra.Conn())
+}
+
+func (r *repoManager) SessionRepo() repository.SessionRepository {
+	return repository.NewSessionRepository(r.infra.Conn())
 }
 
 func NewRepoManager(infra InfraManager) RepoManager {
