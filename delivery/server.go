@@ -30,6 +30,10 @@ func (s *Server) setupControllers() {
 	controller.NewCourseController(s.uc.CourseCase(), rg).Route()
 	controller.NewUserController(s.uc.UserUseCase(), rg, authMiddleware).Route()
 	controller.NewAuthController(s.auth, rg, s.jwtService).Route()
+	controller.NewQuestionController(s.uc.QuestionUseCase(), rg).Route()
+	controller.NewCourseDetailController(s.uc.CourseDetailUseCase(), rg).Route()
+	controller.NewSessionController(s.uc.SessionCaseUseCase(), rg).Route()
+	controller.NewAttendanceController(s.uc.AttendanceUseCase(), rg).Route()
 }
 
 func (s *Server) Run() {

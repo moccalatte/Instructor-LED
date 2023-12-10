@@ -2,6 +2,7 @@ package repository
 
 import (
 	"database/sql"
+	"fmt"
 	"time"
 
 	"final-project-kelompok-1/model"
@@ -51,6 +52,7 @@ func (s *studentRepository) Create(payload model.Student) (model.Student, error)
 		&student.UpdatedAt,
 		&student.IsDeleted,
 	)
+	fmt.Print(err, "STUDENT REPO")
 	if err != nil {
 		return model.Student{}, tx.Rollback()
 	}
@@ -110,19 +112,19 @@ func (s *studentRepository) Update(payload model.Student, id string) (model.Stud
 		time.Now(),
 		false,
 		id).Scan(
-			&student.StudentID,
-			&student.Fullname,
-			&student.BirthDate,
-			&student.BirthPlace,
-			&student.Address,
-			&student.Education,
-			&student.Institution,
-			&student.Job,
-			&student.Email,
-			&student.Password,
-			&student.CreatedAt,
-			&student.UpdatedAt,
-			&student.IsDeleted,
+		&student.StudentID,
+		&student.Fullname,
+		&student.BirthDate,
+		&student.BirthPlace,
+		&student.Address,
+		&student.Education,
+		&student.Institution,
+		&student.Job,
+		&student.Email,
+		&student.Password,
+		&student.CreatedAt,
+		&student.UpdatedAt,
+		&student.IsDeleted,
 	)
 	if err != nil {
 		return model.Student{}, tx.Rollback()
@@ -150,19 +152,19 @@ func (s *studentRepository) Delete(id string) (model.Student, error) {
 	err = tx.QueryRow(common.DeleteStudentById,
 		true,
 		id).Scan(
-			&student.StudentID,
-			&student.Fullname,
-			&student.BirthDate,
-			&student.BirthPlace,
-			&student.Address,
-			&student.Education,
-			&student.Institution,
-			&student.Job,
-			&student.Email,
-			&student.Password,
-			&student.CreatedAt,
-			&student.UpdatedAt,
-			&student.IsDeleted,
+		&student.StudentID,
+		&student.Fullname,
+		&student.BirthDate,
+		&student.BirthPlace,
+		&student.Address,
+		&student.Education,
+		&student.Institution,
+		&student.Job,
+		&student.Email,
+		&student.Password,
+		&student.CreatedAt,
+		&student.UpdatedAt,
+		&student.IsDeleted,
 	)
 	if err != nil {
 		return model.Student{}, tx.Rollback()

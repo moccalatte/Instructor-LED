@@ -2,6 +2,7 @@ package repository
 
 import (
 	"database/sql"
+	"fmt"
 	"time"
 
 	"final-project-kelompok-1/model"
@@ -45,6 +46,7 @@ func (s *sessionRepository) Create(payload model.Session) (model.Session, error)
 		&session.UpdatedAt,
 		&session.IsDeleted,
 	)
+	fmt.Print(err, "SESSION REPO")
 	if err != nil {
 		return model.Session{}, tx.Rollback()
 	}

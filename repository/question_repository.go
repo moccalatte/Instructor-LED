@@ -2,6 +2,7 @@ package repository
 
 import (
 	"database/sql"
+	"fmt"
 	"time"
 
 	"final-project-kelompok-1/model"
@@ -50,6 +51,7 @@ func (q *questionRepository) Create(payload model.Question) (model.Question, err
 		&question.UpdatedAt,
 		&question.IsDeleted,
 	)
+	fmt.Print(err, "QUESTION REPO")
 
 	if err != nil {
 		return model.Question{}, tx.Rollback()

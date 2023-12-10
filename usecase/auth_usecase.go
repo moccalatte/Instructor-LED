@@ -7,7 +7,7 @@ import (
 )
 
 type AuthUseCase interface {
-	Register(payload model.User) (model.Users, error)
+	Register(payload model.Users) (model.Users, error)
 	Login(payload dto.AuthRequestDto) (dto.AuthResponseDto, error)
 }
 
@@ -21,7 +21,7 @@ func (a *authUseCase) Register(payload model.Users) (model.Users, error) {
 }
 
 func (a *authUseCase) Login(payload dto.AuthRequestDto) (dto.AuthResponseDto, error) {
-	user, err := a.uc.FindByUsernamePassword(payload.Username, payload.Password)
+	user, err := a.uc.FindByUsernamePassword(payload.Email, payload.Password)
 	if err != nil {
 		return dto.AuthResponseDto{}, err
 	}

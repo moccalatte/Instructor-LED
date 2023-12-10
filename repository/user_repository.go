@@ -13,6 +13,7 @@ type UserRepositpry interface {
 	GetById(id string) (model.Users, error)
 	Update(payload model.Users, id string) (model.Users, error)
 	Delete(id string) (model.Users, error)
+	GetByUsername(username string) (model.Users, error)
 }
 
 type userRepository struct {
@@ -43,6 +44,7 @@ func (u *userRepository) Create(payload model.Users) (model.Users, error) {
 		&user.UpdatedAt,
 		&user.IsDeleted,
 	)
+	fmt.Print(err, "USER REPO")
 
 	if err != nil {
 		fmt.Println("Error di Repo user : ", err)
@@ -149,6 +151,20 @@ func (u *userRepository) Delete(id string) (model.Users, error) {
 		return model.Users{}, err
 	}
 
+	return user, nil
+}
+func (u *userRepository) GetByUsername(username string) (model.Users, error) {
+	var user model.Users
+	err := u.db.QueryRow(common.GetByFullname, username).Scan(
+		&user.UserID,
+		&user.Fullname,
+		&user.Role,
+		&user.Email,
+		&user.Password,
+	)
+	if err != nil {
+		return model.Users{}, err
+	}
 	return user, nil
 }
 

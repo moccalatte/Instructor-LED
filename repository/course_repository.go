@@ -43,9 +43,7 @@ func (c *courseRepository) Create(payload model.Course) (model.Course, error) {
 		&course.UpdatedAt,
 		&course.IsDeleted,
 	)
-	fmt.Print(course.CourseName, "DATANYAMANA")
-	// fmt.Print(course.CourseDetailID)
-	fmt.Print(err)
+	fmt.Print(err, "COURSE REPO")
 
 	if err != nil {
 		return model.Course{}, tx.Rollback()
@@ -91,12 +89,12 @@ func (c *courseRepository) Update(payload model.Course, id string) (model.Course
 		time.Now(),
 		true,
 		id).Scan(
-			&course.CourseID,
-			&course.CourseName,
-			&course.Description,
-			&course.CreatedAt,
-			&course.UpdatedAt,
-			&course.IsDeleted,
+		&course.CourseID,
+		&course.CourseName,
+		&course.Description,
+		&course.CreatedAt,
+		&course.UpdatedAt,
+		&course.IsDeleted,
 	)
 	if err != nil {
 		return model.Course{}, tx.Rollback()
@@ -123,12 +121,12 @@ func (c *courseRepository) Delete(id string) (model.Course, error) {
 	err = tx.QueryRow(common.UpdateCourseById,
 		true,
 		id).Scan(
-			&course.CourseID,
-			&course.CourseName,
-			&course.Description,
-			&course.CreatedAt,
-			&course.UpdatedAt,
-			&course.IsDeleted,
+		&course.CourseID,
+		&course.CourseName,
+		&course.Description,
+		&course.CreatedAt,
+		&course.UpdatedAt,
+		&course.IsDeleted,
 	)
 	if err != nil {
 		return model.Course{}, tx.Rollback()

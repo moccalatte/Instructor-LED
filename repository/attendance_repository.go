@@ -2,6 +2,7 @@ package repository
 
 import (
 	"database/sql"
+	"fmt"
 	"time"
 
 	"final-project-kelompok-1/model"
@@ -39,6 +40,7 @@ func (a *attendanceRepository) Create(payload model.Attendance) (model.Attendanc
 		&attendance.UpdatedAt,
 		&attendance.IsDeleted,
 	)
+	fmt.Print(err, "ATTENDANCE REPO")
 	if err != nil {
 		return model.Attendance{}, tx.Rollback()
 	}
