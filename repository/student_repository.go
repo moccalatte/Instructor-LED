@@ -2,9 +2,9 @@ package repository
 
 import (
 	"database/sql"
-
 	"final-project-kelompok-1/model"
 	"final-project-kelompok-1/utils/common"
+	"fmt"
 )
 
 type StudentRepository interface {
@@ -48,6 +48,9 @@ func (s *studentRepository) Create(payload model.Student) (model.Student, error)
 		&student.Password,
 		&student.IsDeleted,
 	)
+
+	fmt.Print(err, "INI DI STUDENT REPO")
+
 	if err != nil {
 		return model.Student{}, tx.Rollback()
 	}

@@ -60,7 +60,7 @@ func (u *userUseCase) UpdateUser(payload dto.UserRequestDto, id string) (model.U
 	updatedUser, err := u.repo.Update(newUser, id)
 
 	if err != nil {
-		return model.Users{}, fmt.Errorf("failed to Update data : %s", err.Error())
+		return model.Users{}, fmt.Errorf("failed update data by id : %s", err.Error())
 	}
 
 	return updatedUser, nil

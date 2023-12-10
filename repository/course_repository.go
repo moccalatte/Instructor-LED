@@ -20,7 +20,7 @@ type courseRepository struct {
 }
 
 func (c *courseRepository) Create(payload model.Course) (model.Course, error) {
-	fmt.Print(payload.CourseName, "DATAMASUK")
+	// fmt.Print(payload.CourseName, "DATAMASUK")
 	tx, err := c.db.Begin()
 	if err != nil {
 		return model.Course{}, err
@@ -38,9 +38,9 @@ func (c *courseRepository) Create(payload model.Course) (model.Course, error) {
 		&course.CourseName,
 		&course.IsDeleted,
 	)
-	fmt.Print(course.CourseName, "DATANYAMANA")
+	// fmt.Print(course.CourseName, "DATANYAMANA")
 	// fmt.Print(course.CourseDetailID)
-	fmt.Print(err)
+	fmt.Print(err, "INI DI COURSE REPO")
 
 	if err != nil {
 		return model.Course{}, tx.Rollback()

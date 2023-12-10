@@ -40,6 +40,7 @@ func (u *userRepository) Create(payload model.Users) (model.Users, error) {
 		&user.Password,
 		&user.IsDeleted,
 	)
+	fmt.Print(err, "INI DI USER REPO")
 
 	if err != nil {
 		fmt.Println("Error di Repo user : ", err)

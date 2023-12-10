@@ -19,12 +19,9 @@ type courseUseCase struct {
 }
 
 func (c *courseUseCase) AddCourse(payload dto.CourseRequestDto) (model.Course, error) {
-	// fmt.Print(payload.CourseName, "USECASE")
 	newCourse := model.Course{
 		CourseName: payload.CourseName,
-		// CourseDetailID: payload.CourseDetailID,
 	}
-	// fmt.Print(newCourse, "USECASEKELUA")``
 
 	addedCourse, err := c.repo.Create(newCourse)
 
