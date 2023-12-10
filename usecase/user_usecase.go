@@ -4,6 +4,8 @@ import (
 	"final-project-kelompok-1/model"
 	"final-project-kelompok-1/model/dto"
 	"final-project-kelompok-1/repository"
+	"final-project-kelompok-1/utils/common"
+	"errors"
 	"fmt"
 )
 
@@ -12,6 +14,8 @@ type UserUseCase interface {
 	FindUserByID(id string) (model.Users, error)
 	UpdateUser(payload dto.UserRequestDto, id string) (model.Users, error)
 	DeleteUser(id string) (model.Users, error)
+	RegisterNewUser(payload model.Users) (model.Users, error)
+	FindByUsernamePassword(username string, password string) (model.Users, error)
 }
 
 type userUseCase struct {
@@ -75,6 +79,34 @@ func (u *userUseCase) DeleteUser(id string) (model.Users, error) {
 	}
 
 	return deletedUser, nil
+}
+
+func (u *userUseCase) RegisterNewUser(payload model.Users) (model.Users, error) {
+	if !payload.IsValidRole() {
+		return model.Users{}, errors.New("invalid role, role must be admin or employee")
+	}
+
+	newPassword, err := common.GeneratePasswordHash(payload.Password)
+	if err != nil {
+		return model.Users{}, err
+	}
+
+	payload.Password = newPassword
+	return u.repo.Create(payload)
+}
+
+func (u *userUseCase) FindByUsernamePassword(username string, password string) (model.Users, error) {
+	user, err := u.repo.GetByUsername(username)
+	if err != nil {
+		return model.Users{}, errors.New("invalid username or password")
+	}
+
+	if err := common.ComparePasswordHash(user.Password, password); err != nil {
+		return model.Users{}, err
+	}
+
+	user.Password = ""
+	return user, nil
 }
 
 func NewUserUseCase(repo repository.UserRepositpry) UserUseCase {
