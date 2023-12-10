@@ -13,6 +13,9 @@ type UserRepositpry interface {
 	GetById(id string) (model.Users, error)
 	Update(payload model.Users, id string) (model.Users, error)
 	Delete(id string) (model.Users, error)
+
+	// Get by fullname when login
+	GetByFullname(fullname string) (model.Users, error)
 }
 
 type userRepository struct {
@@ -136,6 +139,25 @@ func (u *userRepository) Delete(id string) (model.Users, error) {
 	}
 
 	if err := tx.Commit(); err != nil {
+		return model.Users{}, err
+	}
+
+	return user, nil
+}
+
+func (u *userRepository) GetByFullname(fullname string) (model.Users, error) {
+	var user model.Users
+	err := u.db.QueryRow(common.GetByFullname, fullname).Scan(
+		&user.UserID,
+		&user.Fullname,
+		&user.Role,
+		&user.Email,
+		&user.Password,
+		&user.IsDeleted,
+	)
+
+	if err != nil {
+		fmt.Println("Failed to get fullname : ", err.Error())
 		return model.Users{}, err
 	}
 

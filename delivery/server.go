@@ -3,7 +3,10 @@ package delivery
 import (
 	"final-project-kelompok-1/config"
 	"final-project-kelompok-1/delivery/controller"
+	"final-project-kelompok-1/delivery/middleware"
 	"final-project-kelompok-1/manager"
+	"final-project-kelompok-1/usecase"
+	"final-project-kelompok-1/utils/common"
 	"fmt"
 	"log"
 
@@ -11,16 +14,22 @@ import (
 )
 
 type Server struct {
-	uc     manager.UseCaseManager
-	engine *gin.Engine
-	host   string
+	uc         manager.UseCaseManager
+	engine     *gin.Engine
+	host       string
+	logService common.MyLogger
+	auth       usecase.AuthUseCase
+	jwtService common.JwtToken
 }
 
 func (s *Server) setupControllers() {
+	s.engine.Use(middleware.NewLogMiddleware(s.logService).LogRequest())
+	authMiddleware := middleware.NewAuthMiddleware(s.jwtService)
 	rg := s.engine.Group("/api/v1")
 	controller.NewStudentController(s.uc.StudentUseCase(), rg).Route()
 	controller.NewCourseController(s.uc.CourseCase(), rg).Route()
-	controller.NewUserController(s.uc.UserUseCase(), rg).Route()
+	controller.NewUserController(s.uc.UserUseCase(), rg, authMiddleware).Route()
+	controller.NewAuthController(s.auth, rg, s.jwtService).Route()
 }
 
 func (s *Server) Run() {
@@ -48,10 +57,15 @@ func NewServer() *Server {
 	useCaseManager := manager.NewUseCaseManager(repoManager)
 	engine := gin.Default()
 	host := fmt.Sprintf(":%s", cfg.ApiPort)
+	logService := common.NewMyLogger(cfg.LogFileConfig)
+	jwtService := common.NewJwtToken(cfg.TokenConfig)
 
 	return &Server{
-		uc:     useCaseManager,
-		engine: engine,
-		host:   host,
+		uc:         useCaseManager,
+		engine:     engine,
+		host:       host,
+		logService: logService,
+		auth:       usecase.NewAuthUseCase(useCaseManager.UserUseCase(), jwtService),
+		jwtService: jwtService,
 	}
 }

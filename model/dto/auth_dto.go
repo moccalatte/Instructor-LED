@@ -1,7 +1,7 @@
 package dto
 
 type AuthRequestDto struct {
-	Email    string `json:"email"`
+	Fullname string `json:"fullname"`
 	Password string `json:"password"`
 }
 

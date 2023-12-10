@@ -3,6 +3,8 @@ package config
 import (
 	"errors"
 	"os"
+	"strconv"
+	"time"
 
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
@@ -21,9 +23,21 @@ type DbConfig struct {
 	Driver   string
 }
 
+type LogFileConfig struct {
+	FilePath string
+}
+
+type TokenConfig struct {
+	IssuerName      string
+	JwtSignatureKey []byte
+	JwtLifeTime     time.Duration
+}
+
 type Config struct {
 	ApiConfig
 	DbConfig
+	LogFileConfig
+	TokenConfig
 }
 
 func (c *Config) readConfig() error {
@@ -42,6 +56,19 @@ func (c *Config) readConfig() error {
 		User:     os.Getenv("USER"),
 		Password: os.Getenv("PASSWORD"),
 		Driver:   os.Getenv("DB_DRIVER"),
+	}
+
+	c.LogFileConfig = LogFileConfig{FilePath: os.Getenv("LOG_FILE")}
+
+	tokenLifeTime, err := strconv.Atoi(os.Getenv("TOKEN_LIFE_TIME"))
+	if err != nil {
+		return err
+	}
+
+	c.TokenConfig = TokenConfig{
+		IssuerName:      os.Getenv("TOKEN_ISSUE_NAME"),
+		JwtSignatureKey: []byte(os.Getenv("TOKEN_KEY")),
+		JwtLifeTime:     time.Duration(tokenLifeTime) * time.Hour,
 	}
 
 	if c.ApiConfig.ApiPort == "" || c.DbConfig.Driver == "" || c.DbConfig.Host == "" || c.DbConfig.Name == "" || c.DbConfig.Port == "" || c.DbConfig.User == "" {

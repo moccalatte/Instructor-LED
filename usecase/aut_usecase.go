@@ -1,0 +1,41 @@
+package usecase
+
+import (
+	"final-project-kelompok-1/model"
+	"final-project-kelompok-1/model/dto"
+	"final-project-kelompok-1/utils/common"
+	"fmt"
+)
+
+type AuthUseCase interface {
+	Create(payload model.Users) (model.Users, error)
+	Login(payload dto.AuthRequestDto) (dto.AuthResponseDto, error)
+}
+
+type authUseCase struct {
+	uc       UserUseCase
+	jwtToken common.JwtToken
+}
+
+func (a *authUseCase) Create(payload model.Users) (model.Users, error) {
+	return a.uc.RegisterNewUser(payload)
+}
+
+func (a *authUseCase) Login(payload dto.AuthRequestDto) (dto.AuthResponseDto, error) {
+	user, err := a.uc.FindByFullnamePassword(payload.Fullname, payload.Password)
+	fmt.Println("Auth Use Case >>>>> ", payload)
+	if err != nil {
+		return dto.AuthResponseDto{}, err
+	}
+
+	token, err := a.jwtToken.GenerateToken(user)
+	if err != nil {
+		return dto.AuthResponseDto{}, err
+	}
+
+	return token, nil
+}
+
+func NewAuthUseCase(uc UserUseCase, jwtToken common.JwtToken) AuthUseCase {
+	return &authUseCase{uc: uc, jwtToken: jwtToken}
+}
