@@ -6,5 +6,3 @@ type AttendanceRequestDto struct {
 	AttendanceStudent bool   `json:"attendance_student"`
 	IsDeleted         bool   `json:"is_deleted"`
 }
-
-//nama struct disesuaikan dengan nama table

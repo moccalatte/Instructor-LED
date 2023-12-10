@@ -11,7 +11,6 @@ CREATE TABLE users (
     is_deleted BOOLEAN 
 ); 
  
- 
 CREATE TABLE student ( 
     student_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(), 
     fullname VARCHAR(255) NOT NULL, 
@@ -111,3 +110,16 @@ ALTER TABLE attendance
  
 ALTER TABLE session 
     ADD FOREIGN KEY (trainer_id) REFERENCES users(user_id);
+
+-- Select all columns from the users table
+SELECT * FROM users;
+
+-- Select specific columns from users where is_deleted is true
+SELECT user_id, fullname, role, email, password, is_deleted
+FROM users
+WHERE is_deleted = true;
+
+-- Insert a new row into users with is_deleted set to true
+INSERT INTO users(fullname, role, email, password, is_deleted)
+VALUES ('gopan', 'admin', 'admin@gmail.com', '12345678', true)
+RETURNING user_id, fullname, role, email, password, is_deleted;

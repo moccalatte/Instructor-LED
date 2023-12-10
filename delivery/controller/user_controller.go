@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"final-project-kelompok-1/delivery/middleware"
 	"final-project-kelompok-1/model/dto"
 	"final-project-kelompok-1/usecase"
 	"net/http"
@@ -9,8 +10,9 @@ import (
 )
 
 type UserController struct {
-	uc usecase.UserUseCase
-	rg *gin.RouterGroup
+	uc             usecase.UserUseCase
+	rg             *gin.RouterGroup
+	authMiddleware middleware.AuthMiddleware
 }
 
 func (u *UserController) CreateHandler(ctx *gin.Context) {
@@ -74,12 +76,13 @@ func (u *UserController) DeleteHandler(ctx *gin.Context) {
 }
 
 func (u *UserController) Route() {
-	u.rg.POST("/user", u.CreateHandler)
-	u.rg.GET("/user/:id", u.GetHandlerByID)
-	u.rg.PUT("/user/:id", u.UpdateHandler)
-	u.rg.DELETE("/user/:id", u.DeleteHandler)
+	ur := u.rg.Group("/user", u.authMiddleware.RequireToken("admin", "trainer"))
+	ur.POST("/", u.CreateHandler)
+	ur.GET("/user/:id", u.GetHandlerByID)
+	ur.PUT("/user/:id", u.UpdateHandler)
+	ur.DELETE("/user/:id", u.DeleteHandler)
 }
 
-func NewUserController(uc usecase.UserUseCase, rg *gin.RouterGroup) *UserController {
-	return &UserController{uc: uc, rg: rg}
+func NewUserController(uc usecase.UserUseCase, rg *gin.RouterGroup, authMiddleware middleware.AuthMiddleware) *UserController {
+	return &UserController{uc: uc, rg: rg, authMiddleware: authMiddleware}
 }
