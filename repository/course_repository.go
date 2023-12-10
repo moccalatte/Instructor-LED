@@ -3,6 +3,7 @@ package repository
 import (
 	"database/sql"
 	"fmt"
+	"time"
 
 	"final-project-kelompok-1/model"
 	"final-project-kelompok-1/utils/common"
@@ -31,11 +32,15 @@ func (c *courseRepository) Create(payload model.Course) (model.Course, error) {
 
 	err = tx.QueryRow(common.CreateCourse,
 		payload.CourseName,
-
-		true,
+		payload.Description,
+		time.Now(),
+		false,
 	).Scan(
 		&course.CourseID,
 		&course.CourseName,
+		&course.Description,
+		&course.CreatedAt,
+		&course.UpdatedAt,
 		&course.IsDeleted,
 	)
 	// fmt.Print(course.CourseName, "DATANYAMANA")
@@ -57,7 +62,9 @@ func (c *courseRepository) GetById(id string) (model.Course, error) {
 	err := c.db.QueryRow(common.GetCourseById, id).Scan(
 		&course.CourseID,
 		&course.CourseName,
-		// &course.CourseDetailID,
+		&course.Description,
+		&course.CreatedAt,
+		&course.UpdatedAt,
 		&course.IsDeleted,
 	)
 	if err != nil {
@@ -80,13 +87,16 @@ func (c *courseRepository) Update(payload model.Course, id string) (model.Course
 	var course model.Course
 	err = tx.QueryRow(common.UpdateCourseById,
 		payload.CourseName,
-		// payload.CourseDetailID,
+		payload.Description,
+		time.Now(),
 		true,
 		id).Scan(
-		&course.CourseID,
-		&course.CourseName,
-		// &course.CourseDetailID,
-		&course.IsDeleted,
+			&course.CourseID,
+			&course.CourseName,
+			&course.Description,
+			&course.CreatedAt,
+			&course.UpdatedAt,
+			&course.IsDeleted,
 	)
 	if err != nil {
 		return model.Course{}, tx.Rollback()
@@ -111,12 +121,14 @@ func (c *courseRepository) Delete(id string) (model.Course, error) {
 
 	var course model.Course
 	err = tx.QueryRow(common.UpdateCourseById,
-		false,
+		true,
 		id).Scan(
-		&course.CourseID,
-		&course.CourseName,
-		// &course.CourseDetailID,
-		&course.IsDeleted,
+			&course.CourseID,
+			&course.CourseName,
+			&course.Description,
+			&course.CreatedAt,
+			&course.UpdatedAt,
+			&course.IsDeleted,
 	)
 	if err != nil {
 		return model.Course{}, tx.Rollback()

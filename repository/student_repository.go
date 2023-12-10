@@ -2,6 +2,8 @@ package repository
 
 import (
 	"database/sql"
+	"time"
+
 	"final-project-kelompok-1/model"
 	"final-project-kelompok-1/utils/common"
 	"fmt"
@@ -26,7 +28,6 @@ func (s *studentRepository) Create(payload model.Student) (model.Student, error)
 	var student model.Student
 	err = tx.QueryRow(common.CreateStudent,
 		payload.Fullname,
-
 		payload.BirthDate,
 		payload.BirthPlace,
 		payload.Address,
@@ -35,7 +36,8 @@ func (s *studentRepository) Create(payload model.Student) (model.Student, error)
 		payload.Job,
 		payload.Email,
 		payload.Password,
-		true).Scan(
+		time.Now(),
+		false).Scan(
 		&student.StudentID,
 		&student.Fullname,
 		&student.BirthDate,
@@ -46,6 +48,8 @@ func (s *studentRepository) Create(payload model.Student) (model.Student, error)
 		&student.Job,
 		&student.Email,
 		&student.Password,
+		&student.CreatedAt,
+		&student.UpdatedAt,
 		&student.IsDeleted,
 	)
 
@@ -76,6 +80,8 @@ func (s *studentRepository) GetById(id string) (model.Student, error) {
 		&student.Job,
 		&student.Email,
 		&student.Password,
+		&student.CreatedAt,
+		&student.UpdatedAt,
 		&student.IsDeleted,
 	)
 	if err != nil {
@@ -105,7 +111,8 @@ func (s *studentRepository) Update(payload model.Student, id string) (model.Stud
 		payload.Job,
 		payload.Email,
 		payload.Password,
-		true,
+		time.Now(),
+		false,
 		id).Scan(
 		&student.StudentID,
 		&student.Fullname,
@@ -117,6 +124,8 @@ func (s *studentRepository) Update(payload model.Student, id string) (model.Stud
 		&student.Job,
 		&student.Email,
 		&student.Password,
+		&student.CreatedAt,
+		&student.UpdatedAt,
 		&student.IsDeleted,
 	)
 	if err != nil {
@@ -143,7 +152,7 @@ func (s *studentRepository) Delete(id string) (model.Student, error) {
 	}()
 	var student model.Student
 	err = tx.QueryRow(common.DeleteStudentById,
-		false,
+		true,
 		id).Scan(
 		&student.StudentID,
 		&student.Fullname,
@@ -155,6 +164,8 @@ func (s *studentRepository) Delete(id string) (model.Student, error) {
 		&student.Job,
 		&student.Email,
 		&student.Password,
+		&student.CreatedAt,
+		&student.UpdatedAt,
 		&student.IsDeleted,
 	)
 	if err != nil {

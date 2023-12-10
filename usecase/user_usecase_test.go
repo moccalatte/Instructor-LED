@@ -25,6 +25,10 @@ func (suite *UserUseCaseTestSuite) SetupTest() {
 	suite.uu = NewUserUseCase(suite.urm)
 }
 
+// func NewUserUseCase(userRepoMock *repomock.UserRepoMock) {
+// 	panic("unimplemented")
+// }
+
 func TestUserUseCaseTestSuite(t *testing.T) {
 	suite.Run(t, new(UserUseCaseTestSuite))
 }

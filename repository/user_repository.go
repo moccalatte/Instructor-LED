@@ -31,6 +31,7 @@ func (u *userRepository) Create(payload model.Users) (model.Users, error) {
 		payload.Role,
 		payload.Email,
 		payload.Password,
+		payload.UpdatedAt,
 		false,
 	).Scan(
 		&user.UserID,
@@ -38,6 +39,8 @@ func (u *userRepository) Create(payload model.Users) (model.Users, error) {
 		&user.Role,
 		&user.Email,
 		&user.Password,
+		&user.CreatedAt,
+		&user.UpdatedAt,
 		&user.IsDeleted,
 	)
 	fmt.Print(err, "INI DI USER REPO")
@@ -62,6 +65,8 @@ func (u *userRepository) GetById(id string) (model.Users, error) {
 		&user.Role,
 		&user.Email,
 		&user.Password,
+		&user.CreatedAt,
+		&user.UpdatedAt,
 		&user.IsDeleted,
 	)
 	if err != nil {
@@ -88,13 +93,16 @@ func (u *userRepository) Update(payload model.Users, id string) (model.Users, er
 		payload.Role,
 		payload.Email,
 		payload.Password,
-		true,
+		payload.UpdatedAt,
+		false,
 		id).Scan(
 		&user.UserID,
 		&user.Fullname,
 		&user.Role,
 		&user.Email,
 		&user.Password,
+		&user.CreatedAt,
+		&user.UpdatedAt,
 		&user.IsDeleted,
 	)
 	if err != nil {
@@ -123,13 +131,15 @@ func (u *userRepository) Delete(id string) (model.Users, error) {
 
 	var user model.Users
 	err = tx.QueryRow(common.DeleteUser,
-		false,
+		true,
 		id).Scan(
 		&user.UserID,
 		&user.Fullname,
 		&user.Role,
 		&user.Email,
 		&user.Password,
+		&user.CreatedAt,
+		&user.UpdatedAt,
 		&user.IsDeleted,
 	)
 	if err != nil {
