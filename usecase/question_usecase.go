@@ -28,6 +28,7 @@ func (s *questionUseCase) AddQuestion(payload dto.QuestionRequestDto) (model.Que
 		Description: payload.Description,
 		CourseID:    model.Course{CourseID: payload.CourseID},
 		Image:       payload.Image,
+		ImagePath: payload.ImagePath,
 	}
 
 	createsQuestion, err := s.repo.Create(newSession)

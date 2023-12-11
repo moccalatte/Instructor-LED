@@ -26,6 +26,7 @@ func (s *Server) setupControllers() {
 	s.engine.Use(middleware.NewLogMiddleware(s.logService).LogRequest())
 	authMiddleware := middleware.NewAuthMiddleware(s.jwtService)
 	rg := s.engine.Group("/api/v1")
+	rg.Use(authMiddleware.RequireToken())
 	controller.NewStudentController(s.uc.StudentUseCase(), rg).Route()
 	controller.NewCourseController(s.uc.CourseCase(), rg).Route()
 	controller.NewUserController(s.uc.UserUseCase(), rg, authMiddleware).Route()

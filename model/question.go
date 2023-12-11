@@ -18,4 +18,5 @@ type Question struct {
 	IsDeleted   bool      `json:"is_deleted"`
 	CreatedAt   time.Time `json:"createdAt"`
 	UpdatedAt   time.Time `json:"updatedAt"`
+	ImagePath string `json:"image_path"`
 }
