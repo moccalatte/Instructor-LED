@@ -8,3 +8,9 @@ type CourseRequestDto struct {
 	IsDeleted    bool                 `json:"is_deleted"`
 	CourseDetail []model.CourseDetail `json:"course_detail"`
 }
+
+type CourseDetailRequestDto struct {
+	CourseId      string `json:"course_id"`
+	CourseChapter string `json:"course_chapter"`
+	CourseContent string `json:"course_content"`
+}

@@ -19,7 +19,7 @@ type UserUseCase interface {
 }
 
 type userUseCase struct {
-	repo repository.UserRepositpry
+	repo repository.UserRepository
 }
 
 func (u *userUseCase) AddUser(payload dto.UserRequestDto) (model.Users, error) {
@@ -109,6 +109,6 @@ func (u *userUseCase) FindByUsernamePassword(username string, password string) (
 	return user, nil
 }
 
-func NewUserUseCase(repo repository.UserRepositpry) UserUseCase {
+func NewUserUseCase(repo repository.UserRepository) UserUseCase {
 	return &userUseCase{repo: repo}
 }

@@ -8,13 +8,17 @@ import (
 )
 
 type CourseDetailUseCase interface {
+	AddCourse(payload dto.CourseDetailRequestDto) (model.CourseDetail, error)
+	FindCourseDetailByID(id string) (model.CourseDetail, error)
+	UpdateAttendance(payload dto.CourseDetailRequestDto, id string) (model.CourseDetail, error)
+	Delete(id string) (model.CourseDetail, error)
 }
 
 type courseDetailUseCase struct {
 	repo repository.CourseDetailRepository
 }
 
-func (c *courseDetailUseCase) AddCourse(payload dto.CourseDetailsDto) (model.CourseDetail, error) {
+func (c *courseDetailUseCase) AddCourse(payload dto.CourseDetailRequestDto) (model.CourseDetail, error) {
 	newCourse := model.CourseDetail{
 		CourseID:      model.Course{CourseID: payload.CourseId},
 		CourseChapter: payload.CourseChapter,
@@ -41,7 +45,7 @@ func (c *courseDetailUseCase) FindCourseDetailByID(id string) (model.CourseDetai
 	return courseDetail, nil
 }
 
-func (c *courseDetailUseCase) UpdateAttendance(payload dto.CourseDetailsDto, id string) (model.CourseDetail, error) {
+func (c *courseDetailUseCase) UpdateAttendance(payload dto.CourseDetailRequestDto, id string) (model.CourseDetail, error) {
 	newCourse := model.CourseDetail{
 		CourseID:      model.Course{CourseID: payload.CourseId},
 		CourseChapter: payload.CourseChapter,
