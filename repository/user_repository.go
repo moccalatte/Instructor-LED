@@ -3,6 +3,7 @@ package repository
 import (
 	"database/sql"
 	"fmt"
+	"time"
 
 	"final-project-kelompok-1/model"
 	"final-project-kelompok-1/utils/common"
@@ -32,7 +33,7 @@ func (u *userRepository) Create(payload model.Users) (model.Users, error) {
 		payload.Role,
 		payload.Email,
 		payload.Password,
-		payload.UpdatedAt,
+		time.Now(),
 		false,
 	).Scan(
 		&user.UserID,
@@ -94,7 +95,7 @@ func (u *userRepository) Update(payload model.Users, id string) (model.Users, er
 		payload.Role,
 		payload.Email,
 		payload.Password,
-		payload.UpdatedAt,
+		time.Now(),
 		false,
 		id).Scan(
 		&user.UserID,
@@ -161,6 +162,9 @@ func (u *userRepository) GetByUsername(username string) (model.Users, error) {
 		&user.Role,
 		&user.Email,
 		&user.Password,
+		&user.CreatedAt,
+		&user.UpdatedAt,
+		&user.IsDeleted,
 	)
 	if err != nil {
 		return model.Users{}, err

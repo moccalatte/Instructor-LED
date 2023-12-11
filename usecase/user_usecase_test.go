@@ -2,16 +2,16 @@ package usecase
 
 import (
 	"errors"
-	repomock "final-project-kelompok-1/mock/repo_mock"
-	"final-project-kelompok-1/model"
-	"final-project-kelompok-1/model/dto"
 	"fmt"
-
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/suite"
+
+	repomock "final-project-kelompok-1/mock/repo_mock"
+	"final-project-kelompok-1/model"
+	"final-project-kelompok-1/model/dto"
 )
 
 type UserUseCaseTestSuite struct {
@@ -22,7 +22,7 @@ type UserUseCaseTestSuite struct {
 
 func (suite *UserUseCaseTestSuite) SetupTest() {
 	suite.urm = new(repomock.UserRepoMock)
-	suite.uu = NewUserUseCase(suite.urm)
+	suite.uu = NewUserUseCase()
 }
 
 // func NewUserUseCase(userRepoMock *repomock.UserRepoMock) {

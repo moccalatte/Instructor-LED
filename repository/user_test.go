@@ -17,7 +17,7 @@ type UserRepositoryTestSuite struct {
 	suite.Suite
 	mockDb  *sql.DB
 	sqlmock sqlmock.Sqlmock
-	repo    UserRepository
+	repo    UserRepositpry
 }
 
 func (suite *UserRepositoryTestSuite) SetupTest() {
