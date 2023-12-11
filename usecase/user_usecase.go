@@ -16,6 +16,7 @@ type UserUseCase interface {
 	DeleteUser(id string) (model.Users, error)
 	RegisterNewUser(payload model.Users) (model.Users, error)
 	FindByUsernamePassword(username string, password string) (model.Users, error)
+	GetByUsername(username string) (model.Users, error)
 }
 
 type userUseCase struct {
@@ -109,6 +110,14 @@ func (u *userUseCase) FindByUsernamePassword(username string, password string) (
 	return user, nil
 }
 
+func (c *userUseCase) GetByUsername(username string) (model.Users, error) {
+    user, err := c.repo.GetByUsername(username)
+    if err != nil {
+        return model.Users{}, fmt.Errorf("failed to get user by username: %s", err.Error())
+    }
+    return user, nil
+}
+
 func NewUserUseCase(repo repository.UserRepository) UserUseCase {
-	return &userUseCase{repo: repo}
+    return &userUseCase{repo: repo}
 }

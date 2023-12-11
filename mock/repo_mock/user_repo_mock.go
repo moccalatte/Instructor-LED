@@ -29,3 +29,9 @@ func (u *UserRepoMock) Delete(id string) (model.Users, error) {
 	args := u.Called(id)
 	return args.Get(0).(model.Users), args.Error(1)
 }
+
+func (u *UserRepoMock) GetByUsername(username string) (model.Users, error) {
+		args := u.Called(username)
+		return args.Get(0).(model.Users), args.Error(1)
+	
+}

@@ -8,7 +8,12 @@ import (
 )
 
 type AttendanceUseCase interface {
+    AddAttendance(payload dto.AttendanceRequestDto) (model.Attendance, error)
+    FindAttendanceByID(id string) (model.Attendance, error)
+    UpdateAttendance(payload dto.AttendanceRequestDto, id string) (model.Attendance, error)
+    Delete(id string) (model.Attendance, error)
 }
+
 
 type attendanceUseCase struct {
 	repo repository.AttendanceRepository
