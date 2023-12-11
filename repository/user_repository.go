@@ -9,7 +9,7 @@ import (
 	"final-project-kelompok-1/utils/common"
 )
 
-type UserRepositpry interface {
+type UserRepository interface {
 	Create(payload model.Users) (model.Users, error)
 	GetById(id string) (model.Users, error)
 	Update(payload model.Users, id string) (model.Users, error)
@@ -172,6 +172,6 @@ func (u *userRepository) GetByUsername(username string) (model.Users, error) {
 	return user, nil
 }
 
-func NewUserRepository(db *sql.DB) UserRepositpry {
+func NewUserRepository(db *sql.DB) UserRepository {
 	return &userRepository{db: db}
 }
