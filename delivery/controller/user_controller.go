@@ -10,9 +10,9 @@ import (
 )
 
 type UserController struct {
-	uc             usecase.UserUseCase
-	rg             *gin.RouterGroup
-	authMiddleware middleware.AuthMiddleware
+	uc usecase.UserUseCase
+	rg *gin.RouterGroup
+	// authMiddleware middleware.AuthMiddleware
 }
 
 func (u *UserController) CreateHandler(ctx *gin.Context) {
@@ -75,14 +75,21 @@ func (u *UserController) DeleteHandler(ctx *gin.Context) {
 	dto.SendSingleResponse(ctx, http.StatusOK, "User Deleted", deletedUser)
 }
 
+// func (u *UserController) Route() {
+// 	ur := u.rg.Group("/user", u.authMiddleware.RequireToken("admin", "trainer"))
+// 	ur.POST("/", u.CreateHandler)
+// 	ur.GET("/user/:id", u.GetHandlerByID)
+// 	ur.PUT("/user/:id", u.UpdateHandler)
+// 	ur.DELETE("/user/:id", u.DeleteHandler)
+// }
+
 func (u *UserController) Route() {
-	ur := u.rg.Group("/user", u.authMiddleware.RequireToken("admin", "trainer"))
-	ur.POST("/", u.CreateHandler)
-	ur.GET("/user/:id", u.GetHandlerByID)
-	ur.PUT("/user/:id", u.UpdateHandler)
-	ur.DELETE("/user/:id", u.DeleteHandler)
+	u.rg.POST("/user", u.CreateHandler)
+	u.rg.GET("/user/:id", u.GetHandlerByID)
+	u.rg.PUT("/user/:id", u.UpdateHandler)
+	u.rg.DELETE("/user/:id", u.DeleteHandler)
 }
 
 func NewUserController(uc usecase.UserUseCase, rg *gin.RouterGroup, authMiddleware middleware.AuthMiddleware) *UserController {
-	return &UserController{uc: uc, rg: rg, authMiddleware: authMiddleware}
+	return &UserController{uc: uc, rg: rg}
 }

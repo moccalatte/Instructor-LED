@@ -87,6 +87,7 @@ func (c *courseDetailRepository) Update(payload model.CourseDetail, id string) (
 		payload.CourseContent,
 		time.Now(),
 		false,
+		id,
 	).Scan(
 		&course_detail.CourseDetailID,
 		&course_detail.CourseID,
@@ -96,6 +97,7 @@ func (c *courseDetailRepository) Update(payload model.CourseDetail, id string) (
 		&course_detail.UpdatedAt,
 		&course_detail.IsDeleted,
 	)
+	fmt.Print(err, "ERROR DISINI")
 	if err != nil {
 		return model.CourseDetail{}, tx.Rollback()
 	}
@@ -119,7 +121,7 @@ func (c *courseDetailRepository) Delete(id string) (model.CourseDetail, error) {
 	}()
 
 	var course_detail model.CourseDetail
-	err = tx.QueryRow(common.UpdateCourseDetailByid,
+	err = tx.QueryRow(common.DeleteCourseDetailById,
 		true,
 		id,
 	).Scan(

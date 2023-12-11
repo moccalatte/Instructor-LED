@@ -34,6 +34,7 @@ func (s *sessionRepository) Create(payload model.Session) (model.Session, error)
 		payload.SessionLink,
 		payload.TrainerID,
 		time.Now(),
+		time.Now(),
 		false).Scan(
 		&session.SessionID,
 		&session.Title,
@@ -94,7 +95,7 @@ func (s *sessionRepository) Update(payload model.Session, id string) (model.Sess
 		payload.Description,
 		payload.SessionDate,
 		payload.SessionTime,
-		payload.SessionTime,
+		payload.SessionLink,
 		payload.TrainerID,
 		time.Now(),
 		false,
@@ -132,7 +133,7 @@ func (s *sessionRepository) Delete(id string) (model.Session, error) {
 		}
 	}()
 	var session model.Session
-	err = tx.QueryRow(common.UpdateSessionById,
+	err = tx.QueryRow(common.DeleteSessionById,
 		true,
 		id).Scan(
 		&session.SessionID,

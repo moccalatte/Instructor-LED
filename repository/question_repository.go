@@ -34,7 +34,8 @@ func (q *questionRepository) Create(payload model.Question) (model.Question, err
 		payload.Description,
 		payload.CourseID,
 		payload.Image,
-		false,
+		payload.Answer,
+		payload.Status,
 		time.Now(),
 		false).Scan(
 		&question.QuestionID,
@@ -102,7 +103,7 @@ func (q *questionRepository) Update(payload model.Question, id string) (model.Qu
 
 	var question model.Question
 	err = tx.QueryRow(
-		common.CreateQuestion,
+		common.UpdateQuestionById,
 		payload.SessionID,
 		payload.StudentID,
 		payload.TrainerID,
@@ -110,7 +111,8 @@ func (q *questionRepository) Update(payload model.Question, id string) (model.Qu
 		payload.Description,
 		payload.CourseID,
 		payload.Image,
-		false,
+		payload.Answer,
+		payload.Status,
 		time.Now(),
 		false,
 		id).Scan(
@@ -128,6 +130,8 @@ func (q *questionRepository) Update(payload model.Question, id string) (model.Qu
 		&question.UpdatedAt,
 		&question.IsDeleted,
 	)
+
+	fmt.Print(err, "ERROR DI REPO")
 	if err != nil {
 		return model.Question{}, tx.Rollback()
 	}
@@ -170,6 +174,7 @@ func (q *questionRepository) Delete(id string) (model.Question, error) {
 		&question.UpdatedAt,
 		&question.IsDeleted,
 	)
+	fmt.Print(err, "ERROR DI REPO")
 	if err != nil {
 		return model.Question{}, tx.Rollback()
 	}
@@ -213,6 +218,7 @@ func (q *questionRepository) Answer(payload model.Question, id string) (model.Qu
 		&question.UpdatedAt,
 		&question.IsDeleted,
 	)
+	fmt.Print(err, "DI REPO")
 	if err != nil {
 		return model.Question{}, tx.Rollback()
 	}

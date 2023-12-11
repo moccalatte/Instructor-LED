@@ -1,11 +1,11 @@
 package usecase
 
 import (
+	"errors"
 	"final-project-kelompok-1/model"
 	"final-project-kelompok-1/model/dto"
 	"final-project-kelompok-1/repository"
 	"final-project-kelompok-1/utils/common"
-	"errors"
 	"fmt"
 )
 
@@ -15,18 +15,19 @@ type UserUseCase interface {
 	UpdateUser(payload dto.UserRequestDto, id string) (model.Users, error)
 	DeleteUser(id string) (model.Users, error)
 	RegisterNewUser(payload model.Users) (model.Users, error)
-	FindByUsernamePassword(username string, password string) (model.Users, error)
+	// FindByUsernamePassword(username string, password string) (model.Users, error)
+	// GetByUsername(username string) (model.Users, error)
 }
 
 type userUseCase struct {
-	repo repository.UserRepositpry
+	repo repository.UserRepository
 }
 
 func (u *userUseCase) AddUser(payload dto.UserRequestDto) (model.Users, error) {
 	newUser := model.Users{
 		Fullname: payload.Fullname,
 		Role:     payload.Role,
-		Email:    payload.Role,
+		Email:    payload.Email,
 		Password: payload.Password,
 	}
 
@@ -95,20 +96,28 @@ func (u *userUseCase) RegisterNewUser(payload model.Users) (model.Users, error) 
 	return u.repo.Create(payload)
 }
 
-func (u *userUseCase) FindByUsernamePassword(username string, password string) (model.Users, error) {
-	user, err := u.repo.GetByUsername(username)
-	if err != nil {
-		return model.Users{}, errors.New("invalid username or password")
-	}
+// func (u *userUseCase) FindByUsernamePassword(username string, password string) (model.Users, error) {
+// 	user, err := u.repo.GetByUsername(username)
+// 	if err != nil {
+// 		return model.Users{}, errors.New("invalid username or password")
+// 	}
 
-	if err := common.ComparePasswordHash(user.Password, password); err != nil {
-		return model.Users{}, err
-	}
+// 	if err := common.ComparePasswordHash(user.Password, password); err != nil {
+// 		return model.Users{}, err
+// 	}
 
-	user.Password = ""
-	return user, nil
-}
+// 	user.Password = ""
+// 	return user, nil
+// }
 
-func NewUserUseCase(repo repository.UserRepositpry) UserUseCase {
+// func (c *userUseCase) GetByUsername(username string) (model.Users, error) {
+//     user, err := c.repo.GetByUsername(username)
+//     if err != nil {
+//         return model.Users{}, fmt.Errorf("failed to get user by username: %s", err.Error())
+//     }
+//     return user, nil
+// }
+
+func NewUserUseCase(repo repository.UserRepository) UserUseCase {
 	return &userUseCase{repo: repo}
 }

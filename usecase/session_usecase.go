@@ -25,7 +25,7 @@ func (s *sessionUseCase) AddSession(payload dto.SessionRequestDto) (model.Sessio
 		SessionDate: payload.SessionDate,
 		SessionTime: payload.SessionTime,
 		SessionLink: payload.SessionLink,
-		TrainerID:   model.Users{UserID: payload.TrainerID},
+		TrainerID:   payload.TrainerID,
 	}
 
 	createsSession, err := s.repo.Create(newSession)
@@ -51,7 +51,8 @@ func (s *sessionUseCase) Update(payload dto.SessionRequestDto, id string) (model
 		Description: payload.Description,
 		SessionDate: payload.SessionDate,
 		SessionTime: payload.SessionTime,
-		TrainerID:   model.Users{UserID: payload.TrainerID},
+		SessionLink: payload.SessionLink,
+		TrainerID:   payload.TrainerID,
 	}
 
 	session, err := s.repo.Update(sessions, id)

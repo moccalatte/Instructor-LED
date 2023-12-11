@@ -3,17 +3,18 @@ package repository
 import (
 	"database/sql"
 	"fmt"
+	"time"
 
 	"final-project-kelompok-1/model"
 	"final-project-kelompok-1/utils/common"
 )
 
-type UserRepositpry interface {
+type UserRepository interface {
 	Create(payload model.Users) (model.Users, error)
 	GetById(id string) (model.Users, error)
 	Update(payload model.Users, id string) (model.Users, error)
 	Delete(id string) (model.Users, error)
-	GetByUsername(username string) (model.Users, error)
+	// GetByUsername(username string) (model.Users, error)
 }
 
 type userRepository struct {
@@ -32,7 +33,7 @@ func (u *userRepository) Create(payload model.Users) (model.Users, error) {
 		payload.Role,
 		payload.Email,
 		payload.Password,
-		payload.UpdatedAt,
+		time.Now(),
 		false,
 	).Scan(
 		&user.UserID,
@@ -94,7 +95,7 @@ func (u *userRepository) Update(payload model.Users, id string) (model.Users, er
 		payload.Role,
 		payload.Email,
 		payload.Password,
-		payload.UpdatedAt,
+		time.Now(),
 		false,
 		id).Scan(
 		&user.UserID,
@@ -153,21 +154,7 @@ func (u *userRepository) Delete(id string) (model.Users, error) {
 
 	return user, nil
 }
-func (u *userRepository) GetByUsername(username string) (model.Users, error) {
-	var user model.Users
-	err := u.db.QueryRow(common.GetByFullname, username).Scan(
-		&user.UserID,
-		&user.Fullname,
-		&user.Role,
-		&user.Email,
-		&user.Password,
-	)
-	if err != nil {
-		return model.Users{}, err
-	}
-	return user, nil
-}
 
-func NewUserRepository(db *sql.DB) UserRepositpry {
+func NewUserRepository(db *sql.DB) UserRepository {
 	return &userRepository{db: db}
 }

@@ -20,7 +20,7 @@ type courseDetailUseCase struct {
 
 func (c *courseDetailUseCase) AddCourse(payload dto.CourseDetailRequestDto) (model.CourseDetail, error) {
 	newCourse := model.CourseDetail{
-		CourseID:      model.Course{CourseID: payload.CourseId},
+		CourseID:      payload.CourseId,
 		CourseChapter: payload.CourseChapter,
 		CourseContent: payload.CourseContent,
 	}
@@ -47,7 +47,7 @@ func (c *courseDetailUseCase) FindCourseDetailByID(id string) (model.CourseDetai
 
 func (c *courseDetailUseCase) UpdateAttendance(payload dto.CourseDetailRequestDto, id string) (model.CourseDetail, error) {
 	newCourse := model.CourseDetail{
-		CourseID:      model.Course{CourseID: payload.CourseId},
+		CourseID:      payload.CourseId,
 		CourseChapter: payload.CourseChapter,
 		CourseContent: payload.CourseContent,
 	}

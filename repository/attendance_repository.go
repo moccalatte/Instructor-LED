@@ -37,6 +37,7 @@ func (a *attendanceRepository) Create(payload model.Attendance) (model.Attendanc
 		&attendance.SessionID,
 		&attendance.StudentID,
 		&attendance.AttendanceStudent,
+		&attendance.CreatedAt,
 		&attendance.UpdatedAt,
 		&attendance.IsDeleted,
 	)
@@ -53,12 +54,14 @@ func (a *attendanceRepository) Create(payload model.Attendance) (model.Attendanc
 }
 
 func (a *attendanceRepository) GetById(id string) (model.Attendance, error) {
+	fmt.Print(id, "ID NYA MASUK")
 	var attendance model.Attendance
-	err := a.db.QueryRow(common.GetStudentByid, id).Scan(
+	err := a.db.QueryRow(common.GetAttendanceById, id).Scan(
 		&attendance.AttendanceID,
 		&attendance.SessionID,
 		&attendance.StudentID,
 		&attendance.AttendanceStudent,
+		&attendance.CreatedAt,
 		&attendance.UpdatedAt,
 		&attendance.IsDeleted,
 	)
@@ -92,9 +95,12 @@ func (a *attendanceRepository) Update(payload model.Attendance, id string) (mode
 		&attendance.SessionID,
 		&attendance.StudentID,
 		&attendance.AttendanceStudent,
+		&attendance.CreatedAt,
 		&attendance.UpdatedAt,
 		&attendance.IsDeleted,
 	)
+	fmt.Print(err, "REPO ERROR")
+
 	if err != nil {
 		return model.Attendance{}, tx.Rollback()
 	}
@@ -124,9 +130,11 @@ func (a *attendanceRepository) Delete(id string) (model.Attendance, error) {
 		&attendance.SessionID,
 		&attendance.StudentID,
 		&attendance.AttendanceStudent,
+		&attendance.CreatedAt,
 		&attendance.UpdatedAt,
 		&attendance.IsDeleted,
 	)
+	fmt.Print(err, "ERROR DI REPOSITORY")
 	if err != nil {
 		return model.Attendance{}, tx.Rollback()
 	}

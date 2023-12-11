@@ -118,7 +118,7 @@ func (c *courseRepository) Delete(id string) (model.Course, error) {
 	}()
 
 	var course model.Course
-	err = tx.QueryRow(common.UpdateCourseById,
+	err = tx.QueryRow(common.DeleteCourseById,
 		true,
 		id).Scan(
 		&course.CourseID,

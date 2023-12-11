@@ -20,8 +20,8 @@ type attendanceUseCase struct {
 
 func (c *attendanceUseCase) AddAttendance(payload dto.AttendanceRequestDto) (model.Attendance, error) {
 	newAttendance := model.Attendance{
-		SessionID:         model.Session{SessionID: payload.SessionID},
-		StudentID:         model.Student{StudentID: payload.StudentID},
+		SessionID:         payload.SessionID,
+		StudentID:         payload.StudentID,
 		AttendanceStudent: payload.AttendanceStudent,
 	}
 
@@ -39,7 +39,7 @@ func (c *attendanceUseCase) FindAttendanceByID(id string) (model.Attendance, err
 	attendance, err := c.repo.GetById(id)
 
 	if err != nil {
-		return model.Attendance{}, fmt.Errorf("failed to find Course : %s", err.Error())
+		return model.Attendance{}, fmt.Errorf("failed to find Attendance : %s", err.Error())
 	}
 
 	return attendance, nil
@@ -47,8 +47,8 @@ func (c *attendanceUseCase) FindAttendanceByID(id string) (model.Attendance, err
 
 func (c *attendanceUseCase) UpdateAttendance(payload dto.AttendanceRequestDto, id string) (model.Attendance, error) {
 	newAttendance := model.Attendance{
-		SessionID:         model.Session{SessionID: payload.SessionID},
-		StudentID:         model.Student{StudentID: payload.StudentID},
+		SessionID:         payload.SessionID,
+		StudentID:         payload.StudentID,
 		AttendanceStudent: payload.AttendanceStudent,
 	}
 

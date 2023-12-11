@@ -15,7 +15,7 @@ type Course struct {
 
 type CourseDetail struct {
 	CourseDetailID string    `json:"course_detail_id"`
-	CourseID       Course    `json:"course_id"`
+	CourseID       string    `json:"course_id"`
 	CourseChapter  string    `json:"course_chapter"`
 	CourseContent  string    `json:"course_content"`
 	IsDeleted      bool      `json:"is_deleted"`

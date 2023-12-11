@@ -2,10 +2,11 @@ package controller
 
 import (
 	// "final-project-kelompok-1/model"
-	"final-project-kelompok-1/model/dto"
+	// "final-project-kelompok-1/model/dto"
 	"final-project-kelompok-1/usecase"
 	"final-project-kelompok-1/utils/common"
-	"fmt"
+
+	// "fmt"
 	"net/http"
 	"strings"
 
@@ -34,23 +35,23 @@ type AuthController struct {
 // 	common.SendCreateResponse(ctx, "Created", newResponse)
 // }
 
-func (a *AuthController) loginHandler(ctx *gin.Context) {
-	var payload dto.AuthRequestDto
-	if err := ctx.ShouldBindJSON(&payload); err != nil {
-		common.SendErrorResponse(ctx, http.StatusBadRequest, err.Error())
-		return
-	}
+// func (a *AuthController) loginHandler(ctx *gin.Context) {
+// 	var payload dto.AuthRequestDto
+// 	if err := ctx.ShouldBindJSON(&payload); err != nil {
+// 		common.SendErrorResponse(ctx, http.StatusBadRequest, err.Error())
+// 		return
+// 	}
 
-	fmt.Println("AUTH >>>> : ", payload)
-	resPayload, err := a.uc.Login(payload)
+// 	fmt.Println("AUTH >>>> : ", payload)
+// 	resPayload, err := a.uc.Login(payload)
 
-	if err != nil {
-		common.SendErrorResponse(ctx, http.StatusInternalServerError, err.Error())
-		return
-	}
+// 	if err != nil {
+// 		common.SendErrorResponse(ctx, http.StatusInternalServerError, err.Error())
+// 		return
+// 	}
 
-	common.SendCreateResponse(ctx, "Ok", resPayload)
-}
+// 	common.SendCreateResponse(ctx, "Ok", resPayload)
+// }
 
 func (a *AuthController) refreshTokenHandler(ctx *gin.Context) {
 	tokenString := strings.Replace(ctx.GetHeader("Authorization"), "Bearer ", "", -1)
@@ -66,7 +67,7 @@ func (a *AuthController) refreshTokenHandler(ctx *gin.Context) {
 func (a *AuthController) Route() {
 	ug := a.rg.Group("/auth")
 	// ug.POST("/register", a.registerHandler)
-	ug.POST("/login", a.loginHandler)
+	// ug.POST("/login", a.loginHandler)
 	ug.GET("/refresh-token", a.refreshTokenHandler)
 }
 

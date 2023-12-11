@@ -21,13 +21,15 @@ type questionUseCase struct {
 
 func (s *questionUseCase) AddQuestion(payload dto.QuestionRequestDto) (model.Question, error) {
 	newSession := model.Question{
-		SessionID:   model.Session{SessionID: payload.SessionID},
-		StudentID:   model.Student{StudentID: payload.StudentID},
-		TrainerID:   model.Users{UserID: payload.TrainerID},
+		SessionID:   payload.SessionID,
+		StudentID:   payload.StudentID,
+		TrainerID:   payload.TrainerID,
 		Title:       payload.Title,
 		Description: payload.Description,
-		CourseID:    model.Course{CourseID: payload.CourseID},
+		CourseID:    payload.CourseID,
 		Image:       payload.Image,
+		Answer:      payload.Answer,
+		Status:      payload.Status,
 	}
 
 	createsQuestion, err := s.repo.Create(newSession)
@@ -49,13 +51,15 @@ func (s *questionUseCase) FindQuestionById(id string) (model.Question, error) {
 
 func (s *questionUseCase) Update(payload dto.QuestionRequestDto, id string) (model.Question, error) {
 	question := model.Question{
-		SessionID:   model.Session{SessionID: payload.SessionID},
-		StudentID:   model.Student{StudentID: payload.StudentID},
-		TrainerID:   model.Users{UserID: payload.TrainerID},
+		SessionID:   payload.SessionID,
+		StudentID:   payload.StudentID,
+		TrainerID:   payload.TrainerID,
 		Title:       payload.Title,
 		Description: payload.Description,
-		CourseID:    model.Course{CourseID: payload.CourseID},
+		CourseID:    payload.CourseID,
 		Image:       payload.Image,
+		Answer:      payload.Answer,
+		Status:      payload.Status,
 	}
 
 	question, err := s.repo.Update(question, id)

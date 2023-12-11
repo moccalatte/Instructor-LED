@@ -92,9 +92,10 @@ func (q *QuestionController) Route() {
 	q.rg.GET("/question/:id", q.GetHandlerByID)
 	q.rg.PUT("/question/:id", q.UpdateHandler)
 	q.rg.DELETE("/question/:id", q.DeleteHandler)
-	q.rg.POST("/question/:id/answer", q.AnswerHandler)
+	q.rg.PUT("/question-answer/:id", q.AnswerHandler)
 }
 
 func NewQuestionController(uc usecase.QuestionUseCase, rg *gin.RouterGroup) *QuestionController {
 	return &QuestionController{uc: uc, rg: rg}
+
 }

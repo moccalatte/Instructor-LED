@@ -4,7 +4,7 @@ import "final-project-kelompok-1/repository"
 
 type RepoManager interface {
 	StudentRepo() repository.StudentRepository
-	UserRepo() repository.UserRepositpry
+	UserRepo() repository.UserRepository
 	CourseRepo() repository.CourseRepository
 	CourseDetailRepo() repository.CourseDetailRepository
 	Question() repository.QuestionRepository
@@ -20,7 +20,7 @@ func (r *repoManager) StudentRepo() repository.StudentRepository {
 	return repository.NewStudentRepository(r.infra.Conn())
 }
 
-func (r *repoManager) UserRepo() repository.UserRepositpry {
+func (r *repoManager) UserRepo() repository.UserRepository {
 	return repository.NewUserRepository(r.infra.Conn())
 }
 
