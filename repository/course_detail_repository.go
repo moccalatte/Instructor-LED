@@ -41,7 +41,7 @@ func (c *courseDetailRepository) Create(payload model.CourseDetail) (model.Cours
 		&course_detail.UpdatedAt,
 		&course_detail.IsDeleted,
 	)
-	fmt.Print(err, "COURSE DETAIL REPO")
+	fmt.Print(err,"COURSE DETAIL REPO")
 	if err != nil {
 		return model.CourseDetail{}, tx.Rollback()
 	}
@@ -52,6 +52,7 @@ func (c *courseDetailRepository) Create(payload model.CourseDetail) (model.Cours
 
 	return course_detail, nil
 }
+
 func (c *courseDetailRepository) GetById(id string) (model.CourseDetail, error) {
 	var course_detail model.CourseDetail
 	err := c.db.QueryRow(common.GetCourseDetailById, id).Scan(

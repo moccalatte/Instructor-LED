@@ -32,7 +32,7 @@ func TestStudentRepositoryTestSuite(t *testing.T) {
 	suite.Run(t, new(StudentRepositoryTestSuite))
 }
 
-func (suite *StudentRepositoryTestSuite) TesCreateStudent_Succes() {
+func (suite *StudentRepositoryTestSuite) TestCreateStudent_Success() {
 	dummy := model.Student{
 		StudentID:   "stdn1212",
 		Fullname:    "golangungil",
@@ -41,7 +41,7 @@ func (suite *StudentRepositoryTestSuite) TesCreateStudent_Succes() {
 		Address:     "Jakarta",
 		Education:   "Strata 1",
 		Institution: "ITICM",
-		Job:         "IT Consultan",
+		Job:         "IT Consultant", // Fixed typo in "Consultan"
 		Email:       "Noiyutyt@gmail.com",
 		Password:    "1212112",
 		CreatedAt:   time.Now(),
@@ -51,14 +51,17 @@ func (suite *StudentRepositoryTestSuite) TesCreateStudent_Succes() {
 
 	suite.sqlmock.ExpectBegin()
 
-	rows := sqlmock.NewRows([]string{"student_id ,fullname, birth_date, birth_place, address, education, institution, job, email, password, created_at, updated_at, is_deleted"}).AddRow(dummy.StudentID, dummy.Fullname, dummy.BirthDate, dummy.BirthPlace, dummy.Address, dummy.Education, dummy.Institution, dummy.Job, dummy.Email, dummy.Password, dummy.CreatedAt, dummy.UpdatedAt, dummy.IsDeleted)
+	rows := sqlmock.NewRows([]string{"student_id", "fullname", "birth_date", "birth_place", "address", "education", "institution", "job", "email", "password", "created_at", "updated_at", "is_deleted"}).
+		AddRow(dummy.StudentID, dummy.Fullname, dummy.BirthDate, dummy.BirthPlace, dummy.Address, dummy.Education, dummy.Institution, dummy.Job, dummy.Email, dummy.Password, dummy.CreatedAt, dummy.UpdatedAt, dummy.IsDeleted)
 	suite.sqlmock.ExpectQuery("insert into student").WillReturnRows(rows)
 	suite.sqlmock.ExpectCommit()
+
 	actual, err := suite.repo.Create(dummy)
 	assert.Nil(suite.T(), err)
 	assert.NoError(suite.T(), err)
 	assert.Equal(suite.T(), dummy.StudentID, actual.StudentID)
 }
+
 
 func (suite *StudentRepositoryTestSuite) TesCreateStudent_Failed() {
 	dummy := model.Student{
@@ -95,3 +98,4 @@ func (suite *StudentRepositoryTestSuite) TesCreateStudent_Failed() {
 	assert.Error(suite.T(), err)
 	assert.Contains(suite.T(), err.Error(), "some error")
 }
+
