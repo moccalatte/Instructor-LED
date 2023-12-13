@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"final-project-kelompok-1/delivery/middleware"
 	"final-project-kelompok-1/model/dto"
 	"final-project-kelompok-1/usecase"
 	"net/http"
@@ -9,8 +10,9 @@ import (
 )
 
 type CourseController struct {
-	uc usecase.CourseUseCase
-	rg *gin.RouterGroup
+	uc             usecase.CourseUseCase
+	rg             *gin.RouterGroup
+	authMiddleware middleware.AuthMiddleware
 }
 
 func (c *CourseController) CreateHandler(ctx *gin.Context) {
@@ -73,12 +75,12 @@ func (c *CourseController) DeleteHandler(ctx *gin.Context) {
 }
 
 func (c *CourseController) Route() {
-	c.rg.POST("/course", c.CreateHandler)
-	c.rg.GET("/course/:id", c.GetHandlerByID)
-	c.rg.PUT("/course/:id", c.UpdateHandler)
-	c.rg.DELETE("/course/:id", c.DeleteHandler)
+	c.rg.POST("/course", c.authMiddleware.RequireToken("admin"), c.CreateHandler)
+	c.rg.GET("/course/:id", c.authMiddleware.RequireToken("admin", "trainer", "student"), c.GetHandlerByID)
+	c.rg.PUT("/course/:id", c.authMiddleware.RequireToken("admin"), c.UpdateHandler)
+	c.rg.DELETE("/course/:id", c.authMiddleware.RequireToken("admin"), c.DeleteHandler)
 }
 
-func NewCourseController(uc usecase.CourseUseCase, rg *gin.RouterGroup) *CourseController {
-	return &CourseController{uc: uc, rg: rg}
+func NewCourseController(uc usecase.CourseUseCase, rg *gin.RouterGroup, authMiddleware middleware.AuthMiddleware) *CourseController {
+	return &CourseController{uc: uc, rg: rg, authMiddleware: authMiddleware}
 }

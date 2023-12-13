@@ -22,7 +22,7 @@ type StudentUseCaseTestSuite struct {
 
 func (suite *StudentUseCaseTestSuite) SetupTest() {
 	suite.srm = new(repomock.StudentRepoMock)
-	suite.su = NewStudentUseCase(suite.srm)
+	// suite.su = NewStudentUseCase(suite.srm)
 }
 
 func TestStudentUseCaseTestSuite(t *testing.T) {

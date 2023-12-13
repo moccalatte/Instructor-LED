@@ -14,7 +14,7 @@ type UserRepository interface {
 	GetById(id string) (model.Users, error)
 	Update(payload model.Users, id string) (model.Users, error)
 	Delete(id string) (model.Users, error)
-	// GetByUsername(username string) (model.Users, error)
+	GetByUsername(email string) (model.Users, error)
 }
 
 type userRepository struct {
@@ -152,6 +152,22 @@ func (u *userRepository) Delete(id string) (model.Users, error) {
 		return model.Users{}, err
 	}
 
+	return user, nil
+}
+
+func (u *userRepository) GetByUsername(email string) (model.Users, error) {
+	var user model.Users
+	err := u.db.QueryRow(common.GetByFullname, email).Scan(
+		&user.UserID,
+		&user.Fullname,
+		&user.Role,
+		&user.Email,
+		&user.Password,
+		&user.IsDeleted,
+	)
+	if err != nil {
+		return model.Users{}, err
+	}
 	return user, nil
 }
 

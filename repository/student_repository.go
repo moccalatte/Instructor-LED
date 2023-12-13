@@ -14,6 +14,8 @@ type StudentRepository interface {
 	GetById(id string) (model.Student, error)
 	Update(payload model.Student, id string) (model.Student, error)
 	Delete(id string) (model.Student, error)
+
+	GetByStudentEmail(email string) (model.Student, error)
 }
 
 type studentRepository struct {
@@ -51,10 +53,12 @@ func (s *studentRepository) Create(payload model.Student) (model.Student, error)
 		&student.Password,
 		&student.CreatedAt,
 		&student.UpdatedAt,
+		&student.Role,
 		&student.IsDeleted,
 	)
-	fmt.Print(err, "STUDENT REPO")
+
 	if err != nil {
+		fmt.Print("Error student in repo : ", err.Error())
 		return model.Student{}, tx.Rollback()
 	}
 
@@ -79,11 +83,13 @@ func (s *studentRepository) GetById(id string) (model.Student, error) {
 		&student.Job,
 		&student.Email,
 		&student.Password,
+		&student.Role,
 		&student.CreatedAt,
 		&student.UpdatedAt,
 		&student.IsDeleted,
 	)
 	if err != nil {
+		fmt.Println("Error in Repi student : ", err.Error())
 		return model.Student{}, err
 	}
 	return student, nil
@@ -177,6 +183,31 @@ func (s *studentRepository) Delete(id string) (model.Student, error) {
 
 	return student, nil
 
+}
+
+func (s *studentRepository) GetByStudentEmail(email string) (model.Student, error) {
+	var student model.Student
+	err := s.db.QueryRow(common.GetByStudentEmail, email).Scan(
+		&student.StudentID,
+		&student.Fullname,
+		&student.BirthDate,
+		&student.BirthPlace,
+		&student.Address,
+		&student.Education,
+		&student.Institution,
+		&student.Job,
+		&student.Role,
+		&student.Email,
+		&student.Password,
+		&student.CreatedAt,
+		&student.UpdatedAt,
+		&student.IsDeleted,
+	)
+	if err != nil {
+		fmt.Println("Error in repo : ", err.Error())
+		return model.Student{}, err
+	}
+	return student, nil
 }
 
 func NewStudentRepository(db *sql.DB) StudentRepository {

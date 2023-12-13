@@ -15,7 +15,7 @@ type UserUseCase interface {
 	UpdateUser(payload dto.UserRequestDto, id string) (model.Users, error)
 	DeleteUser(id string) (model.Users, error)
 	RegisterNewUser(payload model.Users) (model.Users, error)
-	// FindByUsernamePassword(username string, password string) (model.Users, error)
+	FindByUsernamePassword(email string, password string) (model.Users, error)
 	// GetByUsername(username string) (model.Users, error)
 }
 
@@ -30,6 +30,13 @@ func (u *userUseCase) AddUser(payload dto.UserRequestDto) (model.Users, error) {
 		Email:    payload.Email,
 		Password: payload.Password,
 	}
+
+	newPassword, err := common.GeneratePasswordHash(payload.Password)
+	if err != nil {
+		return model.Users{}, err
+	}
+
+	newUser.Password = newPassword
 
 	addedUser, err := u.repo.Create(newUser)
 
@@ -96,28 +103,21 @@ func (u *userUseCase) RegisterNewUser(payload model.Users) (model.Users, error) 
 	return u.repo.Create(payload)
 }
 
-// func (u *userUseCase) FindByUsernamePassword(username string, password string) (model.Users, error) {
-// 	user, err := u.repo.GetByUsername(username)
-// 	if err != nil {
-// 		return model.Users{}, errors.New("invalid username or password")
-// 	}
+func (u *userUseCase) FindByUsernamePassword(email string, password string) (model.Users, error) {
+	user, err := u.repo.GetByUsername(email)
+	fmt.Println(user)
+	if err != nil {
+		fmt.Println("Error in usecase : ", err.Error())
+		return model.Users{}, errors.New("invalid email or password")
+	}
 
-// 	if err := common.ComparePasswordHash(user.Password, password); err != nil {
-// 		return model.Users{}, err
-// 	}
+	if err := common.ComparePasswordHash(user.Password, password); err != nil {
+		return model.Users{}, err
+	}
 
-// 	user.Password = ""
-// 	return user, nil
-// }
-
-// func (c *userUseCase) GetByUsername(username string) (model.Users, error) {
-//     user, err := c.repo.GetByUsername(username)
-//     if err != nil {
-//         return model.Users{}, fmt.Errorf("failed to get user by username: %s", err.Error())
-//     }
-//     return user, nil
-// }
-
+	user.Password = ""
+	return user, nil
+}
 func NewUserUseCase(repo repository.UserRepository) UserUseCase {
 	return &userUseCase{repo: repo}
 }

@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"final-project-kelompok-1/delivery/middleware"
 	"final-project-kelompok-1/model/dto"
 	"final-project-kelompok-1/usecase"
 	"net/http"
@@ -9,8 +10,9 @@ import (
 )
 
 type SessionController struct {
-	uc usecase.SessionUseCase
-	rg *gin.RouterGroup
+	uc             usecase.SessionUseCase
+	rg             *gin.RouterGroup
+	authMiddleware middleware.AuthMiddleware
 }
 
 func (s *SessionController) CreateHandler(ctx *gin.Context) {
@@ -71,12 +73,12 @@ func (s *SessionController) DeleteHandler(ctx *gin.Context) {
 }
 
 func (s *SessionController) Route() {
-	s.rg.POST("/session", s.CreateHandler)
-	s.rg.GET("/session/:id", s.GetHandlerByID)
-	s.rg.PUT("/session/:id", s.UpdateHandler)
-	s.rg.DELETE("/session/:id", s.DeleteHandler)
+	s.rg.POST("/session", s.authMiddleware.RequireToken("admin"), s.CreateHandler)
+	s.rg.GET("/session/:id", s.authMiddleware.RequireToken("admin", "trainer", "student"), s.GetHandlerByID)
+	s.rg.PUT("/session/:id", s.authMiddleware.RequireToken("admin"), s.UpdateHandler)
+	s.rg.DELETE("/session/:id", s.authMiddleware.RequireToken("admin"), s.DeleteHandler)
 }
 
-func NewSessionController(uc usecase.SessionUseCase, rg *gin.RouterGroup) *SessionController {
-	return &SessionController{uc: uc, rg: rg}
+func NewSessionController(uc usecase.SessionUseCase, rg *gin.RouterGroup, authMiddleware middleware.AuthMiddleware) *SessionController {
+	return &SessionController{uc: uc, rg: rg, authMiddleware: authMiddleware}
 }
