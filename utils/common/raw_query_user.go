@@ -6,7 +6,7 @@ const (
 
 	GetUserById = `select * from users where user_id = $1 returning user_id, fullname, role, email, password, created_at, updated_at, is_deleted;`
 
-	GetAllDataU = `select * from users where is_delete = $1;`
+	GetAllDataU = `select * from users where is_deleted = $1;`
 
 	UpdateUser = `update users set fullname = $1,role = $2,email = $3,password = $4, updated_at = $5, is_deleted = $6 where user_id = $7 returning user_id, fullname, role, email, password, created_at, updated_at, is_deleted;`
 

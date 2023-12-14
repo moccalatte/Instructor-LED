@@ -89,7 +89,7 @@ func (suite *AttendanceRepositoryTestSuite) TestGetById() {
 	assert.Equal(suite.T(), dummy.IsDeleted, actual.IsDeleted, "IsDeleted should match")
 }
 
-func (suite *AttendanceRepositoryTestSuite) TestUpdate() {
+func (suite *AttendanceRepositoryTestSuite) TestUpdated() {
 
 	dummyPayload := model.Attendance{
 		SessionID:         "hhhhhhhhhhhhhhhhhhhhhh",

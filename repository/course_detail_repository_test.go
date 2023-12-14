@@ -86,51 +86,77 @@ func (suite *CourseDetailRepositoryTestSuite) TestGetById() {
 
 }
 
-// ini masih error
+
 func (suite *CourseDetailRepositoryTestSuite) TestUpdate() {
-
-	dummyPayload := model.CourseDetail{
-		CourseID:      "hhhhhhhhhhhhhhhhhhhhhh",
-		CourseChapter: "nnnnnnnnnnnnnnnnnnnnnn",
-		CourseContent: "hhhhhhhhhhh",
-		UpdatedAt:     time.Now(),
-		IsDeleted:     false,
+	dummypayload := model.CourseDetail{
+		CourseID:       "oiuouoiytiuyu",
+		CourseChapter:  "golang web api",
+		CourseContent:  "go",
+		UpdatedAt:      time.Now(),
+		IsDeleted:      false,
 	}
-
 	dummyResult := model.CourseDetail{
-		CourseDetailID: "098709687657645654567586778",
-		CourseID:       dummyPayload.CourseID,
-		CourseChapter:  dummyPayload.CourseChapter,
-		CourseContent:  dummyPayload.CourseContent,
+		CourseDetailID: "0980909898098234",
+		CourseID:       dummypayload.CourseID,
+		CourseChapter:  dummypayload.CourseChapter,
+		CourseContent:  dummypayload.CourseContent,
 		CreatedAt:      time.Now(),
 		UpdatedAt:      time.Now(),
 		IsDeleted:      false,
 	}
-
+	suite.sqlmock.ExpectBegin()
 	query := "update course_detail set course_id = \\$1, course_chapter = \\$2, course_content = \\$3, updated_at = \\$4, is_deleted = \\$5 where course_detail_id = \\$6 returning course_detail_id, course_id, course_chapter, course_content, created_at, updated_at, is_deleted;"
+
+	rows := sqlmock.NewRows([]string{"course_detail_id", "course_id", "course_chapter", "course_content", "created_at", "updated_at", "is_deleted"}).AddRow(dummyResult.CourseDetailID, dummyResult.CourseID, dummyResult.CourseChapter, dummyResult.CourseContent, dummyResult.CreatedAt, dummyResult.UpdatedAt, dummyResult.IsDeleted)
+	suite.sqlmock.ExpectQuery(query).WillReturnRows(rows)
+	suite.sqlmock.ExpectCommit()
+
+	actual, err := suite.repo.Update(dummypayload,dummyResult.CourseDetailID)
+
+	assert.Nil(suite.T(), err, "Error should be nil")
+	assert.Equal(suite.T(), dummyResult.CourseDetailID, actual.CourseDetailID, "CourseDetailID should match")
+	assert.Equal(suite.T(), dummypayload.CourseID, actual.CourseID, "CourseID should match")
+	assert.Equal(suite.T(), dummypayload.CourseChapter, actual.CourseChapter, "CourseChapter should match")
+	assert.Equal(suite.T(), dummypayload.CourseContent, actual.CourseContent, "CourseContent should match")
+	assert.Equal(suite.T(), dummyResult.CreatedAt, actual.CreatedAt, "CreatedAt should match")
+	assert.WithinDuration(suite.T(), dummypayload.UpdatedAt, actual.UpdatedAt, time.Second,"UpdatedAt should match")
+	assert.Equal(suite.T(), dummypayload.IsDeleted, actual.IsDeleted, "IsDeleted should match")
+}
+
+func (suite *CourseDetailRepositoryTestSuite) TestDelete() {
+	dummyPayload := model.CourseDetail{
+		IsDeleted: true,
+	}
+	dummyResult := model.CourseDetail{
+		CourseDetailID: "0980909898098234",
+		CourseID:       "oiuouoiytiuyu",
+		CourseChapter:  "golang web api",
+		CourseContent:  "go",
+		CreatedAt:      time.Now(),
+		UpdatedAt:      time.Now(),
+		IsDeleted:      dummyPayload.IsDeleted,
+	}
+
+	suite.sqlmock.ExpectBegin()
+	query := "update course_detail set is_deleted = \\$1 where course_detail_id = \\$2 returning course_detail_id, course_id, course_chapter, course_content, created_at, updated_at, is_deleted;"
 
 	rows := sqlmock.NewRows([]string{"course_detail_id", "course_id", "course_chapter", "course_content", "created_at", "updated_at", "is_deleted"}).
 		AddRow(dummyResult.CourseDetailID, dummyResult.CourseID, dummyResult.CourseChapter, dummyResult.CourseContent, dummyResult.CreatedAt, dummyResult.UpdatedAt, dummyResult.IsDeleted)
 
 	suite.sqlmock.ExpectQuery(query).
-		WithArgs(
-			dummyPayload.CourseID,
-			dummyPayload.CourseChapter,
-			dummyPayload.CourseContent,
-			dummyPayload.UpdatedAt,
-			dummyPayload.IsDeleted,
-			dummyResult.CourseDetailID,
-		).
+		WithArgs(dummyPayload.IsDeleted, dummyResult.CourseDetailID).
 		WillReturnRows(rows)
 
-	actual, err := suite.repo.Update(dummyPayload, dummyResult.CourseDetailID)
+	suite.sqlmock.ExpectCommit()
+
+	actual, err := suite.repo.Delete(dummyResult.CourseDetailID)
 
 	assert.Nil(suite.T(), err, "Error should be nil")
 	assert.Equal(suite.T(), dummyResult.CourseDetailID, actual.CourseDetailID, "CourseDetailID should match")
-	assert.Equal(suite.T(), dummyPayload.CourseID, actual.CourseID, "CourseID should match")
-	assert.Equal(suite.T(), dummyPayload.CourseChapter, actual.CourseChapter, "CourseChapter should match")
-	assert.Equal(suite.T(), dummyPayload.CourseContent, actual.CourseContent, "CourseConten should match")
+	assert.Equal(suite.T(), dummyResult.CourseID, actual.CourseID, "CourseID should match")
+	assert.Equal(suite.T(), dummyResult.CourseChapter, actual.CourseChapter, "CourseChapter should match")
+	assert.Equal(suite.T(), dummyResult.CourseContent, actual.CourseContent, "CourseContent should match")
 	assert.Equal(suite.T(), dummyResult.CreatedAt, actual.CreatedAt, "CreatedAt should match")
-	assert.Equal(suite.T(), dummyResult.UpdatedAt, actual.UpdatedAt, "UpdatedAt should be close to current time")
-	assert.Equal(suite.T(), dummyResult.IsDeleted, actual.IsDeleted, "IsDeleted should match")
+	assert.WithinDuration(suite.T(), dummyResult.UpdatedAt, actual.UpdatedAt, time.Second, "UpdatedAt should match")
+	assert.Equal(suite.T(), dummyPayload.IsDeleted, actual.IsDeleted, "IsDeleted should match")
 }
