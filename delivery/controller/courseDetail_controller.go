@@ -14,7 +14,7 @@ type CourseDetailController struct {
 }
 
 func (c *CourseDetailController) CreateHandler(ctx *gin.Context) {
-	var payload dto.CourseDetail
+	var payload dto.CourseDetailRequestDto
 	if err := ctx.ShouldBindJSON(&payload); err != nil {
 		dto.SendSingleResponse(ctx, http.StatusBadRequest, err.Error(), nil)
 		return
@@ -42,7 +42,7 @@ func (c *CourseDetailController) GetHandlerByID(ctx *gin.Context) {
 }
 
 func (c *CourseDetailController) UpdateHandler(ctx *gin.Context) {
-	var payload dto.Course
+	var payload dto.CourseDetailRequestDto
 	if err := ctx.ShouldBindJSON(&payload); err != nil {
 		dto.SendSingleResponse(ctx, http.StatusBadRequest, err.Error(), nil)
 		return
