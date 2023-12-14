@@ -58,3 +58,35 @@ func (suite *CourseRepositoryTestSuite) TestCreateCourse() {
 	assert.Equal(suite.T(), dummy.UpdatedAt, actual.UpdatedAt, "UpdatedAt should match")
 	assert.Equal(suite.T(), dummy.IsDeleted, actual.IsDeleted, "IsDeleted should match")
 }
+
+
+func(suite *CourseRepositoryTestSuite)TestGetById(){
+	dummy := model.Course{
+		CourseID: "7634836923742983742",
+		CourseName: "nananananan",
+		Description: "blabla",
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+		IsDeleted: false,
+	}
+
+	query := "select \\* from course where course_id = \\$1;"
+	courseID :="7634836923742983742"
+
+	rows := sqlmock.NewRows([]string{"course_id", "course_name", "description", "created_at", "updated_at", "is_deleted"}).AddRow(
+		dummy.CourseID, dummy.CourseName, dummy.Description, dummy.CreatedAt, dummy.UpdatedAt, dummy.IsDeleted,
+	)
+
+	suite.sqlmock.ExpectQuery(query).WithArgs(courseID).WillReturnRows(rows)
+
+	actual, err := suite.repo.GetById(courseID)
+
+	assert.Nil(suite.T(), err, "Error should be nill")
+	assert.Equal(suite.T(),dummy.CourseID,actual.CourseID,"CourseId")
+	assert.Equal(suite.T(),dummy.CourseName,actual.CourseName,"CourseName")
+	assert.Equal(suite.T(),dummy.Description,actual.Description,"Description")
+	assert.Equal(suite.T(), dummy.CreatedAt, actual.CreatedAt, "CreatedAt should match")
+	assert.Equal(suite.T(), dummy.UpdatedAt, actual.UpdatedAt, "UpdatedAt should match")
+	assert.Equal(suite.T(), dummy.IsDeleted, actual.IsDeleted, "IsDeleted should match")
+}
+

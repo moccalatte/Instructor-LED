@@ -14,6 +14,7 @@ type AttendanceRepository interface {
 	GetById(id string) (model.Attendance, error)
 	Update(payload model.Attendance, id string) (model.Attendance, error)
 	Delete(id string) (model.Attendance, error)
+	// FindAll(status bool)(model.Attendance, error)
 }
 
 type attendanceRepository struct {
@@ -144,6 +145,10 @@ func (a *attendanceRepository) Delete(id string) (model.Attendance, error) {
 	}
 	return attendance, nil
 }
+
+// func(a *attendanceRepository) FindAll(payload model.Attendance)(model.Attendance, error){
+
+// }
 
 func NewAttendanceRepository(db *sql.DB) AttendanceRepository {
 	return &attendanceRepository{db: db}
