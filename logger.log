@@ -253,3 +253,7 @@ time="2023-12-13T11:44:19+07:00" level=info msg="{2023-12-13 11:44:19.2702282 +0
 time="2023-12-13T11:44:40+07:00" level=info msg="{2023-12-13 11:44:40.7306321 +0700 +07 m=+65.965292201 0s ::1 GET 200 /api/v1/session/b5c8663d-269d-4db6-8793-04e69039d7ff PostmanRuntime/7.36.0}"
 time="2023-12-13T11:45:06+07:00" level=info msg="{2023-12-13 11:45:06.7517206 +0700 +07 m=+91.986380701 0s ::1 GET 200 /api/v1/session/b5c8663d-269d-4db6-8793-04e69039d7ff PostmanRuntime/7.36.0}"
 time="2023-12-13T11:45:50+07:00" level=info msg="{2023-12-13 11:45:50.3966079 +0700 +07 m=+11.660165101 0s ::1 GET 200 /api/v1/session/b5c8663d-269d-4db6-8793-04e69039d7ff PostmanRuntime/7.36.0}"
+time="2023-12-13T22:53:00+07:00" level=info msg="{2023-12-13 22:53:00.7308622 +0700 +07 m=+58.693764101 0s ::1 POST 200 /api/v1/question/upload PostmanRuntime/7.36.0}"
+time="2023-12-13T22:55:22+07:00" level=warning msg="{2023-12-13 22:55:22.6291539 +0700 +07 m=+200.592055801 0s ::1 POST 404 /api/v1/question/upload/cbf5608e-8bf8-441b-ac99-31ef688d57db PostmanRuntime/7.36.0}"
+time="2023-12-13T22:59:00+07:00" level=info msg="{2023-12-13 22:59:00.9473402 +0700 +07 m=+418.910242101 0s ::1 POST 200 /api/v1/question PostmanRuntime/7.36.0}"
+time="2023-12-13T22:59:29+07:00" level=warning msg="{2023-12-13 22:59:29.8778906 +0700 +07 m=+447.840792501 0s ::1 POST 404 /api/v1/question/cbf5608e-8bf8-441b-ac99-31ef688d57db PostmanRuntime/7.36.0}"

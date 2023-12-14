@@ -1,0 +1,931 @@
+{
+	"info": {
+		"_postman_id": "41bab37e-293c-47b2-84ea-739f532d6286",
+		"name": "ENIGMA-INSTRUCTOR LED",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16860631"
+	},
+	"item": [
+		{
+			"name": "AUTH",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"nafe\",\r\n    \"password\":\"123123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login-student",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"nafe\",\r\n    \"password\":\"123123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "admin",
+			"item": [
+				{
+					"name": "user",
+					"item": [
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"fullname\" : \"IrfanASD\",\r\n\t\"role\" : \"trainer\",\r\n\t\"email\" : \"gopan123123@gmail.com\",\r\n\t\"password\" : \"123123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/api/v1/user/",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"user",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"fullname\": \"yanto\",\r\n    \"shortname\": \"yyx\",\r\n    \"birth_date\": \"2006-01-02T15:04:05Z\",\r\n    \"birth_place\": \"New York\",\r\n    \"address\": \"456 Street, New York\",\r\n    \"education\": \"High School\",\r\n    \"institution\": \"ABC High School\",\r\n    \"job\": \"Student\",\r\n    \"email\": \"johndoe@example.com\",\r\n    \"password\": \"johndoespassword\",\r\n    \"is_deleted\": false\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/api/v1/student/2385b68f-a846-4daf-bc06-3dbfb54a6846",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"student",
+										"2385b68f-a846-4daf-bc06-3dbfb54a6846"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/api/v1/student/2385b68f-a846-4daf-bc06-3dbfb54a6846",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"student",
+										"2385b68f-a846-4daf-bc06-3dbfb54a6846"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "student",
+					"item": [
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"fullname\": \"yantos\",\r\n    \"birth_date\": \"2006-01-02T15:04:05Z\",\r\n    \"birth_place\": \"Malang\",\r\n    \"address\": \"123 Street, New York\",\r\n    \"education\": \"High School\",\r\n    \"institution\": \"ABC High School\",\r\n    \"job\": \"Student\",\r\n    \"email\": \"yantosaa@example.com\",\r\n    \"password\": \"johndoespassword\",\r\n    \"is_deleted\": false\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/api/v1/student",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"student"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"fullname\": \"yanto\",\r\n    \"shortname\": \"yyx\",\r\n    \"birth_date\": \"2006-01-02T15:04:05Z\",\r\n    \"birth_place\": \"New York\",\r\n    \"address\": \"456 Street, New York\",\r\n    \"education\": \"High School\",\r\n    \"institution\": \"ABC High School\",\r\n    \"job\": \"Student\",\r\n    \"email\": \"johndoe@example.com\",\r\n    \"password\": \"johndoespassword\",\r\n    \"is_deleted\": false\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/api/v1/student/2385b68f-a846-4daf-bc06-3dbfb54a6846",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"student",
+										"2385b68f-a846-4daf-bc06-3dbfb54a6846"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/api/v1/student/2385b68f-a846-4daf-bc06-3dbfb54a6846",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"student",
+										"2385b68f-a846-4daf-bc06-3dbfb54a6846"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "session",
+					"item": [
+						{
+							"name": "update",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"title\": \"Introduction Session\",\r\n\t\"description\": \"Introduction to our course and first session.\",\r\n\t\"session_date\": \"2022-03-01\",\r\n\t\"session_time\": \"14:00\",\r\n\t\"session_link\": \"https://www.zoom.us/my/introductorysession\",\r\n\t\"trainer_id\": \"4be61f68-fe7c-45b9-ae6a-a8a54e1ba93e\",\r\n\t\"is_deleted\": false\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/api/v1/session/7ef19dcb-a548-4f53-a53c-4b46e44a6bf1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"session",
+										"7ef19dcb-a548-4f53-a53c-4b46e44a6bf1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"title\": \"Final Session\",\r\n\t\"description\": \"Finaly everything is done.\",\r\n\t\"session_date\": \"2022-03-01\",\r\n\t\"session_time\": \"14:00\",\r\n\t\"session_link\": \"https://www.zoom.us/my/introductorysession\",\r\n\t\"trainer_id\": \"4be61f68-fe7c-45b9-ae6a-a8a54e1ba93e\",\r\n\t\"is_deleted\": false\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/api/v1/session",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"session"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/api/v1/session/7ef19dcb-a548-4f53-a53c-4b46e44a6bf1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"session",
+										"7ef19dcb-a548-4f53-a53c-4b46e44a6bf1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/api/v1/session/7ef19dcb-a548-4f53-a53c-4b46e44a6bf1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"session",
+										"7ef19dcb-a548-4f53-a53c-4b46e44a6bf1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "course",
+					"item": [
+						{
+							"name": "course_detail",
+							"item": [
+								{
+									"name": "course-details",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{   \r\n    \"course_id\": \"748d9d12-80cf-4592-807a-05b0b9c33d63\",\r\n\t\"course_chapter\": \"final course\",\r\n\t\"course_content\": \"In the end!\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:8080/api/v1/course-detail",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v1",
+												"course-detail"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "course-detail",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "localhost:8080/api/v1/course-detail/7dffa210-4b8c-4ef4-b652-7e34ee508cae",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v1",
+												"course-detail",
+												"7dffa210-4b8c-4ef4-b652-7e34ee508cae"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "course-detail",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{   \r\n    \"course_id\": \"748d9d12-80cf-4592-807a-05b0b9c33d63\",\r\n\t\"course_chapter\": \"Introduction to pornhub\",\r\n\t\"course_content\": \"Welcome to our course!\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:8080/api/v1/course-detail/7dffa210-4b8c-4ef4-b652-7e34ee508cae",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v1",
+												"course-detail",
+												"7dffa210-4b8c-4ef4-b652-7e34ee508cae"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "course-detail",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "localhost:8080/api/v1/course-detail/7dffa210-4b8c-4ef4-b652-7e34ee508cae",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v1",
+												"course-detail",
+												"7dffa210-4b8c-4ef4-b652-7e34ee508cae"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "course id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/api/v1/course/b33b5a59-7e82-4500-9ae4-63f0e08068c8",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"course",
+										"b33b5a59-7e82-4500-9ae4-63f0e08068c8"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "course",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n \"course_name\": \"Go Programming12\",\r\n \"course_detail_id\": \"5f29598e-5541-4893-8963-e66d54f0327e\",\r\n \"description\" : \"lorem dolor ipsum sit amet ngento\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/api/v1/course/b33b5a59-7e82-4500-9ae4-63f0e08068c8",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"course",
+										"b33b5a59-7e82-4500-9ae4-63f0e08068c8"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "course",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n \"course_name\": \"java learning\",\r\n \"course_detail_id\": \"5f29598e-5541-4893-8963-e66d54f0327e\",\r\n \"description\" : \"lorem dolor ipsum sit amet ngento\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/api/v1/course",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"course"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "course",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/api/v1/course/b33b5a59-7e82-4500-9ae4-63f0e08068c8",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"course",
+										"b33b5a59-7e82-4500-9ae4-63f0e08068c8"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "student",
+			"item": [
+				{
+					"name": "session",
+					"item": [
+						{
+							"name": "get",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/api/v1/session/7ef19dcb-a548-4f53-a53c-4b46e44a6bf1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"session",
+										"7ef19dcb-a548-4f53-a53c-4b46e44a6bf1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "question",
+					"item": [
+						{
+							"name": "question Copy",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"session_id\": \"b5c8663d-269d-4db6-8793-04e69039d7ff\",\r\n    \"student_id\": \"b1453f80-4882-458e-9f74-fd70db74f358\",\r\n    \"trainer_id\": \"4be61f68-fe7c-45b9-ae6a-a8a54e1ba93e\",\r\n    \"title\": \"What is Golang? and why you alive?\",\r\n    \"description\": \"A popular Golang-based framework for creating microservices and stand-alone applications.\",\r\n    \"course_id\": \"748d9d12-80cf-4592-807a-05b0b9c33d63\",\r\n    \"image\": \"https://example.com/spring-boot-image.jpg\",\r\n    \"answer\":\"\",\r\n    \"status\":\"unsolved\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/api/v1/question",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"question"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "question id Copy",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/api/v1/question/cbf5608e-8bf8-441b-ac99-31ef688d57db",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"question",
+										"cbf5608e-8bf8-441b-ac99-31ef688d57db"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "question Copy",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"session_id\": \"c561fa5d-d967-4228-8c0a-fd1a577dd624\",\r\n    \"student_id\": \"6965ed98-45cb-4070-ad05-698fa799b0ac\",\r\n    \"trainer_id\": \"4be61f68-fe7c-45b9-ae6a-a8a54e1ba93e\",\r\n    \"title\": \"What is Spring Boot?\",\r\n    \"description\": \"A popular Java-based framework for creating microservices and stand-alone applications.\",\r\n    \"course_id\": \"748d9d12-80cf-4592-807a-05b0b9c33d63\",\r\n    \"image\": \"https://example.com/spring-boot-image.jpg\",\r\n    \"answer\":\"lorem dolor lit silit uuk\",\r\n    \"status\":\"solved\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/api/v1/question/cbf5608e-8bf8-441b-ac99-31ef688d57db",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"question",
+										"cbf5608e-8bf8-441b-ac99-31ef688d57db"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "question Copy",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/api/v1/question/cbf5608e-8bf8-441b-ac99-31ef688d57db",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"question",
+										"cbf5608e-8bf8-441b-ac99-31ef688d57db"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "trainer",
+			"item": [
+				{
+					"name": "session",
+					"item": [
+						{
+							"name": "get Copy",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/api/v1/session/7ef19dcb-a548-4f53-a53c-4b46e44a6bf1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"session",
+										"7ef19dcb-a548-4f53-a53c-4b46e44a6bf1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "question",
+					"item": [
+						{
+							"name": "get",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/api/v1/question/cbf5608e-8bf8-441b-ac99-31ef688d57db",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"question",
+										"cbf5608e-8bf8-441b-ac99-31ef688d57db"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update answer",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"answer\": \"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea \"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/api/v1/question-answer/39ae1b8f-e1a0-4bf2-a082-87c564e6312d",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"question-answer",
+										"39ae1b8f-e1a0-4bf2-a082-87c564e6312d"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "attendance",
+					"item": [
+						{
+							"name": "attendance Copy",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"session_id\": \"c561fa5d-d967-4228-8c0a-fd1a577dd624\",\r\n    \"student_id\": \"6965ed98-45cb-4070-ad05-698fa799b0ac\",\r\n    \"attendance_student\": false\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/api/v1/attendance",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"attendance"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "attendance id Copy",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/api/v1/attendance/c57c5bc4-b0e9-4f0d-9cfa-5ed2afbc98d8",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"attendance",
+										"c57c5bc4-b0e9-4f0d-9cfa-5ed2afbc98d8"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "attendance Copy",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"session_id\": \"c561fa5d-d967-4228-8c0a-fd1a577dd624\",\r\n    \"student_id\": \"6965ed98-45cb-4070-ad05-698fa799b0ac\",\r\n    \"attendance_student\": false\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/api/v1/attendance/c57c5bc4-b0e9-4f0d-9cfa-5ed2afbc98d8",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"attendance",
+										"c57c5bc4-b0e9-4f0d-9cfa-5ed2afbc98d8"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "attendance Copy",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/api/v1/attendance/c57c5bc4-b0e9-4f0d-9cfa-5ed2afbc98d8",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"attendance",
+										"c57c5bc4-b0e9-4f0d-9cfa-5ed2afbc98d8"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}

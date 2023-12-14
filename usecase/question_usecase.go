@@ -30,6 +30,7 @@ func (s *questionUseCase) AddQuestion(payload dto.QuestionRequestDto) (model.Que
 		Image:       payload.Image,
 		Answer:      payload.Answer,
 		Status:      payload.Status,
+		ImagePath: payload.ImagePath,
 	}
 
 	createsQuestion, err := s.repo.Create(newSession)
