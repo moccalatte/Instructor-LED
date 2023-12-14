@@ -2,6 +2,7 @@ package repository
 
 import (
 	"database/sql"
+	"fmt"
 	"time"
 
 	"final-project-kelompok-1/model"
@@ -13,6 +14,7 @@ type CourseDetailRepository interface {
 	GetById(id string) (model.CourseDetail, error)
 	Update(payload model.CourseDetail, id string) (model.CourseDetail, error)
 	Delete(id string) (model.CourseDetail, error)
+	FindAll(status bool)([]model.CourseDetail, error)
 }
 
 type courseDetailRepository struct {
@@ -40,6 +42,7 @@ func (c *courseDetailRepository) Create(payload model.CourseDetail) (model.Cours
 		&course_detail.UpdatedAt,
 		&course_detail.IsDeleted,
 	)
+	fmt.Print(err,"COURSE DETAIL REPO")
 	if err != nil {
 		return model.CourseDetail{}, tx.Rollback()
 	}
@@ -50,6 +53,7 @@ func (c *courseDetailRepository) Create(payload model.CourseDetail) (model.Cours
 
 	return course_detail, nil
 }
+
 func (c *courseDetailRepository) GetById(id string) (model.CourseDetail, error) {
 	var course_detail model.CourseDetail
 	err := c.db.QueryRow(common.GetCourseDetailById, id).Scan(
@@ -85,6 +89,7 @@ func (c *courseDetailRepository) Update(payload model.CourseDetail, id string) (
 		payload.CourseContent,
 		time.Now(),
 		false,
+		id,
 	).Scan(
 		&course_detail.CourseDetailID,
 		&course_detail.CourseID,
@@ -94,6 +99,7 @@ func (c *courseDetailRepository) Update(payload model.CourseDetail, id string) (
 		&course_detail.UpdatedAt,
 		&course_detail.IsDeleted,
 	)
+	fmt.Print(err, "ERROR DISINI")
 	if err != nil {
 		return model.CourseDetail{}, tx.Rollback()
 	}
@@ -117,7 +123,7 @@ func (c *courseDetailRepository) Delete(id string) (model.CourseDetail, error) {
 	}()
 
 	var course_detail model.CourseDetail
-	err = tx.QueryRow(common.UpdateCourseDetailByid,
+	err = tx.QueryRow(common.DeleteCourseDetailById,
 		true,
 		id,
 	).Scan(
@@ -139,6 +145,39 @@ func (c *courseDetailRepository) Delete(id string) (model.CourseDetail, error) {
 
 	return course_detail, nil
 }
+
+func (c *courseDetailRepository) FindAll(status bool) ([]model.CourseDetail, error) {
+	rows, err := c.db.Query(common.GetAllDataActiveCd, false)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var courseDetails []model.CourseDetail
+	for rows.Next() {
+		var courseDetail model.CourseDetail
+		err := rows.Scan(
+			&courseDetail.CourseDetailID,
+			&courseDetail.CourseID,
+			&courseDetail.CourseChapter,
+			&courseDetail.CourseContent,
+			&courseDetail.CreatedAt,
+			&courseDetail.UpdatedAt,
+			&courseDetail.IsDeleted,
+		)
+		if err != nil {
+			return nil, err
+		}
+		courseDetails = append(courseDetails, courseDetail)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return courseDetails, nil
+}
+
 
 func NewCourseDetailRepository(db *sql.DB) CourseDetailRepository {
 	return &courseDetailRepository{db: db}
