@@ -14,6 +14,7 @@ type Student struct {
 	Email       string    `json:"email"`
 	Password    string    `json:"password"`
 	IsDeleted   bool      `json:"is_deleted"`
+	Role        string    `json:"role"`
 	CreatedAt   time.Time `json:"createdAt"`
 	UpdatedAt   time.Time `json:"updatedAt"`
 }

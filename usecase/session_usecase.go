@@ -58,7 +58,7 @@ func (s *sessionUseCase) Update(payload dto.SessionRequestDto, id string) (model
 	session, err := s.repo.Update(sessions, id)
 
 	if err != nil {
-		return model.Session{}, fmt.Errorf("failed to update data : %s", err.Error())
+		return model.Session{}, fmt.Errorf("failed to Update Session : %s", err.Error())
 	}
 
 	return session, nil

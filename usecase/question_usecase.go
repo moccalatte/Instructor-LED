@@ -10,6 +10,7 @@ import (
 type QuestionUseCase interface {
 	AddQuestion(payload dto.QuestionRequestDto) (model.Question, error)
 	FindQuestionById(id string) (model.Question, error)
+	FindQuestionByStudentId(id string) (model.Question, error)
 	Update(payload dto.QuestionRequestDto, id string) (model.Question, error)
 	Delete(id string) (model.Question, error)
 	Answer(payload dto.QuestionRequestDto, id string) (model.Question, error)
@@ -49,6 +50,15 @@ func (s *questionUseCase) FindQuestionById(id string) (model.Question, error) {
 	return Question, nil
 }
 
+func (s *questionUseCase) FindQuestionByStudentId(id string) (model.Question, error) {
+	Question, err := s.repo.GetByStudentId(id)
+
+	if err != nil {
+		return model.Question{}, fmt.Errorf("failed to get data by id : %s", err.Error())
+	}
+	return Question, nil
+}
+
 func (s *questionUseCase) Update(payload dto.QuestionRequestDto, id string) (model.Question, error) {
 	question := model.Question{
 		SessionID:   payload.SessionID,
@@ -65,7 +75,7 @@ func (s *questionUseCase) Update(payload dto.QuestionRequestDto, id string) (mod
 	question, err := s.repo.Update(question, id)
 
 	if err != nil {
-		return model.Question{}, fmt.Errorf("failed to update data : %s", err.Error())
+		return model.Question{}, fmt.Errorf("failed to Update Question : %s", err.Error())
 	}
 
 	return question, nil

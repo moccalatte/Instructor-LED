@@ -82,6 +82,7 @@ func (s *studentRepository) GetById(id string) (model.Student, error) {
 		&student.CreatedAt,
 		&student.UpdatedAt,
 		&student.IsDeleted,
+		&student.Role,
 	)
 	if err != nil {
 		return model.Student{}, err

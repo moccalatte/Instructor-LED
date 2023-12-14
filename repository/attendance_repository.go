@@ -2,7 +2,6 @@ package repository
 
 import (
 	"database/sql"
-	"fmt"
 	"time"
 
 	"final-project-kelompok-1/model"
@@ -12,6 +11,7 @@ import (
 type AttendanceRepository interface {
 	Create(payload model.Attendance) (model.Attendance, error)
 	GetById(id string) (model.Attendance, error)
+	GetBySessionId(id string) (model.Attendance, error)
 	Update(payload model.Attendance, id string) (model.Attendance, error)
 	Delete(id string) (model.Attendance, error)
 }
@@ -41,7 +41,6 @@ func (a *attendanceRepository) Create(payload model.Attendance) (model.Attendanc
 		&attendance.UpdatedAt,
 		&attendance.IsDeleted,
 	)
-	fmt.Print(err, "ATTENDANCE REPO")
 	if err != nil {
 		return model.Attendance{}, tx.Rollback()
 	}
@@ -54,9 +53,26 @@ func (a *attendanceRepository) Create(payload model.Attendance) (model.Attendanc
 }
 
 func (a *attendanceRepository) GetById(id string) (model.Attendance, error) {
-	fmt.Print(id, "ID NYA MASUK")
 	var attendance model.Attendance
 	err := a.db.QueryRow(common.GetAttendanceById, id).Scan(
+		&attendance.AttendanceID,
+		&attendance.SessionID,
+		&attendance.StudentID,
+		&attendance.AttendanceStudent,
+		&attendance.CreatedAt,
+		&attendance.UpdatedAt,
+		&attendance.IsDeleted,
+	)
+	if err != nil {
+		return model.Attendance{}, err
+	}
+	return attendance, nil
+
+}
+
+func (a *attendanceRepository) GetBySessionId(id string) (model.Attendance, error) {
+	var attendance model.Attendance
+	err := a.db.QueryRow(common.GetAttandanceBySessionId, id).Scan(
 		&attendance.AttendanceID,
 		&attendance.SessionID,
 		&attendance.StudentID,
@@ -99,7 +115,6 @@ func (a *attendanceRepository) Update(payload model.Attendance, id string) (mode
 		&attendance.UpdatedAt,
 		&attendance.IsDeleted,
 	)
-	fmt.Print(err, "REPO ERROR")
 
 	if err != nil {
 		return model.Attendance{}, tx.Rollback()
@@ -134,7 +149,6 @@ func (a *attendanceRepository) Delete(id string) (model.Attendance, error) {
 		&attendance.UpdatedAt,
 		&attendance.IsDeleted,
 	)
-	fmt.Print(err, "ERROR DI REPOSITORY")
 	if err != nil {
 		return model.Attendance{}, tx.Rollback()
 	}

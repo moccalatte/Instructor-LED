@@ -2,7 +2,6 @@ package repository
 
 import (
 	"database/sql"
-	"fmt"
 	"time"
 
 	"final-project-kelompok-1/model"
@@ -41,7 +40,6 @@ func (c *courseDetailRepository) Create(payload model.CourseDetail) (model.Cours
 		&course_detail.UpdatedAt,
 		&course_detail.IsDeleted,
 	)
-	fmt.Print(err, "COURSE DETAIL REPO")
 	if err != nil {
 		return model.CourseDetail{}, tx.Rollback()
 	}
@@ -97,7 +95,6 @@ func (c *courseDetailRepository) Update(payload model.CourseDetail, id string) (
 		&course_detail.UpdatedAt,
 		&course_detail.IsDeleted,
 	)
-	fmt.Print(err, "ERROR DISINI")
 	if err != nil {
 		return model.CourseDetail{}, tx.Rollback()
 	}

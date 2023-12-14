@@ -2,7 +2,6 @@ package repository
 
 import (
 	"database/sql"
-	"fmt"
 	"time"
 
 	"final-project-kelompok-1/model"
@@ -21,12 +20,10 @@ type courseRepository struct {
 }
 
 func (c *courseRepository) Create(payload model.Course) (model.Course, error) {
-	fmt.Print(payload.CourseName, "DATAMASUK")
 	tx, err := c.db.Begin()
 	if err != nil {
 		return model.Course{}, err
 	}
-	fmt.Print(payload.CourseName, "DATAMASUK")
 
 	var course model.Course
 
@@ -43,7 +40,6 @@ func (c *courseRepository) Create(payload model.Course) (model.Course, error) {
 		&course.UpdatedAt,
 		&course.IsDeleted,
 	)
-	fmt.Print(err, "COURSE REPO")
 
 	if err != nil {
 		return model.Course{}, tx.Rollback()

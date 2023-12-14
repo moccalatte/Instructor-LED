@@ -10,6 +10,7 @@ import (
 type AttendanceUseCase interface {
 	AddAttendance(payload dto.AttendanceRequestDto) (model.Attendance, error)
 	FindAttendanceByID(id string) (model.Attendance, error)
+	FindAttendanceBySessionId(id string) (model.Attendance, error)
 	UpdateAttendance(payload dto.AttendanceRequestDto, id string) (model.Attendance, error)
 	Delete(id string) (model.Attendance, error)
 }
@@ -45,6 +46,17 @@ func (c *attendanceUseCase) FindAttendanceByID(id string) (model.Attendance, err
 	return attendance, nil
 }
 
+func (c *attendanceUseCase) FindAttendanceBySessionId(id string) (model.Attendance, error) {
+	// fmt.Print(id, "USECASEATTSESSION")
+	attendance, err := c.repo.GetBySessionId(id)
+
+	if err != nil {
+		return model.Attendance{}, fmt.Errorf("failed to find Attendance : %s", err.Error())
+	}
+
+	return attendance, nil
+}
+
 func (c *attendanceUseCase) UpdateAttendance(payload dto.AttendanceRequestDto, id string) (model.Attendance, error) {
 	newAttendance := model.Attendance{
 		SessionID:         payload.SessionID,
@@ -55,7 +67,7 @@ func (c *attendanceUseCase) UpdateAttendance(payload dto.AttendanceRequestDto, i
 	UpdateAttendance, err := c.repo.Update(newAttendance, id)
 
 	if err != nil {
-		return model.Attendance{}, fmt.Errorf("failed to Update Course : %s", err.Error())
+		return model.Attendance{}, fmt.Errorf("failed to Update Attendance : %s", err.Error())
 	}
 
 	return UpdateAttendance, nil
@@ -65,7 +77,7 @@ func (c *attendanceUseCase) Delete(id string) (model.Attendance, error) {
 	deletedAtendance, err := c.repo.Delete(id)
 
 	if err != nil {
-		return model.Attendance{}, fmt.Errorf("failed to Delete Course : %s", err.Error())
+		return model.Attendance{}, fmt.Errorf("failed to Delete Attendance : %s", err.Error())
 	}
 
 	return deletedAtendance, nil

@@ -2,7 +2,6 @@ package repository
 
 import (
 	"database/sql"
-	"fmt"
 	"time"
 
 	"final-project-kelompok-1/model"
@@ -12,6 +11,7 @@ import (
 type QuestionRepository interface {
 	Create(payload model.Question) (model.Question, error)
 	GetById(id string) (model.Question, error)
+	GetByStudentId(id string) (model.Question, error)
 	Update(payload model.Question, id string) (model.Question, error)
 	Delete(id string) (model.Question, error)
 	Answer(payload model.Question, id string) (model.Question, error)
@@ -52,7 +52,6 @@ func (q *questionRepository) Create(payload model.Question) (model.Question, err
 		&question.UpdatedAt,
 		&question.IsDeleted,
 	)
-	fmt.Print(err, "QUESTION REPO")
 
 	if err != nil {
 		return model.Question{}, tx.Rollback()
@@ -68,6 +67,31 @@ func (q *questionRepository) Create(payload model.Question) (model.Question, err
 func (q *questionRepository) GetById(id string) (model.Question, error) {
 	var question model.Question
 	err := q.db.QueryRow(common.GetQuestionById, id).Scan(
+		&question.QuestionID,
+		&question.SessionID,
+		&question.StudentID,
+		&question.TrainerID,
+		&question.Title,
+		&question.Description,
+		&question.CourseID,
+		&question.Image,
+		&question.Answer,
+		&question.Status,
+		&question.CreatedAt,
+		&question.UpdatedAt,
+		&question.IsDeleted,
+	)
+
+	if err != nil {
+		return model.Question{}, err
+	}
+
+	return question, nil
+}
+
+func (q *questionRepository) GetByStudentId(id string) (model.Question, error) {
+	var question model.Question
+	err := q.db.QueryRow(common.GetQuestionByStudentId, id).Scan(
 		&question.QuestionID,
 		&question.SessionID,
 		&question.StudentID,
@@ -131,7 +155,6 @@ func (q *questionRepository) Update(payload model.Question, id string) (model.Qu
 		&question.IsDeleted,
 	)
 
-	fmt.Print(err, "ERROR DI REPO")
 	if err != nil {
 		return model.Question{}, tx.Rollback()
 	}
@@ -174,7 +197,6 @@ func (q *questionRepository) Delete(id string) (model.Question, error) {
 		&question.UpdatedAt,
 		&question.IsDeleted,
 	)
-	fmt.Print(err, "ERROR DI REPO")
 	if err != nil {
 		return model.Question{}, tx.Rollback()
 	}
@@ -218,7 +240,6 @@ func (q *questionRepository) Answer(payload model.Question, id string) (model.Qu
 		&question.UpdatedAt,
 		&question.IsDeleted,
 	)
-	fmt.Print(err, "DI REPO")
 	if err != nil {
 		return model.Question{}, tx.Rollback()
 	}

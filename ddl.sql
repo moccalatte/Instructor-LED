@@ -120,7 +120,11 @@ SELECT user_id, fullname, role, email, password, is_deleted
 FROM users
 WHERE is_deleted = true;
 
--- Insert a new row into users with is_deleted set to true
-INSERT INTO users(fullname, role, email, password, is_deleted)
-VALUES ('gopan', 'admin', 'admin@gmail.com', '12345678', true)
-RETURNING user_id, fullname, role, email, password, is_deleted;
+-- dummy data 
+
+INSERT INTO users (fullname, role, email, password, created_at, updated_at, is_deleted)
+VALUES
+    ('John Doe', 'admin', 'john.doe@example.com', 'password123', NOW(), NOW(), false),
+    ('Jane Smith', 'trainer', 'jane.smith@example.com', 'studentpassword', NOW(), NOW(), false),
+    ('Trainer One', 'trainer', 'trainer.one@example.com', 'trainerpassword', NOW(), NOW(), false);
+
