@@ -4,6 +4,7 @@ const (
 	CreateQuestion = `insert into question (session_id, student_id, trainer_id, title, description, course_id, image, answer, status, updated_at, is_deleted) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) returning question_id, session_id, student_id, trainer_id, title, description, course_id, image, answer, status, created_at, updated_at, is_deleted;`
 
 	GetQuestionById = `select * from question where question_id = $1;`
+	GetAllDataQ = `select * from question where is_delete = $1;`
 
 	UpdateQuestionById = `update question set session_id = $1, student_id = $2, trainer_id = $3, title=$4, description=$5, course_id = $6, image = $7, answer = $8, status = $9, updated_at = $10, is_deleted = $11 where question_id = $12 returning question_id, session_id, student_id, trainer_id, title, description, course_id, image, answer, status, created_at, updated_at, is_deleted;`
 

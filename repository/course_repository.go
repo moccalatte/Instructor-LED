@@ -14,6 +14,7 @@ type CourseRepository interface {
 	GetById(id string) (model.Course, error)
 	Update(payload model.Course, id string) (model.Course, error)
 	Delete(id string) (model.Course, error)
+	FindAll(status bool) ([]model.Course, error)
 }
 
 type courseRepository struct {
@@ -136,6 +137,37 @@ func (c *courseRepository) Delete(id string) (model.Course, error) {
 		return model.Course{}, err
 	}
 	return course, nil
+}
+
+func (c *courseRepository) FindAll(status bool) ([]model.Course, error) {
+	rows, err := c.db.Query(common.GetAllDataC, false)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var courses []model.Course
+	for rows.Next() {
+		var course model.Course
+		err := rows.Scan(
+			&course.CourseID,
+			&course.CourseName,
+			&course.Description,
+			&course.CreatedAt,
+			&course.UpdatedAt,
+			&course.IsDeleted,
+		)
+		if err != nil {
+			return nil, err
+		}
+		courses = append(courses, course)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return courses, nil
 }
 
 func NewCourseRepository(db *sql.DB) CourseRepository {
