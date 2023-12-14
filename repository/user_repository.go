@@ -12,6 +12,7 @@ import (
 type UserRepository interface {
 	Create(payload model.Users) (model.Users, error)
 	GetById(id string) (model.Users, error)
+	GetAll() ([]model.Users, error)
 	Update(payload model.Users, id string) (model.Users, error)
 	Delete(id string) (model.Users, error)
 	GetByUsername(username string) (model.Users, error)
@@ -75,6 +76,36 @@ func (u *userRepository) GetById(id string) (model.Users, error) {
 		return model.Users{}, err
 	}
 	return user, nil
+}
+
+func (u *userRepository) GetAll() ([]model.Users, error) {
+	var users []model.Users
+
+	rows, err := u.db.Query(common.GetAllUser)
+
+	if err != nil {
+		return users, err
+	}
+	for rows.Next() {
+		var user model.Users
+		err := rows.Scan(
+			&user.UserID,
+			&user.Fullname,
+			&user.Role,
+			&user.Email,
+			&user.Password,
+			&user.IsDeleted,
+		)
+
+		if err != nil {
+			return users, nil
+		}
+
+		users = append(users, user)
+	}
+
+	return users, nil
+
 }
 
 func (u *userRepository) Update(payload model.Users, id string) (model.Users, error) {

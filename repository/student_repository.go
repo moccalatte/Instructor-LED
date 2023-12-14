@@ -3,7 +3,7 @@ package repository
 import (
 	"database/sql"
 	"time"
-
+	"fmt"
 	"final-project-kelompok-1/model"
 	"final-project-kelompok-1/utils/common"
 )
@@ -11,6 +11,7 @@ import (
 type StudentRepository interface {
 	Create(payload model.Student) (model.Student, error)
 	GetById(id string) (model.Student, error)
+	GetAll() ([]model.Student, error)
 	Update(payload model.Student, id string) (model.Student, error)
 	Delete(id string) (model.Student, error)
 }
@@ -84,6 +85,41 @@ func (s *studentRepository) GetById(id string) (model.Student, error) {
 		return model.Student{}, err
 	}
 	return student, nil
+}
+
+func (s *studentRepository) GetAll() ([]model.Student, error) {
+	var students []model.Student
+
+	rows, err := s.db.Query(common.GetAllStudent)
+
+	if err != nil {
+		return students, err
+	}
+	for rows.Next() {
+		var student model.Student
+		err := rows.Scan(
+			&student.StudentID,
+			&student.Fullname,
+			&student.BirthDate,
+			&student.BirthPlace,
+			&student.Address,
+			&student.Education,
+			&student.Institution,
+			&student.Job,
+			&student.Email,
+			&student.Password,
+			&student.IsDeleted,
+		)
+
+		if err != nil {
+			fmt.Println("error in repo :", err.Error())
+			return students, nil
+		}
+
+		students = append(students, student)
+	}
+
+	return students, nil
 }
 
 func (s *studentRepository) Update(payload model.Student, id string) (model.Student, error) {

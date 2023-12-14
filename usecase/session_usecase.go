@@ -12,6 +12,7 @@ type SessionUseCase interface {
 	FindSessionById(id string) (model.Session, error)
 	Update(payload dto.SessionRequestDto, id string) (model.Session, error)
 	Delete(id string) (model.Session, error)
+	GetAllSession() ([]model.Session, error)
 }
 
 type sessionUseCase struct {
@@ -43,6 +44,17 @@ func (s *sessionUseCase) FindSessionById(id string) (model.Session, error) {
 		return model.Session{}, fmt.Errorf("failed to get data by id : %s", err.Error())
 	}
 	return session, nil
+}
+
+func (s *sessionUseCase) GetAllSession() ([]model.Session, error) {
+	sessionAll, err := s.repo.GetAllSession()
+
+	if err != nil {
+		fmt.Println("Error Get All Data in use case : ", err.Error())
+		return sessionAll, fmt.Errorf("failed to find data : %v", err.Error())
+	}
+
+	return sessionAll, nil
 }
 
 func (s *sessionUseCase) Update(payload dto.SessionRequestDto, id string) (model.Session, error) {

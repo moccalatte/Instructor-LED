@@ -14,6 +14,7 @@ type CourseRepository interface {
 	GetById(id string) (model.Course, error)
 	Update(payload model.Course, id string) (model.Course, error)
 	Delete(id string) (model.Course, error)
+	GetAll() ([]model.Course, error)
 }
 
 type courseRepository struct {
@@ -71,6 +72,36 @@ func (c *courseRepository) GetById(id string) (model.Course, error) {
 		return model.Course{}, err
 	}
 	return course, nil
+}
+
+func (c *courseRepository) GetAll() ([]model.Course, error) {
+	var courses []model.Course
+
+	rows, err := c.db.Query(common.GetAllCourse)
+
+	if err != nil {
+		return courses, err
+	}
+	for rows.Next() {
+		var course model.Course
+		err := rows.Scan(
+			&course.CourseID,
+			&course.CourseName,
+			&course.Description,
+			&course.CreatedAt,
+			&course.IsDeleted,
+		)
+
+		if err != nil {
+			fmt.Println("error in repo :", err.Error())
+			return courses, nil
+		}
+
+		courses = append(courses, course)
+	}
+
+	return courses, nil
+
 }
 
 func (c *courseRepository) Update(payload model.Course, id string) (model.Course, error) {

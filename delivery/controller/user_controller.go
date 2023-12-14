@@ -44,6 +44,16 @@ func (u *UserController) GetHandlerByID(ctx *gin.Context) {
 	dto.SendSingleResponse(ctx, http.StatusOK, "Get user by ID", user)
 }
 
+func (u *UserController) GetHandlerAll(ctx *gin.Context) {
+	user, err := u.uc.GetAllUser()
+	if err != nil {
+		dto.SendSingleResponse(ctx, http.StatusInternalServerError, err.Error(), nil)
+		return
+	}
+
+	dto.SendSingleResponse(ctx, http.StatusOK, "Get all user", user)
+}
+
 func (u *UserController) UpdateHandler(ctx *gin.Context) {
 	var payload dto.UserRequestDto
 	if err := ctx.ShouldBindJSON(&payload); err != nil {
@@ -76,11 +86,11 @@ func (u *UserController) DeleteHandler(ctx *gin.Context) {
 }
 
 func (u *UserController) Route() {
-	ur := u.rg.Group("/user", u.authMiddleware.RequireToken("admin", "trainer"))
-	ur.POST("/", u.CreateHandler)
-	ur.GET("/user/:id", u.GetHandlerByID)
-	ur.PUT("/user/:id", u.UpdateHandler)
-	ur.DELETE("/user/:id", u.DeleteHandler)
+	u.rg.POST("/user", u.authMiddleware.RequireToken("admin"), u.CreateHandler)
+	u.rg.GET("/user/:id", u.authMiddleware.RequireToken("admin"), u.GetHandlerByID)
+	u.rg.GET("/user", u.GetHandlerAll)
+	u.rg.PUT("/user/:id", u.authMiddleware.RequireToken("admin"), u.UpdateHandler)
+	u.rg.DELETE("/user/:id", u.authMiddleware.RequireToken("admin"), u.DeleteHandler)
 }
 
 func NewUserController(uc usecase.UserUseCase, rg *gin.RouterGroup, authMiddleware middleware.AuthMiddleware) *UserController {

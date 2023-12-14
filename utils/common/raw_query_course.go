@@ -5,4 +5,5 @@ const (
 	GetCourseById    = `select * from course where course_id = $1 returning  course_id, course_name, description, created_at, updated_at, is_deleted ;`
 	UpdateCourseById = `update course set course_name = $1, description = $2, updated_at = $3, is_deleted = $4 where course_id = $5 returning  course_id, course_name, description, created_at, updated_at, is_deleted ;`
 	DeleteCourseById = `update course set is_deleted = $1 where course_id = $2 returning  course_id, course_name, description, created_at, updated_at, is_deleted ;`
+	GetAllCourse     = `SELECT course_id, course_name, description, created_at, is_deleted FROM course WHERE is_deleted = false;`
 )

@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"final-project-kelompok-1/delivery/middleware"
 	"final-project-kelompok-1/model/dto"
 	"final-project-kelompok-1/usecase"
 	"net/http"
@@ -11,6 +12,7 @@ import (
 type SessionController struct {
 	uc usecase.SessionUseCase
 	rg *gin.RouterGroup
+	authMiddleware middleware.AuthMiddleware
 }
 
 func (s *SessionController) CreateHandler(ctx *gin.Context) {
@@ -39,6 +41,16 @@ func (s *SessionController) GetHandlerByID(ctx *gin.Context) {
 	}
 
 	dto.SendSingleResponse(ctx, http.StatusOK, "Get Session by ID", session)
+}
+
+func (s *SessionController) GetHandlerAll(ctx *gin.Context) {
+	session, err := s.uc.GetAllSession()
+	if err != nil {
+		dto.SendSingleResponse(ctx, http.StatusInternalServerError, err.Error(), nil)
+		return
+	}
+
+	dto.SendSingleResponse(ctx, http.StatusOK, "Get all session", session)
 }
 
 func (s *SessionController) UpdateHandler(ctx *gin.Context) {
@@ -71,10 +83,11 @@ func (s *SessionController) DeleteHandler(ctx *gin.Context) {
 }
 
 func (s *SessionController) Route() {
-	s.rg.POST("/session", s.CreateHandler)
-	s.rg.GET("/session/:id", s.GetHandlerByID)
-	s.rg.PUT("/session/:id", s.UpdateHandler)
-	s.rg.DELETE("/session/:id", s.DeleteHandler)
+	s.rg.POST("/session", s.authMiddleware.RequireToken("admin"), s.CreateHandler)
+	s.rg.GET("/session/:id", s.authMiddleware.RequireToken("admin", "trainer", "student"), s.GetHandlerByID)
+	s.rg.GET("/session", s.authMiddleware.RequireToken("admin", "trainer"), s.GetHandlerAll)
+	s.rg.PUT("/session/:id", s.authMiddleware.RequireToken("admin"), s.UpdateHandler)
+	s.rg.DELETE("/session/:id", s.authMiddleware.RequireToken("admin"), s.DeleteHandler)
 }
 
 func NewSessionController(uc usecase.SessionUseCase, rg *gin.RouterGroup) *SessionController {

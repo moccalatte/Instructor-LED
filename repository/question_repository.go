@@ -3,7 +3,7 @@ package repository
 import (
 	"database/sql"
 	"time"
-
+	"fmt"
 	"final-project-kelompok-1/model"
 	"final-project-kelompok-1/utils/common"
 )
@@ -13,6 +13,7 @@ type QuestionRepository interface {
 	GetById(id string) (model.Question, error)
 	Update(payload model.Question, id string) (model.Question, error)
 	Delete(id string) (model.Question, error)
+	GetAll() ([]model.Question, error)
 	Answer(payload model.Question, id string) (model.Question, error)
 }
 type questionRepository struct {
@@ -85,6 +86,41 @@ func (q *questionRepository) GetById(id string) (model.Question, error) {
 	}
 
 	return question, nil
+}
+
+func (q *questionRepository) GetAll() ([]model.Question, error) {
+	var questions []model.Question
+
+	rows, err := q.db.Query(common.GetAllQuestion)
+
+	if err != nil {
+		return questions, err
+	}
+	for rows.Next() {
+		var question model.Question
+		err := rows.Scan(
+			&question.QuestionID,
+			&question.SessionID,
+			&question.StudentID,
+			&question.TrainerID,
+			&question.Title,
+			&question.Description,
+			&question.CourseID,
+			&question.Image,
+			&question.Answer,
+			&question.Status,
+			&question.IsDeleted,
+		)
+
+		if err != nil {
+			fmt.Println("error in repo :", err.Error())
+			return questions, nil
+		}
+
+		questions = append(questions, question)
+	}
+
+	return questions, nil
 }
 
 func (q *questionRepository) Update(payload model.Question, id string) (model.Question, error) {

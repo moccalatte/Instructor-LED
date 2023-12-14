@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"final-project-kelompok-1/delivery/middleware"
 	"final-project-kelompok-1/model/dto"
 	"final-project-kelompok-1/usecase"
 	"net/http"
@@ -11,6 +12,7 @@ import (
 type CourseController struct {
 	uc usecase.CourseUseCase
 	rg *gin.RouterGroup
+	authMiddleware middleware.AuthMiddleware
 }
 
 func (c *CourseController) CreateHandler(ctx *gin.Context) {
@@ -39,6 +41,17 @@ func (c *CourseController) GetHandlerByID(ctx *gin.Context) {
 		return
 	}
 	dto.SendSingleResponse(ctx, http.StatusOK, "Get Student by ID", course)
+}
+
+func (c *CourseController) GetHandlerAll(ctx *gin.Context) {
+
+	course, err := c.uc.GetAllCourse()
+	if err != nil {
+		dto.SendSingleResponse(ctx, http.StatusInternalServerError, err.Error(), nil)
+		return
+	}
+
+	dto.SendSingleResponse(ctx, http.StatusOK, "Get Course All", course)
 }
 
 func (c *CourseController) UpdateHandler(ctx *gin.Context) {
@@ -73,10 +86,11 @@ func (c *CourseController) DeleteHandler(ctx *gin.Context) {
 }
 
 func (c *CourseController) Route() {
-	c.rg.POST("/course", c.CreateHandler)
-	c.rg.GET("/course/:id", c.GetHandlerByID)
-	c.rg.PUT("/course/:id", c.UpdateHandler)
-	c.rg.DELETE("/course/:id", c.DeleteHandler)
+	c.rg.POST("/course", c.authMiddleware.RequireToken("admin"), c.CreateHandler)
+	c.rg.GET("/course/:id", c.authMiddleware.RequireToken("admin", "trainer", "student"), c.GetHandlerByID)
+	c.rg.GET("/course", c.authMiddleware.RequireToken("admin", "trainer"), c.GetHandlerAll)
+	c.rg.PUT("/course/:id", c.authMiddleware.RequireToken("admin"), c.UpdateHandler)
+	c.rg.DELETE("/course/:id", c.authMiddleware.RequireToken("admin"), c.DeleteHandler)
 }
 
 func NewCourseController(uc usecase.CourseUseCase, rg *gin.RouterGroup) *CourseController {

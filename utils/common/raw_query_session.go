@@ -9,5 +9,5 @@ const(
 
 	DeleteSessionById = `update session set is_deleted = $1 where session_id = $2 returning session_id, title, description, session_date, session_time, session_link, trainer_id, created_at, updated_at, is_deleted;`
 
-
+	GetAllSession = `SELECT session_id, title, description, session_date, session_time, session_link, trainer_id, is_deleted FROM session WHERE is_deleted = false ORDER BY session_date ASC;`
 )

@@ -3,7 +3,7 @@ package repository
 import (
 	"database/sql"
 	"time"
-
+	"fmt"
 	"final-project-kelompok-1/model"
 	"final-project-kelompok-1/utils/common"
 )
@@ -13,6 +13,7 @@ type SessionRepository interface {
 	GetById(id string) (model.Session, error)
 	Update(payload model.Session, id string) (model.Session, error)
 	Delete(id string) (model.Session, error)
+	GetAllSession() ([]model.Session, error)
 }
 
 type sessionRepository struct {
@@ -74,6 +75,38 @@ func (s *sessionRepository) GetById(id string) (model.Session, error) {
 		return model.Session{}, err
 	}
 	return session, nil
+}
+
+func (s *sessionRepository) GetAllSession() ([]model.Session, error) {
+	var sessions []model.Session
+
+	rows, err := s.db.Query(common.GetAllSession)
+
+	if err != nil {
+		return sessions, err
+	}
+	for rows.Next() {
+		var session model.Session
+		err := rows.Scan(
+			&session.SessionID,
+			&session.Title,
+			&session.Description,
+			&session.SessionDate,
+			&session.SessionTime,
+			&session.SessionLink,
+			&session.TrainerID,
+			&session.IsDeleted,
+		)
+
+		if err != nil {
+			fmt.Println("error in repo :", err.Error())
+			return sessions, nil
+		}
+
+		sessions = append(sessions, session)
+	}
+
+	return sessions, nil
 }
 
 func (s *sessionRepository) Update(payload model.Session, id string) (model.Session, error) {

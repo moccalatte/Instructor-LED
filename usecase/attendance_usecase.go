@@ -8,10 +8,11 @@ import (
 )
 
 type AttendanceUseCase interface {
-    AddAttendance(payload dto.AttendanceRequestDto) (model.Attendance, error)
-    FindAttendanceByID(id string) (model.Attendance, error)
-    UpdateAttendance(payload dto.AttendanceRequestDto, id string) (model.Attendance, error)
-    Delete(id string) (model.Attendance, error)
+	AddAttendance(payload dto.AttendanceRequestDto) (model.Attendance, error)
+	FindAttendanceByID(id string) (model.Attendance, error)
+	UpdateAttendance(payload dto.AttendanceRequestDto, id string) (model.Attendance, error)
+	Delete(id string) (model.Attendance, error)
+	GetAllAttendance() ([]model.Attendance, error)
 }
 
 
@@ -44,6 +45,17 @@ func (c *attendanceUseCase) FindAttendanceByID(id string) (model.Attendance, err
 	}
 
 	return attendance, nil
+}
+
+func (c *attendanceUseCase) GetAllAttendance() ([]model.Attendance, error) {
+	attendanceAll, err := c.repo.GetAll()
+
+	if err != nil {
+		fmt.Println("Error Get All Data in use case : ", err.Error())
+		return attendanceAll, fmt.Errorf("failed to find data : %v", err.Error())
+	}
+
+	return attendanceAll, nil
 }
 
 func (c *attendanceUseCase) UpdateAttendance(payload dto.AttendanceRequestDto, id string) (model.Attendance, error) {

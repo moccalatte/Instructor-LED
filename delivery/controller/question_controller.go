@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"final-project-kelompok-1/delivery/middleware"
 	"final-project-kelompok-1/model/dto"
 	"final-project-kelompok-1/usecase"
 	"net/http"
@@ -11,6 +12,7 @@ import (
 type QuestionController struct {
 	uc usecase.QuestionUseCase
 	rg *gin.RouterGroup
+	authMiddleware middleware.AuthMiddleware
 }
 
 func (q *QuestionController) CreateHandler(ctx *gin.Context) {
@@ -39,6 +41,17 @@ func (q *QuestionController) GetHandlerByID(ctx *gin.Context) {
 	}
 
 	dto.SendSingleResponse(ctx, http.StatusOK, "Get Question by ID", question)
+}
+
+func (q *QuestionController) GetHandlerAll(ctx *gin.Context) {
+
+	question, err := q.uc.GetAllQuestion()
+	if err != nil {
+		dto.SendSingleResponse(ctx, http.StatusInternalServerError, err.Error(), nil)
+		return
+	}
+
+	dto.SendSingleResponse(ctx, http.StatusOK, "Get Question All", question)
 }
 
 func (q *QuestionController) UpdateHandler(ctx *gin.Context) {
@@ -88,11 +101,12 @@ func (q *QuestionController) AnswerHandler(ctx *gin.Context) {
 }
 
 func (q *QuestionController) Route() {
-	q.rg.POST("/question", q.CreateHandler)
-	q.rg.GET("/question/:id", q.GetHandlerByID)
-	q.rg.PUT("/question/:id", q.UpdateHandler)
-	q.rg.DELETE("/question/:id", q.DeleteHandler)
-	q.rg.POST("/question/:id/answer", q.AnswerHandler)
+	q.rg.POST("/question", q.authMiddleware.RequireToken("student"), q.CreateHandler)
+	q.rg.GET("/question/:id", q.authMiddleware.RequireToken("student", "trainer"), q.GetHandlerByID)
+	q.rg.GET("/question", q.authMiddleware.RequireToken("student", "trainer"), q.GetHandlerAll)
+	q.rg.PUT("/question/:id", q.authMiddleware.RequireToken("student"), q.UpdateHandler)
+	q.rg.DELETE("/question/:id", q.authMiddleware.RequireToken("student"), q.DeleteHandler)
+	q.rg.PUT("/question-answer/:id", q.authMiddleware.RequireToken("trainer"), q.AnswerHandler)
 }
 
 func NewQuestionController(uc usecase.QuestionUseCase, rg *gin.RouterGroup) *QuestionController {
