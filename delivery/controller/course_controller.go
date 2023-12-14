@@ -43,6 +43,17 @@ func (c *CourseController) GetHandlerByID(ctx *gin.Context) {
 	dto.SendSingleResponse(ctx, http.StatusOK, "Get Student by ID", course)
 }
 
+func (c *CourseController) GetHandlerAll(ctx *gin.Context) {
+
+	course, err := c.uc.GetAllCourse()
+	if err != nil {
+		dto.SendSingleResponse(ctx, http.StatusInternalServerError, err.Error(), nil)
+		return
+	}
+
+	dto.SendSingleResponse(ctx, http.StatusOK, "Get Course All", course)
+}
+
 func (c *CourseController) UpdateHandler(ctx *gin.Context) {
 	var payload dto.CourseRequestDto
 	if err := ctx.ShouldBindJSON(&payload); err != nil {
@@ -77,6 +88,7 @@ func (c *CourseController) DeleteHandler(ctx *gin.Context) {
 func (c *CourseController) Route() {
 	c.rg.POST("/course", c.authMiddleware.RequireToken("admin"), c.CreateHandler)
 	c.rg.GET("/course/:id", c.authMiddleware.RequireToken("admin", "trainer", "student"), c.GetHandlerByID)
+	c.rg.GET("/course", c.GetHandlerAll)
 	c.rg.PUT("/course/:id", c.authMiddleware.RequireToken("admin"), c.UpdateHandler)
 	c.rg.DELETE("/course/:id", c.authMiddleware.RequireToken("admin"), c.DeleteHandler)
 }

@@ -12,6 +12,7 @@ import (
 type UserUseCase interface {
 	AddUser(payload dto.UserRequestDto) (model.Users, error)
 	FindUserByID(id string) (model.Users, error)
+	GetAllUser() ([]model.Users, error)
 	UpdateUser(payload dto.UserRequestDto, id string) (model.Users, error)
 	DeleteUser(id string) (model.Users, error)
 	RegisterNewUser(payload model.Users) (model.Users, error)
@@ -59,6 +60,17 @@ func (u *userUseCase) FindUserByID(id string) (model.Users, error) {
 
 	return userWithId, nil
 
+}
+
+func (u *userUseCase) GetAllUser() ([]model.Users, error) {
+	userAll, err := u.repo.GetAll()
+
+	if err != nil {
+		fmt.Println("Error Get All Data in use case : ", err.Error())
+		return userAll, fmt.Errorf("failed to find data : %v", err.Error())
+	}
+
+	return userAll, nil
 }
 
 func (u *userUseCase) UpdateUser(payload dto.UserRequestDto, id string) (model.Users, error) {

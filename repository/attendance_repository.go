@@ -14,6 +14,7 @@ type AttendanceRepository interface {
 	GetById(id string) (model.Attendance, error)
 	Update(payload model.Attendance, id string) (model.Attendance, error)
 	Delete(id string) (model.Attendance, error)
+	GetAll() ([]model.Attendance, error)
 }
 
 type attendanceRepository struct {
@@ -69,6 +70,38 @@ func (a *attendanceRepository) GetById(id string) (model.Attendance, error) {
 		return model.Attendance{}, err
 	}
 	return attendance, nil
+
+}
+
+func (a *attendanceRepository) GetAll() ([]model.Attendance, error) {
+	var attendances []model.Attendance
+
+	rows, err := a.db.Query(common.GetAllAttendance)
+
+	if err != nil {
+		return attendances, err
+	}
+	for rows.Next() {
+		var attendance model.Attendance
+		err := rows.Scan(
+			&attendance.AttendanceID,
+			&attendance.SessionID,
+			&attendance.StudentID,
+			&attendance.AttendanceStudent,
+			&attendance.CreatedAt,
+			&attendance.UpdatedAt,
+			&attendance.IsDeleted,
+		)
+
+		if err != nil {
+			fmt.Println("error in repo :", err.Error())
+			return attendances, nil
+		}
+
+		attendances = append(attendances, attendance)
+	}
+
+	return attendances, nil
 
 }
 

@@ -12,6 +12,7 @@ type CourseUseCase interface {
 	FindCourseByID(id string) (model.Course, error)
 	UpdateCourse(payload dto.CourseRequestDto, id string) (model.Course, error)
 	DeleteCourse(id string) (model.Course, error)
+	GetAllCourse() ([]model.Course, error)
 }
 
 type courseUseCase struct {
@@ -42,6 +43,17 @@ func (c *courseUseCase) FindCourseByID(id string) (model.Course, error) {
 	}
 
 	return courseWithId, nil
+}
+
+func (c *courseUseCase) GetAllCourse() ([]model.Course, error) {
+	courseAll, err := c.repo.GetAll()
+
+	if err != nil {
+		fmt.Println("Error Get All Data in use case : ", err.Error())
+		return courseAll, fmt.Errorf("failed to find data : %v", err.Error())
+	}
+
+	return courseAll, nil
 }
 
 func (c *courseUseCase) UpdateCourse(payload dto.CourseRequestDto, id string) (model.Course, error) {

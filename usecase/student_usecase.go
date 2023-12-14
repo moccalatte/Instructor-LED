@@ -12,6 +12,7 @@ import (
 type StudentUseCase interface {
 	AddStudent(payload dto.StudentRequestDto) (model.Student, error)
 	FindStudentByID(id string) (model.Student, error)
+	GetAllStudent() ([]model.Student, error)
 	UpdateStudent(payload dto.StudentRequestDto, id string) (model.Student, error)
 	DeleteStudent(id string) (model.Student, error)
 	FindByEmailPassword(email string, password string) (model.Student, error)
@@ -58,6 +59,17 @@ func (s *studentUseCase) FindStudentByID(id string) (model.Student, error) {
 		return model.Student{}, fmt.Errorf("failed get data by id : %s", err.Error())
 	}
 	return student, nil
+}
+
+func (s *studentUseCase) GetAllStudent() ([]model.Student, error) {
+	studentAll, err := s.repo.GetAll()
+
+	if err != nil {
+		fmt.Println("Error Get All Data in use case : ", err.Error())
+		return studentAll, fmt.Errorf("failed to find data : %v", err.Error())
+	}
+
+	return studentAll, nil
 }
 
 func (s *studentUseCase) UpdateStudent(payload dto.StudentRequestDto, id string) (model.Student, error) {

@@ -41,6 +41,16 @@ func (s *StudentController) GetHandlerID(ctx *gin.Context) {
 	dto.SendSingleResponse(ctx, http.StatusOK, "Get Student successfuly by ID", student)
 }
 
+func (s *StudentController) GetHandlerAll(ctx *gin.Context) {
+	student, err := s.uc.GetAllStudent()
+	if err != nil {
+		dto.SendSingleResponse(ctx, http.StatusInternalServerError, err.Error(), nil)
+		return
+	}
+
+	dto.SendSingleResponse(ctx, http.StatusOK, "Get all student", student)
+}
+
 func (s *StudentController) UpdateHandler(ctx *gin.Context) {
 	var payload dto.StudentRequestDto
 	if err := ctx.ShouldBindJSON(&payload); err != nil {
@@ -75,6 +85,7 @@ func (s *StudentController) DeleteHandler(ctx *gin.Context) {
 func (s *StudentController) Route() {
 	s.rg.POST("/student", s.authMiddleware.RequireToken("admin"), s.CreateHandler)
 	s.rg.GET("/student/:id", s.authMiddleware.RequireToken("admin", "trainer"), s.GetHandlerID)
+	s.rg.GET("/student", s.GetHandlerAll)
 	s.rg.PUT("/student/:id", s.authMiddleware.RequireToken("admin"), s.UpdateHandler)
 	s.rg.DELETE("/student/:id", s.authMiddleware.RequireToken("admin"), s.DeleteHandler)
 }

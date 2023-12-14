@@ -43,6 +43,17 @@ func (a *AttendanceController) GetHandlerByID(ctx *gin.Context) {
 	dto.SendSingleResponse(ctx, http.StatusOK, "Get Attendance by ID", attendance)
 }
 
+func (c *AttendanceController) GetHandlerAll(ctx *gin.Context) {
+
+	attendance, err := c.uc.GetAllAttendance()
+	if err != nil {
+		dto.SendSingleResponse(ctx, http.StatusInternalServerError, err.Error(), nil)
+		return
+	}
+
+	dto.SendSingleResponse(ctx, http.StatusOK, "Get Attendance All", attendance)
+}
+
 func (a *AttendanceController) UpdateHandler(ctx *gin.Context) {
 	var payload dto.AttendanceRequestDto
 	if err := ctx.ShouldBindJSON(&payload); err != nil {
@@ -75,6 +86,7 @@ func (a *AttendanceController) DeleteHandler(ctx *gin.Context) {
 func (a *AttendanceController) Route() {
 	a.rg.POST("/attendance", a.authMiddleware.RequireToken("trainer"), a.CreateHandler)
 	a.rg.GET("/attendance/:id", a.authMiddleware.RequireToken("trainer"), a.GetHandlerByID)
+	a.rg.GET("/attendance", a.GetHandlerAll)
 	a.rg.PUT("/attendance/:id", a.authMiddleware.RequireToken("trainer"), a.UpdateHandler)
 	a.rg.DELETE("/attendance/:id", a.authMiddleware.RequireToken("trainer"), a.DeleteHandler)
 }

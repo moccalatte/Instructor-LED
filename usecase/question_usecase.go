@@ -12,6 +12,7 @@ type QuestionUseCase interface {
 	FindQuestionById(id string) (model.Question, error)
 	Update(payload dto.QuestionRequestDto, id string) (model.Question, error)
 	Delete(id string) (model.Question, error)
+	GetAllQuestion() ([]model.Question, error)
 	Answer(payload dto.QuestionRequestDto, id string) (model.Question, error)
 }
 
@@ -47,6 +48,17 @@ func (s *questionUseCase) FindQuestionById(id string) (model.Question, error) {
 		return model.Question{}, fmt.Errorf("failed to get data by id : %s", err.Error())
 	}
 	return Question, nil
+}
+
+func (s *questionUseCase) GetAllQuestion() ([]model.Question, error) {
+	questionAll, err := s.repo.GetAll()
+
+	if err != nil {
+		fmt.Println("Error Get All Data in use case : ", err.Error())
+		return questionAll, fmt.Errorf("failed to find data : %v", err.Error())
+	}
+
+	return questionAll, nil
 }
 
 func (s *questionUseCase) Update(payload dto.QuestionRequestDto, id string) (model.Question, error) {

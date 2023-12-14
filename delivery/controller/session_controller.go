@@ -43,6 +43,16 @@ func (s *SessionController) GetHandlerByID(ctx *gin.Context) {
 	dto.SendSingleResponse(ctx, http.StatusOK, "Get Session by ID", session)
 }
 
+func (s *SessionController) GetHandlerAll(ctx *gin.Context) {
+	session, err := s.uc.GetAllSession()
+	if err != nil {
+		dto.SendSingleResponse(ctx, http.StatusInternalServerError, err.Error(), nil)
+		return
+	}
+
+	dto.SendSingleResponse(ctx, http.StatusOK, "Get all session", session)
+}
+
 func (s *SessionController) UpdateHandler(ctx *gin.Context) {
 	var payload dto.SessionRequestDto
 	if err := ctx.ShouldBindJSON(&payload); err != nil {
@@ -75,6 +85,7 @@ func (s *SessionController) DeleteHandler(ctx *gin.Context) {
 func (s *SessionController) Route() {
 	s.rg.POST("/session", s.authMiddleware.RequireToken("admin"), s.CreateHandler)
 	s.rg.GET("/session/:id", s.authMiddleware.RequireToken("admin", "trainer", "student"), s.GetHandlerByID)
+	s.rg.GET("/session", s.GetHandlerAll)
 	s.rg.PUT("/session/:id", s.authMiddleware.RequireToken("admin"), s.UpdateHandler)
 	s.rg.DELETE("/session/:id", s.authMiddleware.RequireToken("admin"), s.DeleteHandler)
 }
