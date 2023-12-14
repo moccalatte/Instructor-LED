@@ -14,6 +14,8 @@ type StudentRepository interface {
 	GetById(id string) (model.Student, error)
 	Update(payload model.Student, id string) (model.Student, error)
 	Delete(id string) (model.Student, error)
+	FindAll(status bool) ([]model.Student, error)
+
 }
 
 type studentRepository struct {
@@ -178,6 +180,45 @@ func (s *studentRepository) Delete(id string) (model.Student, error) {
 	return student, nil
 
 }
+
+func (s *studentRepository) FindAll(status bool) ([]model.Student, error) {
+	rows, err := s.db.Query(common.GetAllDataStd, false)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var students []model.Student
+	for rows.Next() {
+		var student model.Student
+		err := rows.Scan(
+			&student.StudentID,
+			&student.Fullname,
+			&student.BirthDate,
+			&student.BirthPlace,
+			&student.Address,
+			&student.Education,
+			&student.Institution,
+			&student.Job,
+			&student.Email,
+			&student.Password,
+			&student.CreatedAt,
+			&student.UpdatedAt,
+			&student.IsDeleted,
+		)
+		if err != nil {
+			return nil, err
+		}
+		students = append(students, student)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return students, nil
+}
+
 
 func NewStudentRepository(db *sql.DB) StudentRepository {
 	return &studentRepository{db: db}

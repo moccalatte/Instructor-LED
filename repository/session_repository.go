@@ -14,6 +14,7 @@ type SessionRepository interface {
 	GetById(id string) (model.Session, error)
 	Update(payload model.Session, id string) (model.Session, error)
 	Delete(id string) (model.Session, error)
+	FindAll(status bool) ([]model.Session, error)
 }
 
 type sessionRepository struct {
@@ -157,6 +158,42 @@ func (s *sessionRepository) Delete(id string) (model.Session, error) {
 
 	return session, nil
 }
+
+func (s *sessionRepository) FindAll(status bool) ([]model.Session, error) {
+	rows, err := s.db.Query(common.GetAllDatas, false)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var sessions []model.Session
+	for rows.Next() {
+		var session model.Session
+		err := rows.Scan(
+			&session.SessionID,
+			&session.Title,
+			&session.Description,
+			&session.SessionDate,
+			&session.SessionTime,
+			&session.SessionLink,
+			&session.TrainerID,
+			&session.CreatedAt,
+			&session.UpdatedAt,
+			&session.IsDeleted,
+		)
+		if err != nil {
+			return nil, err
+		}
+		sessions = append(sessions, session)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return sessions, nil
+}
+
 
 func NewSessionRepository(db *sql.DB) SessionRepository {
 	return &sessionRepository{db: db}

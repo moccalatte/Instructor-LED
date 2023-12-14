@@ -14,6 +14,7 @@ type UserRepository interface {
 	GetById(id string) (model.Users, error)
 	Update(payload model.Users, id string) (model.Users, error)
 	Delete(id string) (model.Users, error)
+	FindAll(status bool) ([]model.Users, error)
 	// GetByUsername(username string) (model.Users, error)
 }
 
@@ -154,6 +155,40 @@ func (u *userRepository) Delete(id string) (model.Users, error) {
 
 	return user, nil
 }
+
+func (u *userRepository) FindAll(status bool) ([]model.Users, error) {
+	rows, err := u.db.Query(common.GetAllDataU, false)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var users []model.Users
+	for rows.Next() {
+		var user model.Users
+		err := rows.Scan(
+			&user.UserID,
+			&user.Fullname,
+			&user.Role,
+			&user.Email,
+			&user.Password,
+			&user.CreatedAt,
+			&user.UpdatedAt,
+			&user.IsDeleted,
+		)
+		if err != nil {
+			return nil, err
+		}
+		users = append(users, user)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return users, nil
+}
+
 
 func NewUserRepository(db *sql.DB) UserRepository {
 	return &userRepository{db: db}
