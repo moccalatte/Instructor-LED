@@ -49,6 +49,15 @@ func (s *questionUseCase) FindQuestionById(id string) (model.Question, error) {
 	return Question, nil
 }
 
+func (s *questionUseCase) GetAllQuestion() ([]model.Question, error) {
+	var sliceQuest []model.Question
+	Question, err := s.repo.FindAll()
+	if err != nil {
+		return nil, fmt.Errorf("failed to get data all data : %s", err.Error())
+	}
+	return append(sliceQuest, Question...), nil
+}
+
 func (s *questionUseCase) Update(payload dto.QuestionRequestDto, id string) (model.Question, error) {
 	question := model.Question{
 		SessionID:   payload.SessionID,

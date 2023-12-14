@@ -49,6 +49,15 @@ func (s *studentUseCase) FindStudentByID(id string) (model.Student, error) {
 	return student, nil
 }
 
+func (s *studentUseCase) GetAllStudent() ([]model.Student, error) {
+	var sliceStudent []model.Student
+	userData, err := s.repo.FindAll()
+	if err != nil {
+		return nil, fmt.Errorf("failed to find all data : %s", err.Error())
+	}
+	return append(sliceStudent, userData...), nil
+}
+
 func (s *studentUseCase) UpdateStudent(payload dto.StudentRequestDto, id string) (model.Student, error) {
 	newStudent := model.Student{
 		Fullname: payload.Fullname,

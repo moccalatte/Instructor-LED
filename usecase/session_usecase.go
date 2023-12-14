@@ -45,6 +45,15 @@ func (s *sessionUseCase) FindSessionById(id string) (model.Session, error) {
 	return session, nil
 }
 
+func (s *sessionUseCase) GetAllSession() ([]model.Session, error) {
+	var sliceSession []model.Session
+	sessionData, err := s.repo.FindAll()
+	if err != nil {
+		return nil, fmt.Errorf("failed to find all data : %s", err.Error())
+	}
+	return append(sliceSession, sessionData...), nil
+}
+
 func (s *sessionUseCase) Update(payload dto.SessionRequestDto, id string) (model.Session, error) {
 	sessions := model.Session{
 		Title:       payload.Title,

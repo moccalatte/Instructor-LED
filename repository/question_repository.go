@@ -15,7 +15,7 @@ type QuestionRepository interface {
 	Update(payload model.Question, id string) (model.Question, error)
 	Delete(id string) (model.Question, error)
 	Answer(payload model.Question, id string) (model.Question, error)
-	FindAll(status bool) ([]model.Question, error)
+	FindAll() ([]model.Question, error)
 }
 type questionRepository struct {
 	db *sql.DB
@@ -232,7 +232,7 @@ func (q *questionRepository) Answer(payload model.Question, id string) (model.Qu
 
 }
 
-func (q *questionRepository) FindAll(status bool) ([]model.Question, error) {
+func (q *questionRepository) FindAll() ([]model.Question, error) {
 	rows, err := q.db.Query(common.GetAllDataQ, false)
 	if err != nil {
 		return nil, err

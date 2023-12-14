@@ -45,6 +45,17 @@ func (c *attendanceUseCase) FindAttendanceByID(id string) (model.Attendance, err
 	return attendance, nil
 }
 
+func (c *attendanceUseCase) GetAllAttendance() ([]model.Attendance, error) {
+	var attendanceSlice []model.Attendance
+	attendance, err := c.repo.FindAll()
+
+	if err != nil {
+		return nil, fmt.Errorf("failed to get all data: %s", err.Error())
+	}
+
+	return append(attendanceSlice, attendance...), nil
+}
+
 func (c *attendanceUseCase) UpdateAttendance(payload dto.AttendanceRequestDto, id string) (model.Attendance, error) {
 	newAttendance := model.Attendance{
 		SessionID:         payload.SessionID,

@@ -201,3 +201,5 @@ time="2023-12-13T12:30:07+07:00" level=warning msg="{2023-12-13 12:30:07.3559972
 time="2023-12-13T12:30:09+07:00" level=warning msg="{2023-12-13 12:30:09.220108811 +0700 WIB m=+9.326810559 250ns ::1 POST 404 /api/v1/auth/login PostmanRuntime/7.35.0}"
 time="2023-12-13T12:31:43+07:00" level=info msg="{2023-12-13 12:31:43.176064733 +0700 WIB m=+103.282766471 228ns ::1 POST 200 /api/v1/user PostmanRuntime/7.35.0}"
 time="2023-12-13T12:32:44+07:00" level=info msg="{2023-12-13 12:32:44.545201731 +0700 WIB m=+3.780181120 666ns ::1 POST 200 /api/v1/user PostmanRuntime/7.35.0}"
+time="2023-12-15T00:09:39+07:00" level=info msg="{2023-12-15 00:09:39.0792937 +0700 +07 m=+32.678890201 0s ::1 GET 200 /api/v1/user PostmanRuntime/7.36.0}"
+time="2023-12-15T00:10:16+07:00" level=info msg="{2023-12-15 00:10:16.8341357 +0700 +07 m=+9.026104001 0s ::1 GET 200 /api/v1/user PostmanRuntime/7.36.0}"

@@ -14,7 +14,7 @@ type AttendanceRepository interface {
 	GetById(id string) (model.Attendance, error)
 	Update(payload model.Attendance, id string) (model.Attendance, error)
 	Delete(id string) (model.Attendance, error)
-	FindAll(status bool) ([]model.Attendance, error)
+	FindAll() ([]model.Attendance, error)
 }
 
 type attendanceRepository struct {
@@ -146,7 +146,7 @@ func (a *attendanceRepository) Delete(id string) (model.Attendance, error) {
 	return attendance, nil
 }
 
-func (a *attendanceRepository) FindAll(status bool) ([]model.Attendance, error) {
+func (a *attendanceRepository) FindAll() ([]model.Attendance, error) {
 	rows, err := a.db.Query(common.GetAllDataActive, false)
 	if err != nil {
 		return nil, err

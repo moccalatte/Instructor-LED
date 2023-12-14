@@ -44,6 +44,16 @@ func (c *courseUseCase) FindCourseByID(id string) (model.Course, error) {
 	return courseWithId, nil
 }
 
+func (c *courseUseCase) GetAllCourse() ([]model.Course, error) {
+	var courseSlice []model.Course
+	course, err := c.repo.FindAll()
+	if err != nil {
+		return nil, fmt.Errorf("failed to get all data : %s", err.Error())
+	}
+
+	return append(courseSlice, course...), nil
+}
+
 func (c *courseUseCase) UpdateCourse(payload dto.CourseRequestDto, id string) (model.Course, error) {
 	newCourse := model.Course{
 		CourseName:  payload.CourseName,

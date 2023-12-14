@@ -15,6 +15,7 @@ type UserUseCase interface {
 	UpdateUser(payload dto.UserRequestDto, id string) (model.Users, error)
 	DeleteUser(id string) (model.Users, error)
 	RegisterNewUser(payload model.Users) (model.Users, error)
+	GetAllUser() ([]model.Users, error)
 	// FindByUsernamePassword(username string, password string) (model.Users, error)
 	// GetByUsername(username string) (model.Users, error)
 }
@@ -51,6 +52,19 @@ func (u *userUseCase) FindUserByID(id string) (model.Users, error) {
 	}
 
 	return userWithId, nil
+
+}
+
+func (u *userUseCase) GetAllUser() ([]model.Users, error) {
+	var sliceUser []model.Users
+	userData, err := u.repo.FindAll()
+	if err != nil {
+		return nil, fmt.Errorf("failed to find all data : %s", err.Error())
+	}
+	// for _, data := range userData {
+	// 	sliceUser = append(sliceUser, data)
+	// }
+	return append(sliceUser, userData...), nil
 
 }
 

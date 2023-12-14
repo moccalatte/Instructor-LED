@@ -14,8 +14,7 @@ type UserRepository interface {
 	GetById(id string) (model.Users, error)
 	Update(payload model.Users, id string) (model.Users, error)
 	Delete(id string) (model.Users, error)
-	FindAll(status bool) ([]model.Users, error)
-	// GetByUsername(username string) (model.Users, error)
+	FindAll() ([]model.Users, error) // GetByUsername(username string) (model.Users, error)
 }
 
 type userRepository struct {
@@ -156,7 +155,7 @@ func (u *userRepository) Delete(id string) (model.Users, error) {
 	return user, nil
 }
 
-func (u *userRepository) FindAll(status bool) ([]model.Users, error) {
+func (u *userRepository) FindAll() ([]model.Users, error) {
 	rows, err := u.db.Query(common.GetAllDataU, false)
 	if err != nil {
 		return nil, err
@@ -188,7 +187,6 @@ func (u *userRepository) FindAll(status bool) ([]model.Users, error) {
 
 	return users, nil
 }
-
 
 func NewUserRepository(db *sql.DB) UserRepository {
 	return &userRepository{db: db}

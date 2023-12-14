@@ -14,7 +14,7 @@ type SessionRepository interface {
 	GetById(id string) (model.Session, error)
 	Update(payload model.Session, id string) (model.Session, error)
 	Delete(id string) (model.Session, error)
-	FindAll(status bool) ([]model.Session, error)
+	FindAll() ([]model.Session, error)
 }
 
 type sessionRepository struct {
@@ -159,7 +159,7 @@ func (s *sessionRepository) Delete(id string) (model.Session, error) {
 	return session, nil
 }
 
-func (s *sessionRepository) FindAll(status bool) ([]model.Session, error) {
+func (s *sessionRepository) FindAll() ([]model.Session, error) {
 	rows, err := s.db.Query(common.GetAllDatas, false)
 	if err != nil {
 		return nil, err
@@ -193,7 +193,6 @@ func (s *sessionRepository) FindAll(status bool) ([]model.Session, error) {
 
 	return sessions, nil
 }
-
 
 func NewSessionRepository(db *sql.DB) SessionRepository {
 	return &sessionRepository{db: db}
