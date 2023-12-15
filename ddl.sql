@@ -70,7 +70,8 @@ CREATE TABLE session (
     session_date VARCHAR(20) NOT NULL, 
  session_time VARCHAR(20) NOT NULL, 
  session_link VARCHAR(255) NOT NULL, 
-    trainer_id UUID, 
+    trainer_id UUID,
+    note VARCHAR(255), 
  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
  updated_at TIMESTAMP, 
     is_deleted BOOLEAN 

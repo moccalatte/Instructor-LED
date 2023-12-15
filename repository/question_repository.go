@@ -15,8 +15,8 @@ type QuestionRepository interface {
 	GetByStudentId(id string) (model.Question, error)
 	Update(payload model.Question, id string) (model.Question, error)
 	Delete(id string) (model.Question, error)
+	GetAll() ([]model.Question, error)
 	Answer(payload model.Question, id string) (model.Question, error)
-	FindAll() ([]model.Question, error)
 }
 type questionRepository struct {
 	db *sql.DB
@@ -111,10 +111,47 @@ func (q *questionRepository) GetByStudentId(id string) (model.Question, error) {
 	)
 
 	if err != nil {
+
+		fmt.Println("Error in repo question ", err.Error())
 		return model.Question{}, err
 	}
 
 	return question, nil
+}
+
+func (q *questionRepository) GetAll() ([]model.Question, error) {
+	var questions []model.Question
+
+	rows, err := q.db.Query(common.GetAllQuestion)
+
+	if err != nil {
+		return questions, err
+	}
+	for rows.Next() {
+		var question model.Question
+		err := rows.Scan(
+			&question.QuestionID,
+			&question.SessionID,
+			&question.StudentID,
+			&question.TrainerID,
+			&question.Title,
+			&question.Description,
+			&question.CourseID,
+			&question.Image,
+			&question.Answer,
+			&question.Status,
+			&question.IsDeleted,
+		)
+
+		if err != nil {
+			fmt.Println("error in repo :", err.Error())
+			return questions, nil
+		}
+
+		questions = append(questions, question)
+	}
+
+	return questions, nil
 }
 
 func (q *questionRepository) Update(payload model.Question, id string) (model.Question, error) {
@@ -253,44 +290,6 @@ func (q *questionRepository) Answer(payload model.Question, id string) (model.Qu
 
 	return question, nil
 
-}
-
-func (q *questionRepository) FindAll() ([]model.Question, error) {
-	rows, err := q.db.Query(common.GetAllDataQ, false)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	var questions []model.Question
-	for rows.Next() {
-		var question model.Question
-		err := rows.Scan(
-			&question.QuestionID,
-			&question.SessionID,
-			&question.StudentID,
-			&question.TrainerID,
-			&question.Title,
-			&question.Description,
-			&question.CourseID,
-			&question.Image,
-			&question.Answer,
-			&question.Status,
-			&question.CreatedAt,
-			&question.UpdatedAt,
-			&question.IsDeleted,
-		)
-		if err != nil {
-			return nil, err
-		}
-		questions = append(questions, question)
-	}
-
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-
-	return questions, nil
 }
 
 func NewQuestionRepository(db *sql.DB) QuestionRepository {

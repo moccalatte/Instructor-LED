@@ -20,7 +20,7 @@ func (s *CourseRepoMock) GetById(id string) (model.Course, error) {
 	return args.Get(0).(model.Course), args.Error(1)
 }
 
-func (u *CourseRepoMock) FindAll() ([]model.Course, error) {
+func (u *CourseRepoMock) GetAll() ([]model.Course, error) {
 	args := u.Called()
 	return args.Get(0).([]model.Course), args.Error(1)
 }

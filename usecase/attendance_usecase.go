@@ -47,16 +47,16 @@ func (c *attendanceUseCase) FindAttendanceByID(id string) (model.Attendance, err
 	return attendance, nil
 }
 
-func (c *attendanceUseCase) GetAllAttendance() ([]model.Attendance, error) {
-	var attendanceSlice []model.Attendance
-	attendance, err := c.repo.FindAll()
+// func (c *attendanceUseCase) GetAllAttendance() ([]model.Attendance, error) {
+// 	var attendanceSlice []model.Attendance
+// 	attendance, err := c.repo.FindAll()
 
-	if err != nil {
-		return nil, fmt.Errorf("failed to get all data: %s", err.Error())
-	}
+// 	if err != nil {
+// 		return nil, fmt.Errorf("failed to get all data: %s", err.Error())
+// 	}
 
-	return append(attendanceSlice, attendance...), nil
-}
+// 	return append(attendanceSlice, attendance...), nil
+// }
 
 func (c *attendanceUseCase) FindAttendanceBySessionId(id string) (model.Attendance, error) {
 	// fmt.Print(id, "USECASEATTSESSION")
@@ -67,6 +67,17 @@ func (c *attendanceUseCase) FindAttendanceBySessionId(id string) (model.Attendan
 	}
 
 	return attendance, nil
+}
+
+func (c *attendanceUseCase) GetAllAttendance() ([]model.Attendance, error) {
+	attendanceAll, err := c.repo.GetAll()
+
+	if err != nil {
+		fmt.Println("Error Get All Data in use case : ", err.Error())
+		return attendanceAll, fmt.Errorf("failed to find data : %v", err.Error())
+	}
+
+	return attendanceAll, nil
 }
 
 func (c *attendanceUseCase) UpdateAttendance(payload dto.AttendanceRequestDto, id string) (model.Attendance, error) {

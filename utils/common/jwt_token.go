@@ -14,6 +14,7 @@ import (
 
 type JwtToken interface {
 	GenerateToken(payload model.Users) (dto.AuthResponseDto, error)
+	GenerateTokenStudent(payload model.Student) (dto.AuthResponseDto, error)
 	VerifyToken(tokenString string) (jwt.MapClaims, error)
 	RefreshToken(oldTokenString string) (dto.AuthResponseDto, error)
 }
@@ -30,6 +31,26 @@ func (j *jwtToken) GenerateToken(payload model.Users) (dto.AuthResponseDto, erro
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(j.cfg.JwtLifeTime)),
 		},
 		UserId: payload.UserID,
+		Role:   payload.Role,
+	}
+
+	jwtNewClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	token, err := jwtNewClaims.SignedString(j.cfg.JwtSignatureKey)
+	if err != nil {
+		return dto.AuthResponseDto{}, errors.New("failed to generate token")
+	}
+
+	return dto.AuthResponseDto{Token: token}, nil
+}
+
+func (j *jwtToken) GenerateTokenStudent(payload model.Student) (dto.AuthResponseDto, error) {
+	claims := modelutil.JwtTokenClaims{
+		RegisteredClaims: jwt.RegisteredClaims{
+			Issuer:    j.cfg.IssuerName,
+			IssuedAt:  jwt.NewNumericDate(time.Now().UTC()),
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(j.cfg.JwtLifeTime)),
+		},
+		UserId: payload.StudentID,
 		Role:   payload.Role,
 	}
 

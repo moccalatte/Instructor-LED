@@ -12,6 +12,7 @@ type SessionUseCase interface {
 	FindSessionById(id string) (model.Session, error)
 	GetAllSession() ([]model.Session, error)
 	Update(payload dto.SessionRequestDto, id string) (model.Session, error)
+	UpdateNote(payload dto.SessionRequestDto, id string) (model.Session, error)
 	Delete(id string) (model.Session, error)
 }
 
@@ -27,6 +28,7 @@ func (s *sessionUseCase) AddSession(payload dto.SessionRequestDto) (model.Sessio
 		SessionTime: payload.SessionTime,
 		SessionLink: payload.SessionLink,
 		TrainerID:   payload.TrainerID,
+		Note:        payload.Note,
 	}
 
 	createsSession, err := s.repo.Create(newSession)
@@ -48,7 +50,7 @@ func (s *sessionUseCase) FindSessionById(id string) (model.Session, error) {
 
 func (s *sessionUseCase) GetAllSession() ([]model.Session, error) {
 	var sliceSession []model.Session
-	sessionData, err := s.repo.FindAll()
+	sessionData, err := s.repo.GetAllSession()
 	if err != nil {
 		return nil, fmt.Errorf("failed to find all data : %s", err.Error())
 	}
@@ -63,12 +65,27 @@ func (s *sessionUseCase) Update(payload dto.SessionRequestDto, id string) (model
 		SessionTime: payload.SessionTime,
 		SessionLink: payload.SessionLink,
 		TrainerID:   payload.TrainerID,
+		Note:        payload.Note,
 	}
 
 	session, err := s.repo.Update(sessions, id)
 
 	if err != nil {
 		return model.Session{}, fmt.Errorf("failed to Update Session : %s", err.Error())
+	}
+
+	return session, nil
+}
+
+func (s *sessionUseCase) UpdateNote(payload dto.SessionRequestDto, id string) (model.Session, error) {
+	sessions := model.Session{
+		Note: payload.Note,
+	}
+
+	session, err := s.repo.UpdateNote(sessions, id)
+
+	if err != nil {
+		return model.Session{}, fmt.Errorf("failed to update data : %s", err.Error())
 	}
 
 	return session, nil

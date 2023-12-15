@@ -20,7 +20,7 @@ func (u *UserRepoMock) GetById(id string) (model.Users, error) {
 	return args.Get(0).(model.Users), args.Error(1)
 }
 
-func (u *UserRepoMock) FindAll() ([]model.Users, error) {
+func (u *UserRepoMock) GetAll() ([]model.Users, error) {
 	args := u.Called()
 	return args.Get(0).([]model.Users), args.Error(1)
 }

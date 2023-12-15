@@ -2,6 +2,7 @@ package repository
 
 import (
 	"database/sql"
+	"fmt"
 	"time"
 
 	"final-project-kelompok-1/model"
@@ -12,8 +13,9 @@ type SessionRepository interface {
 	Create(payload model.Session) (model.Session, error)
 	GetById(id string) (model.Session, error)
 	Update(payload model.Session, id string) (model.Session, error)
+	UpdateNote(payload model.Session, id string) (model.Session, error)
 	Delete(id string) (model.Session, error)
-	FindAll() ([]model.Session, error)
+	GetAllSession() ([]model.Session, error)
 }
 
 type sessionRepository struct {
@@ -33,6 +35,7 @@ func (s *sessionRepository) Create(payload model.Session) (model.Session, error)
 		payload.SessionTime,
 		payload.SessionLink,
 		payload.TrainerID,
+		payload.Note,
 		time.Now(),
 		time.Now(),
 		false).Scan(
@@ -43,6 +46,7 @@ func (s *sessionRepository) Create(payload model.Session) (model.Session, error)
 		&session.SessionTime,
 		&session.SessionLink,
 		&session.TrainerID,
+		&session.Note,
 		&session.CreatedAt,
 		&session.UpdatedAt,
 		&session.IsDeleted,
@@ -71,11 +75,45 @@ func (s *sessionRepository) GetById(id string) (model.Session, error) {
 		&session.CreatedAt,
 		&session.UpdatedAt,
 		&session.IsDeleted,
+		&session.Note,
 	)
 	if err != nil {
 		return model.Session{}, err
 	}
 	return session, nil
+}
+
+func (s *sessionRepository) GetAllSession() ([]model.Session, error) {
+	var sessions []model.Session
+
+	rows, err := s.db.Query(common.GetAllSession)
+
+	if err != nil {
+		return sessions, err
+	}
+	for rows.Next() {
+		var session model.Session
+		err := rows.Scan(
+			&session.SessionID,
+			&session.Title,
+			&session.Description,
+			&session.SessionDate,
+			&session.SessionTime,
+			&session.SessionLink,
+			&session.TrainerID,
+			&session.Note,
+			&session.IsDeleted,
+		)
+
+		if err != nil {
+			fmt.Println("error in repo :", err.Error())
+			return sessions, nil
+		}
+
+		sessions = append(sessions, session)
+	}
+
+	return sessions, nil
 }
 
 func (s *sessionRepository) Update(payload model.Session, id string) (model.Session, error) {
@@ -96,6 +134,7 @@ func (s *sessionRepository) Update(payload model.Session, id string) (model.Sess
 		payload.SessionTime,
 		payload.SessionLink,
 		payload.TrainerID,
+		payload.Note,
 		time.Now(),
 		false,
 		id).Scan(
@@ -106,11 +145,52 @@ func (s *sessionRepository) Update(payload model.Session, id string) (model.Sess
 		&session.SessionTime,
 		&session.SessionLink,
 		&session.TrainerID,
+		&session.Note,
 		&session.CreatedAt,
 		&session.UpdatedAt,
 		&session.IsDeleted,
 	)
 	if err != nil {
+		fmt.Println("Error in repo : ", err.Error())
+		return model.Session{}, tx.Rollback()
+	}
+
+	if err := tx.Commit(); err != nil {
+		return model.Session{}, err
+	}
+
+	return session, nil
+}
+
+func (s *sessionRepository) UpdateNote(payload model.Session, id string) (model.Session, error) {
+	tx, err := s.db.Begin()
+	if err != nil {
+		return model.Session{}, err
+	}
+	defer func() {
+		if err != nil {
+			tx.Rollback()
+		}
+	}()
+	var session model.Session
+	err = tx.QueryRow(common.UpdateNote,
+		payload.Note,
+		time.Now(),
+		id).Scan(
+		&session.SessionID,
+		&session.Title,
+		&session.Description,
+		&session.SessionDate,
+		&session.SessionTime,
+		&session.SessionLink,
+		&session.TrainerID,
+		&session.Note,
+		&session.CreatedAt,
+		&session.UpdatedAt,
+		&session.IsDeleted,
+	)
+	if err != nil {
+		fmt.Println("Error in repo : ", err.Error())
 		return model.Session{}, tx.Rollback()
 	}
 
@@ -142,6 +222,7 @@ func (s *sessionRepository) Delete(id string) (model.Session, error) {
 		&session.SessionTime,
 		&session.SessionLink,
 		&session.TrainerID,
+		&session.Note,
 		&session.CreatedAt,
 		&session.UpdatedAt,
 		&session.IsDeleted,

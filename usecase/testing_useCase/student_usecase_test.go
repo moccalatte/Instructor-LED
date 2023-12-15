@@ -142,7 +142,7 @@ func (suite *StudentUseCaseTestSuite) TestGetAllStudent_Success() {
 			Password:    "hashed_password",
 		},
 	}
-	suite.srm.On("FindAll").Return(expectedStudents, nil)
+	suite.srm.On("GetAll").Return(expectedStudents, nil)
 
 	// Call the method being tested
 	students, err := suite.su.GetAllStudent()
@@ -157,7 +157,7 @@ func (suite *StudentUseCaseTestSuite) TestGetAllStudent_Success() {
 
 func (suite *StudentUseCaseTestSuite) TestGetAllStudent_ErrorFromRepository() {
 	// Mock repository response with an error
-	suite.srm.On("FindAll").Return([]model.Student{}, errors.New("repository error"))
+	suite.srm.On("GetAll").Return([]model.Student{}, errors.New("repository error"))
 
 	// Call the method being tested
 	students, err := suite.su.GetAllStudent()

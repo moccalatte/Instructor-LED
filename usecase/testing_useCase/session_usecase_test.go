@@ -121,7 +121,7 @@ func (suite *SessionUseCaseTestSuite) TestGetAllSession_Success() {
 			SessionDate: "2023-01-01",
 		},
 	}
-	suite.srm.On("FindAll").Return(expectedSessions, nil)
+	suite.srm.On("GetAllSession").Return(expectedSessions, nil)
 
 	// Call the method being tested
 	sessions, err := suite.su.GetAllSession()
@@ -136,7 +136,7 @@ func (suite *SessionUseCaseTestSuite) TestGetAllSession_Success() {
 
 func (suite *SessionUseCaseTestSuite) TestGetAllSession_ErrorFromRepository() {
 	// Mock repository response with an error
-	suite.srm.On("FindAll").Return([]model.Session{}, errors.New("repository error"))
+	suite.srm.On("GetAllSession").Return([]model.Session{}, errors.New("repository error"))
 
 	// Call the method being tested
 	sessions, err := suite.su.GetAllSession()

@@ -2,6 +2,7 @@ package repository
 
 import (
 	"database/sql"
+	"fmt"
 	"time"
 
 	"final-project-kelompok-1/model"
@@ -14,7 +15,7 @@ type AttendanceRepository interface {
 	GetBySessionId(id string) (model.Attendance, error)
 	Update(payload model.Attendance, id string) (model.Attendance, error)
 	Delete(id string) (model.Attendance, error)
-	FindAll() ([]model.Attendance, error)
+	GetAll() ([]model.Attendance, error)
 }
 
 type attendanceRepository struct {
@@ -43,6 +44,7 @@ func (a *attendanceRepository) Create(payload model.Attendance) (model.Attendanc
 		&attendance.IsDeleted,
 	)
 	if err != nil {
+		fmt.Println("Error attendance in repo : ", err.Error())
 		return model.Attendance{}, tx.Rollback()
 	}
 
@@ -65,6 +67,7 @@ func (a *attendanceRepository) GetById(id string) (model.Attendance, error) {
 		&attendance.IsDeleted,
 	)
 	if err != nil {
+		fmt.Println(" Error attendance in repo getbyid: ", err.Error())
 		return model.Attendance{}, err
 	}
 	return attendance, nil
@@ -83,9 +86,43 @@ func (a *attendanceRepository) GetBySessionId(id string) (model.Attendance, erro
 		&attendance.IsDeleted,
 	)
 	if err != nil {
+
+		fmt.Println("Error in repo getbysessioid : ", err.Error())
 		return model.Attendance{}, err
 	}
 	return attendance, nil
+
+}
+
+func (a *attendanceRepository) GetAll() ([]model.Attendance, error) {
+	var attendances []model.Attendance
+
+	rows, err := a.db.Query(common.GetAllAttendance)
+
+	if err != nil {
+		return attendances, err
+	}
+	for rows.Next() {
+		var attendance model.Attendance
+		err := rows.Scan(
+			&attendance.AttendanceID,
+			&attendance.SessionID,
+			&attendance.StudentID,
+			&attendance.AttendanceStudent,
+			&attendance.CreatedAt,
+			&attendance.UpdatedAt,
+			&attendance.IsDeleted,
+		)
+
+		if err != nil {
+			fmt.Println("error in repo :", err.Error())
+			return attendances, nil
+		}
+
+		attendances = append(attendances, attendance)
+	}
+
+	return attendances, nil
 
 }
 
@@ -118,6 +155,7 @@ func (a *attendanceRepository) Update(payload model.Attendance, id string) (mode
 	)
 
 	if err != nil {
+		fmt.Println("Error attendance in repo : ", err.Error())
 		return model.Attendance{}, tx.Rollback()
 	}
 
@@ -151,6 +189,7 @@ func (a *attendanceRepository) Delete(id string) (model.Attendance, error) {
 		&attendance.IsDeleted,
 	)
 	if err != nil {
+		fmt.Println("Error attendance in repo : ", err.Error())
 		return model.Attendance{}, tx.Rollback()
 	}
 

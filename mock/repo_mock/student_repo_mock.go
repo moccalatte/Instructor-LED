@@ -20,9 +20,14 @@ func (s *StudentRepoMock) GetById(id string) (model.Student, error) {
 	return args.Get(0).(model.Student), args.Error(1)
 }
 
-func (s *StudentRepoMock) FindAll() ([]model.Student, error) {
+func (s *StudentRepoMock) GetAll() ([]model.Student, error) {
 	args := s.Called()
 	return args.Get(0).([]model.Student), args.Error(1)
+}
+
+func (s *StudentRepoMock) GetByStudentEmail(email string) (model.Student, error) {
+	args := s.Called(email)
+	return args.Get(0).(model.Student), args.Error(1)
 }
 
 func (s *StudentRepoMock) Update(payload model.Student, id string) (model.Student, error) {

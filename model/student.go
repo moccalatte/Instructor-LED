@@ -13,8 +13,12 @@ type Student struct {
 	Job         string    `json:"job"`
 	Email       string    `json:"email"`
 	Password    string    `json:"password"`
-	IsDeleted   bool      `json:"is_deleted"`
 	Role        string    `json:"role"`
+	IsDeleted   bool      `json:"is_deleted"`
 	CreatedAt   time.Time `json:"createdAt"`
 	UpdatedAt   time.Time `json:"updatedAt"`
+}
+
+func (u Users) IsValidRoleStudent() bool {
+	return u.Role == "student"
 }

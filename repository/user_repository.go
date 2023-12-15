@@ -12,9 +12,10 @@ import (
 type UserRepository interface {
 	Create(payload model.Users) (model.Users, error)
 	GetById(id string) (model.Users, error)
+	GetAll() ([]model.Users, error)
 	Update(payload model.Users, id string) (model.Users, error)
 	Delete(id string) (model.Users, error)
-	FindAll() ([]model.Users, error) // GetByUsername(username string) (model.Users, error)
+	GetByUsername(email string) (model.Users, error)
 }
 
 type userRepository struct {
@@ -77,6 +78,36 @@ func (u *userRepository) GetById(id string) (model.Users, error) {
 	return user, nil
 }
 
+func (u *userRepository) GetAll() ([]model.Users, error) {
+	var users []model.Users
+
+	rows, err := u.db.Query(common.GetAllUser)
+
+	if err != nil {
+		return users, err
+	}
+	for rows.Next() {
+		var user model.Users
+		err := rows.Scan(
+			&user.UserID,
+			&user.Fullname,
+			&user.Role,
+			&user.Email,
+			&user.Password,
+			&user.IsDeleted,
+		)
+
+		if err != nil {
+			return users, nil
+		}
+
+		users = append(users, user)
+	}
+
+	return users, nil
+
+}
+
 func (u *userRepository) Update(payload model.Users, id string) (model.Users, error) {
 	tx, err := u.db.Begin()
 	if err != nil {
@@ -85,6 +116,7 @@ func (u *userRepository) Update(payload model.Users, id string) (model.Users, er
 
 	defer func() {
 		if err != nil {
+			fmt.Println("Error inserting user di repo : ", err)
 			tx.Rollback()
 		}
 	}()
@@ -109,7 +141,7 @@ func (u *userRepository) Update(payload model.Users, id string) (model.Users, er
 	)
 	fmt.Print(err)
 	if err != nil {
-		fmt.Println("Error inserting user di repo : ", err)
+		fmt.Println("Error inserting user di repo : ", err.Error())
 		return model.Users{}, tx.Rollback()
 	}
 
@@ -156,37 +188,20 @@ func (u *userRepository) Delete(id string) (model.Users, error) {
 	return user, nil
 }
 
-func (u *userRepository) FindAll() ([]model.Users, error) {
-	rows, err := u.db.Query(common.GetAllDataU, false)
+func (u *userRepository) GetByUsername(email string) (model.Users, error) {
+	var user model.Users
+	err := u.db.QueryRow(common.GetByFullname, email).Scan(
+		&user.UserID,
+		&user.Fullname,
+		&user.Role,
+		&user.Email,
+		&user.Password,
+		&user.IsDeleted,
+	)
 	if err != nil {
-		return nil, err
+		return model.Users{}, err
 	}
-	defer rows.Close()
-
-	var users []model.Users
-	for rows.Next() {
-		var user model.Users
-		err := rows.Scan(
-			&user.UserID,
-			&user.Fullname,
-			&user.Role,
-			&user.Email,
-			&user.Password,
-			&user.CreatedAt,
-			&user.UpdatedAt,
-			&user.IsDeleted,
-		)
-		if err != nil {
-			return nil, err
-		}
-		users = append(users, user)
-	}
-
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-
-	return users, nil
+	return user, nil
 }
 
 func NewUserRepository(db *sql.DB) UserRepository {

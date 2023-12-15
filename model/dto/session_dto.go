@@ -8,4 +8,5 @@ type SessionRequestDto struct {
 	SessionLink string `json:"session_link"`
 	TrainerID   string `json:"trainer_id"`
 	IsDeleted   bool   `json:"is_deleted"`
+	Note        string `json:"note"`
 }

@@ -132,7 +132,7 @@ func (suite *QuestionUseCaseTestSuite) TestGetAllQuestion_Success() {
 			TrainerID:  "1",
 		},
 	}
-	suite.qrm.On("FindAll").Return(expectedQuestions, nil)
+	suite.qrm.On("GetAll").Return(expectedQuestions, nil)
 
 	questions, err := suite.qu.GetAllQuestion()
 
@@ -143,7 +143,7 @@ func (suite *QuestionUseCaseTestSuite) TestGetAllQuestion_Success() {
 }
 
 func (suite *QuestionUseCaseTestSuite) TestGetAllQuestion_ErrorFromRepository() {
-	suite.qrm.On("FindAll").Return([]model.Question{}, errors.New("repository error"))
+	suite.qrm.On("GetAll").Return([]model.Question{}, errors.New("repository error"))
 
 	questions, err := suite.qu.GetAllQuestion()
 

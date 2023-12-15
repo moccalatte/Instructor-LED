@@ -107,7 +107,7 @@ func (suite *CourseUseCaseTestSuite) TestGetAllCourse_Success() {
 			Description: "anu anu anu",
 		},
 	}
-	suite.crm.On("FindAll").Return(expectedCourses, nil)
+	suite.crm.On("GetAll").Return(expectedCourses, nil)
 
 	courses, err := suite.cu.GetAllCourse()
 
@@ -118,7 +118,7 @@ func (suite *CourseUseCaseTestSuite) TestGetAllCourse_Success() {
 }
 
 func (suite *CourseUseCaseTestSuite) TestGetAllCourse_ErrorFromRepository() {
-	suite.crm.On("FindAll").Return([]model.Course{}, errors.New("repository error"))
+	suite.crm.On("GetAll").Return([]model.Course{}, errors.New("repository error"))
 
 	courses, err := suite.cu.GetAllCourse()
 

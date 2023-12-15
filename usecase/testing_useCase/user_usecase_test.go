@@ -124,7 +124,7 @@ func (suite *UserUseCaseTestSuite) TestGetAllUser_Success() {
 			IsDeleted: false,
 		},
 	}
-	suite.urm.On("FindAll").Return(expectedUsers, nil)
+	suite.urm.On("GetAll").Return(expectedUsers, nil)
 
 	users, err := suite.uu.GetAllUser()
 
@@ -136,7 +136,7 @@ func (suite *UserUseCaseTestSuite) TestGetAllUser_Success() {
 
 func (suite *UserUseCaseTestSuite) TestGetAllUser_ErrorFromRepository() {
 	expectedErr := errors.New("repository error")
-	suite.urm.On("FindAll").Return([]model.Users{}, expectedErr)
+	suite.urm.On("GetAll").Return([]model.Users{}, expectedErr)
 
 	users, err := suite.uu.GetAllUser()
 

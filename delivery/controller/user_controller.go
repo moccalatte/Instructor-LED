@@ -10,9 +10,9 @@ import (
 )
 
 type UserController struct {
-	uc usecase.UserUseCase
-	rg *gin.RouterGroup
-	// authMiddleware middleware.AuthMiddleware
+	uc             usecase.UserUseCase
+	rg             *gin.RouterGroup
+	authMiddleware middleware.AuthMiddleware
 }
 
 func (u *UserController) CreateHandler(ctx *gin.Context) {
@@ -42,6 +42,16 @@ func (u *UserController) GetHandlerByID(ctx *gin.Context) {
 	}
 
 	dto.SendSingleResponse(ctx, http.StatusOK, "Get user by ID", user)
+}
+
+func (u *UserController) GetHandlerAll(ctx *gin.Context) {
+	user, err := u.uc.GetAllUser()
+	if err != nil {
+		dto.SendSingleResponse(ctx, http.StatusInternalServerError, err.Error(), nil)
+		return
+	}
+
+	dto.SendSingleResponse(ctx, http.StatusOK, "Get all user", user)
 }
 
 func (u *UserController) UpdateHandler(ctx *gin.Context) {
@@ -84,12 +94,13 @@ func (u *UserController) DeleteHandler(ctx *gin.Context) {
 // }
 
 func (u *UserController) Route() {
-	u.rg.POST("/user", u.CreateHandler)
-	u.rg.GET("/user/:id", u.GetHandlerByID)
-	u.rg.PUT("/user/:id", u.UpdateHandler)
-	u.rg.DELETE("/user/:id", u.DeleteHandler)
+	u.rg.POST("/user", u.authMiddleware.RequireToken("admin"), u.CreateHandler)
+	u.rg.GET("/user/:id", u.authMiddleware.RequireToken("admin"), u.GetHandlerByID)
+	u.rg.GET("/user", u.authMiddleware.RequireToken("admin"), u.GetHandlerAll)
+	u.rg.PUT("/user/:id", u.authMiddleware.RequireToken("admin"), u.UpdateHandler)
+	u.rg.DELETE("/user/:id", u.authMiddleware.RequireToken("admin"), u.DeleteHandler)
 }
 
 func NewUserController(uc usecase.UserUseCase, rg *gin.RouterGroup, authMiddleware middleware.AuthMiddleware) *UserController {
-	return &UserController{uc: uc, rg: rg}
+	return &UserController{uc: uc, rg: rg, authMiddleware: authMiddleware}
 }

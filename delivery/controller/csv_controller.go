@@ -23,7 +23,7 @@ func (c *CsvController) StartPointCsvHandler(ctx *gin.Context) {
 }
 
 func (c *CsvController) Route() {
-	c.rg.GET("report", c.StartPointCsvHandler)
+	c.rg.GET("/report", c.StartPointCsvHandler)
 }
 
 func NewCsvController(uc usecase.CsvUseCase, rg *gin.RouterGroup) *CsvController {

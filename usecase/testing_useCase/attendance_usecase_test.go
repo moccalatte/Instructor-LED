@@ -139,7 +139,7 @@ func (suite *AttendanceUseCaseTestSuite) TestGetAllAttendance_Success() {
 			AttendanceStudent: true,
 		},
 	}
-	suite.arm.On("FindAll").Return(expectedAttendance, nil)
+	suite.arm.On("GetAll").Return(expectedAttendance, nil)
 
 	attendance, err := suite.au.GetAllAttendance()
 
@@ -150,7 +150,7 @@ func (suite *AttendanceUseCaseTestSuite) TestGetAllAttendance_Success() {
 }
 
 func (suite *AttendanceUseCaseTestSuite) TestGetAllAttendance_ErrorFromRepository() {
-	suite.arm.On("FindAll").Return([]model.Attendance{}, errors.New("repository error"))
+	suite.arm.On("GetAll").Return([]model.Attendance{}, errors.New("repository error"))
 
 	attendance, err := suite.au.GetAllAttendance()
 

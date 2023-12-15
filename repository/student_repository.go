@@ -12,9 +12,10 @@ import (
 type StudentRepository interface {
 	Create(payload model.Student) (model.Student, error)
 	GetById(id string) (model.Student, error)
+	GetAll() ([]model.Student, error)
 	Update(payload model.Student, id string) (model.Student, error)
 	Delete(id string) (model.Student, error)
-	FindAll() ([]model.Student, error)
+	GetByStudentEmail(email string) (model.Student, error)
 }
 
 type studentRepository struct {
@@ -52,10 +53,12 @@ func (s *studentRepository) Create(payload model.Student) (model.Student, error)
 		&student.Password,
 		&student.CreatedAt,
 		&student.UpdatedAt,
+		&student.Role,
 		&student.IsDeleted,
 	)
-	fmt.Print(err, "STUDENT REPO")
+
 	if err != nil {
+		fmt.Print("Error student in repo : ", err.Error())
 		return model.Student{}, tx.Rollback()
 	}
 
@@ -91,6 +94,41 @@ func (s *studentRepository) GetById(id string) (model.Student, error) {
 	return student, nil
 }
 
+func (s *studentRepository) GetAll() ([]model.Student, error) {
+	var students []model.Student
+
+	rows, err := s.db.Query(common.GetAllDataStd)
+
+	if err != nil {
+		return students, err
+	}
+	for rows.Next() {
+		var student model.Student
+		err := rows.Scan(
+			&student.StudentID,
+			&student.Fullname,
+			&student.BirthDate,
+			&student.BirthPlace,
+			&student.Address,
+			&student.Education,
+			&student.Institution,
+			&student.Job,
+			&student.Email,
+			&student.Password,
+			&student.IsDeleted,
+		)
+
+		if err != nil {
+			fmt.Println("error in repo :", err.Error())
+			return students, nil
+		}
+
+		students = append(students, student)
+	}
+
+	return students, nil
+}
+
 func (s *studentRepository) Update(payload model.Student, id string) (model.Student, error) {
 	tx, err := s.db.Begin()
 	if err != nil {
@@ -114,6 +152,7 @@ func (s *studentRepository) Update(payload model.Student, id string) (model.Stud
 		payload.Password,
 		time.Now(),
 		false,
+		"student",
 		id).Scan(
 		&student.StudentID,
 		&student.Fullname,
@@ -128,6 +167,7 @@ func (s *studentRepository) Update(payload model.Student, id string) (model.Stud
 		&student.CreatedAt,
 		&student.UpdatedAt,
 		&student.IsDeleted,
+		&student.Role,
 	)
 	if err != nil {
 		return model.Student{}, tx.Rollback()
@@ -181,42 +221,29 @@ func (s *studentRepository) Delete(id string) (model.Student, error) {
 
 }
 
-func (s *studentRepository) FindAll() ([]model.Student, error) {
-	rows, err := s.db.Query(common.GetAllDataStd, false)
+func (s *studentRepository) GetByStudentEmail(email string) (model.Student, error) {
+	var student model.Student
+	err := s.db.QueryRow(common.GetByStudentEmail, email).Scan(
+		&student.StudentID,
+		&student.Fullname,
+		&student.BirthDate,
+		&student.BirthPlace,
+		&student.Address,
+		&student.Education,
+		&student.Institution,
+		&student.Job,
+		&student.Role,
+		&student.Email,
+		&student.Password,
+		&student.CreatedAt,
+		&student.UpdatedAt,
+		&student.IsDeleted,
+	)
 	if err != nil {
-		return nil, err
+		fmt.Println("Error in repo : ", err.Error())
+		return model.Student{}, err
 	}
-	defer rows.Close()
-
-	var students []model.Student
-	for rows.Next() {
-		var student model.Student
-		err := rows.Scan(
-			&student.StudentID,
-			&student.Fullname,
-			&student.BirthDate,
-			&student.BirthPlace,
-			&student.Address,
-			&student.Education,
-			&student.Institution,
-			&student.Job,
-			&student.Email,
-			&student.Password,
-			&student.CreatedAt,
-			&student.UpdatedAt,
-			&student.IsDeleted,
-		)
-		if err != nil {
-			return nil, err
-		}
-		students = append(students, student)
-	}
-
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-
-	return students, nil
+	return student, nil
 }
 
 func NewStudentRepository(db *sql.DB) StudentRepository {

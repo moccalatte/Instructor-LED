@@ -18,6 +18,7 @@ func (c *csvRepository) CsvStart() ([]string, error) {
 	var allsessionId []string
 	rows, err := c.db.Query(common.CsvGetIdSession)
 	if err != nil {
+		fmt.Println("Error in repo for query csvgetidsession ", err.Error())
 		return nil, fmt.Errorf("failed to get data from db : %s", err.Error())
 	}
 

@@ -20,12 +20,17 @@ func (s *SessionRepoMock) GetById(id string) (model.Session, error) {
 	return args.Get(0).(model.Session), args.Error(1)
 }
 
-func (s *SessionRepoMock) FindAll() ([]model.Session, error) {
+func (s *SessionRepoMock) GetAllSession() ([]model.Session, error) {
 	args := s.Called()
 	return args.Get(0).([]model.Session), args.Error(1)
 }
 
 func (s *SessionRepoMock) Update(payload model.Session, id string) (model.Session, error) {
+	args := s.Called(payload, id)
+	return args.Get(0).(model.Session), args.Error(1)
+}
+
+func (s *SessionRepoMock) UpdateNote(payload model.Session, id string) (model.Session, error) {
 	args := s.Called(payload, id)
 	return args.Get(0).(model.Session), args.Error(1)
 }

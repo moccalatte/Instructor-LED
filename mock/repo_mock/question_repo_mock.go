@@ -24,7 +24,7 @@ func (s *QuestionRepoMock) GetByStudentId(id string) (model.Question, error) {
 	return args.Get(0).(model.Question), args.Error(1)
 }
 
-func (s *QuestionRepoMock) FindAll() ([]model.Question, error) {
+func (s *QuestionRepoMock) GetAll() ([]model.Question, error) {
 	args := s.Called()
 	return args.Get(0).([]model.Question), args.Error(1)
 }

@@ -57,11 +57,12 @@ func (u *useCaseManager) CsvCaseUseCase(csvService common.CvsCommon) usecase.Csv
 		u.UserUseCase(),
 		u.QuestionUseCase(),
 		u.CourseCase(),
-		csvService, // Gunakan instance common.CvsCommon yang diberikan sebagai argumen
+		csvService,
 		u.repo.CsvRepo(),
 	)
 }
 
 func NewUseCaseManager(repo RepoManager, csvService common.CvsCommon) UseCaseManager {
 	return &useCaseManager{repo: repo, csvService: csvService}
+
 }

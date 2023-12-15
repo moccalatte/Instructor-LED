@@ -53,7 +53,7 @@ func (s *questionUseCase) FindQuestionById(id string) (model.Question, error) {
 
 func (s *questionUseCase) GetAllQuestion() ([]model.Question, error) {
 	var sliceQuest []model.Question
-	Question, err := s.repo.FindAll()
+	Question, err := s.repo.GetAll()
 	if err != nil {
 		return nil, fmt.Errorf("failed to get data all data : %s", err.Error())
 	}
@@ -68,6 +68,26 @@ func (s *questionUseCase) FindQuestionByStudentId(id string) (model.Question, er
 	}
 	return Question, nil
 }
+
+// func (s *questionUseCase) FindQuestionByStudentId(id string) (model.Question, error) {
+// 	Question, err := s.repo.GetByStudentId(id)
+
+// 	if err != nil {
+// 		return model.Question{}, fmt.Errorf("failed to get data by id in question use case student id : %s", err.Error())
+// 	}
+// 	return Question, nil
+// }
+
+// func (s *questionUseCase) GetAllQuestion() ([]model.Question, error) {
+// 	questionAll, err := s.repo.GetAll()
+
+// 	if err != nil {
+// 		fmt.Println("Error Get All Data in use case : ", err.Error())
+// 		return questionAll, fmt.Errorf("failed to find data : %v", err.Error())
+// 	}
+
+// 	return questionAll, nil
+// }
 
 func (s *questionUseCase) Update(payload dto.QuestionRequestDto, id string) (model.Question, error) {
 	question := model.Question{

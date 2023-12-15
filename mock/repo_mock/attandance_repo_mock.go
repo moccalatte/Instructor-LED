@@ -20,7 +20,7 @@ func (a *AttendanceRepoMock) GetById(id string) (model.Attendance, error) {
 	return args.Get(0).(model.Attendance), args.Error(1)
 }
 
-func (a *AttendanceRepoMock) FindAll() ([]model.Attendance, error) {
+func (a *AttendanceRepoMock) GetAll() ([]model.Attendance, error) {
 	args := a.Called()
 	return args.Get(0).([]model.Attendance), args.Error(1)
 }

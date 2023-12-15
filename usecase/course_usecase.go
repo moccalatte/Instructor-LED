@@ -47,7 +47,7 @@ func (c *courseUseCase) FindCourseByID(id string) (model.Course, error) {
 
 func (c *courseUseCase) GetAllCourse() ([]model.Course, error) {
 	var courseSlice []model.Course
-	course, err := c.repo.FindAll()
+	course, err := c.repo.GetAll()
 	if err != nil {
 		return nil, fmt.Errorf("failed to get all data : %s", err.Error())
 	}
