@@ -86,7 +86,7 @@ func (a *AttendanceController) DeleteHandler(ctx *gin.Context) {
 func (a *AttendanceController) Route() {
 	a.rg.POST("/attendance", a.authMiddleware.RequireToken("trainer"), a.CreateHandler)
 	a.rg.GET("/attendance/:id", a.authMiddleware.RequireToken("trainer"), a.GetHandlerByID)
-	a.rg.GET("/attendance", a.GetHandlerAll)
+	a.rg.GET("/attendance", a.authMiddleware.RequireToken("trainer"), a.GetHandlerAll)
 	a.rg.PUT("/attendance/:id", a.authMiddleware.RequireToken("trainer"), a.UpdateHandler)
 	a.rg.DELETE("/attendance/:id", a.authMiddleware.RequireToken("trainer"), a.DeleteHandler)
 }

@@ -103,7 +103,7 @@ func (q *QuestionController) AnswerHandler(ctx *gin.Context) {
 func (q *QuestionController) Route() {
 	q.rg.POST("/question", q.authMiddleware.RequireToken("student"), q.CreateHandler)
 	q.rg.GET("/question/:id", q.authMiddleware.RequireToken("student", "trainer"), q.GetHandlerByID)
-	q.rg.GET("/question", q.GetHandlerAll)
+	q.rg.GET("/question", q.authMiddleware.RequireToken("student", "trainer"), q.GetHandlerAll)
 	q.rg.PUT("/question/:id", q.authMiddleware.RequireToken("student"), q.UpdateHandler)
 	q.rg.DELETE("/question/:id", q.authMiddleware.RequireToken("student"), q.DeleteHandler)
 	q.rg.PUT("/question-answer/:id", q.authMiddleware.RequireToken("trainer"), q.AnswerHandler)

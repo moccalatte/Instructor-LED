@@ -10,6 +10,7 @@ import (
 type QuestionUseCase interface {
 	AddQuestion(payload dto.QuestionRequestDto) (model.Question, error)
 	FindQuestionById(id string) (model.Question, error)
+	FindQuestionByStudentId(id string) (model.Question, error)
 	Update(payload dto.QuestionRequestDto, id string) (model.Question, error)
 	Delete(id string) (model.Question, error)
 	GetAllQuestion() ([]model.Question, error)
@@ -46,6 +47,15 @@ func (s *questionUseCase) FindQuestionById(id string) (model.Question, error) {
 
 	if err != nil {
 		return model.Question{}, fmt.Errorf("failed to get data by id : %s", err.Error())
+	}
+	return Question, nil
+}
+
+func (s *questionUseCase) FindQuestionByStudentId(id string) (model.Question, error) {
+	Question, err := s.repo.GetByStudentId(id)
+
+	if err != nil {
+		return model.Question{}, fmt.Errorf("failed to get data by id in question use case : %s", err.Error())
 	}
 	return Question, nil
 }

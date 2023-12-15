@@ -85,7 +85,12 @@ func (s *studentUseCase) UpdateStudent(payload dto.StudentRequestDto, id string)
 		Email:       payload.Email,
 		Password:    payload.Password,
 	}
+	newPassword, err := common.GeneratePasswordHash(payload.Password)
+	if err != nil {
+		return model.Student{}, err
+	}
 
+	newStudent.Password = newPassword
 	updatedStudent, err := s.repo.Update(newStudent, id)
 
 	if err != nil {

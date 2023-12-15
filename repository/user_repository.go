@@ -116,6 +116,7 @@ func (u *userRepository) Update(payload model.Users, id string) (model.Users, er
 
 	defer func() {
 		if err != nil {
+			fmt.Println("Error inserting user di repo : ", err)
 			tx.Rollback()
 		}
 	}()
@@ -139,7 +140,7 @@ func (u *userRepository) Update(payload model.Users, id string) (model.Users, er
 		&user.IsDeleted,
 	)
 	if err != nil {
-		fmt.Println("Error inserting user di repo : ", err)
+		fmt.Println("Error inserting user di repo : ", err.Error())
 		return model.Users{}, tx.Rollback()
 	}
 

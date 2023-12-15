@@ -81,6 +81,13 @@ func (u *userUseCase) UpdateUser(payload dto.UserRequestDto, id string) (model.U
 		Password: payload.Password,
 	}
 
+	newPassword, err := common.GeneratePasswordHash(payload.Password)
+	if err != nil {
+		return model.Users{}, err
+	}
+
+	newUser.Password = newPassword
+
 	updatedUser, err := u.repo.Update(newUser, id)
 
 	if err != nil {

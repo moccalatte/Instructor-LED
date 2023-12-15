@@ -10,6 +10,7 @@ import (
 type AttendanceUseCase interface {
 	AddAttendance(payload dto.AttendanceRequestDto) (model.Attendance, error)
 	FindAttendanceByID(id string) (model.Attendance, error)
+	FindAttendanceBySessionId(id string) (model.Attendance, error)
 	UpdateAttendance(payload dto.AttendanceRequestDto, id string) (model.Attendance, error)
 	Delete(id string) (model.Attendance, error)
 	GetAllAttendance() ([]model.Attendance, error)
@@ -38,6 +39,17 @@ func (c *attendanceUseCase) AddAttendance(payload dto.AttendanceRequestDto) (mod
 
 func (c *attendanceUseCase) FindAttendanceByID(id string) (model.Attendance, error) {
 	attendance, err := c.repo.GetById(id)
+
+	if err != nil {
+		return model.Attendance{}, fmt.Errorf("failed to find Attendance : %s", err.Error())
+	}
+
+	return attendance, nil
+}
+
+func (c *attendanceUseCase) FindAttendanceBySessionId(id string) (model.Attendance, error) {
+	// fmt.Print(id, "USECASEATTSESSION")
+	attendance, err := c.repo.GetBySessionId(id)
 
 	if err != nil {
 		return model.Attendance{}, fmt.Errorf("failed to find Attendance : %s", err.Error())

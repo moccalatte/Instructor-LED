@@ -70,6 +70,23 @@ func (s *SessionController) UpdateHandler(ctx *gin.Context) {
 	dto.SendSingleResponse(ctx, http.StatusOK, "Session Updated", updatedSession)
 }
 
+func (s *SessionController) UpdateNoteHandler(ctx *gin.Context) {
+	var payload dto.SessionRequestDto
+	if err := ctx.ShouldBindJSON(&payload); err != nil {
+		dto.SendSingleResponse(ctx, http.StatusBadRequest, err.Error(), nil)
+		return
+	}
+
+	sessionID := ctx.Param("id")
+	updatedSession, err := s.uc.UpdateNote(payload, sessionID)
+	if err != nil {
+		dto.SendSingleResponse(ctx, http.StatusInternalServerError, err.Error(), nil)
+		return
+	}
+
+	dto.SendSingleResponse(ctx, http.StatusOK, "Session Updated", updatedSession)
+}
+
 func (s *SessionController) DeleteHandler(ctx *gin.Context) {
 	sessionID := ctx.Param("id")
 
@@ -85,8 +102,9 @@ func (s *SessionController) DeleteHandler(ctx *gin.Context) {
 func (s *SessionController) Route() {
 	s.rg.POST("/session", s.authMiddleware.RequireToken("admin"), s.CreateHandler)
 	s.rg.GET("/session/:id", s.authMiddleware.RequireToken("admin", "trainer", "student"), s.GetHandlerByID)
-	s.rg.GET("/session", s.GetHandlerAll)
+	s.rg.GET("/session", s.authMiddleware.RequireToken("admin", "trainer", "student"), s.GetHandlerAll)
 	s.rg.PUT("/session/:id", s.authMiddleware.RequireToken("admin"), s.UpdateHandler)
+	s.rg.PUT("/session/note/:id", s.authMiddleware.RequireToken("trainer"), s.UpdateNoteHandler)
 	s.rg.DELETE("/session/:id", s.authMiddleware.RequireToken("admin"), s.DeleteHandler)
 }
 

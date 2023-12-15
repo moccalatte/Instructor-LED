@@ -10,6 +10,7 @@ type RepoManager interface {
 	Question() repository.QuestionRepository
 	Session() repository.SessionRepository
 	Attendance() repository.AttendanceRepository
+	CsvRepo() repository.CsvRepository
 }
 
 type repoManager struct {
@@ -42,6 +43,10 @@ func (r *repoManager) Session() repository.SessionRepository {
 
 func (r *repoManager) Attendance() repository.AttendanceRepository {
 	return repository.NewAttendanceRepository(r.infra.Conn())
+}
+
+func (r *repoManager) CsvRepo() repository.CsvRepository {
+	return repository.NewCsv(r.infra.Conn())
 }
 
 func NewRepoManager(infra InfraManager) RepoManager {

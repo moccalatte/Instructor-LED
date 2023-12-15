@@ -27,6 +27,10 @@ type LogFileConfig struct {
 	FilePath string
 }
 
+type CsvFileConfig struct {
+	FilePath string
+}
+
 type TokenConfig struct {
 	IssuerName      string
 	JwtSignatureKey []byte
@@ -37,6 +41,7 @@ type Config struct {
 	ApiConfig
 	DbConfig
 	LogFileConfig
+	CsvFileConfig
 	TokenConfig
 }
 
@@ -59,6 +64,7 @@ func (c *Config) readConfig() error {
 	}
 
 	c.LogFileConfig = LogFileConfig{FilePath: os.Getenv("LOG_FILE")}
+	c.CsvFileConfig = CsvFileConfig{FilePath: os.Getenv("CSV_FILE")}
 
 	tokenLifeTime, err := strconv.Atoi(os.Getenv("TOKEN_LIFE_TIME"))
 	if err != nil {

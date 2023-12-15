@@ -88,7 +88,7 @@ func (c *CourseController) DeleteHandler(ctx *gin.Context) {
 func (c *CourseController) Route() {
 	c.rg.POST("/course", c.authMiddleware.RequireToken("admin"), c.CreateHandler)
 	c.rg.GET("/course/:id", c.authMiddleware.RequireToken("admin", "trainer", "student"), c.GetHandlerByID)
-	c.rg.GET("/course", c.GetHandlerAll)
+	c.rg.GET("/course", c.authMiddleware.RequireToken("admin", "trainer", "student"), c.GetHandlerAll)
 	c.rg.PUT("/course/:id", c.authMiddleware.RequireToken("admin"), c.UpdateHandler)
 	c.rg.DELETE("/course/:id", c.authMiddleware.RequireToken("admin"), c.DeleteHandler)
 }

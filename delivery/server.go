@@ -18,6 +18,7 @@ type Server struct {
 	engine     *gin.Engine
 	host       string
 	logService common.MyLogger
+	csvService common.CvsCommon
 	auth       usecase.AuthUseCase
 	jwtService common.JwtToken
 }
@@ -34,6 +35,7 @@ func (s *Server) setupControllers() {
 	controller.NewCourseDetailController(s.uc.CourseDetailUseCase(), rg, authMiddleware).Route()
 	controller.NewSessionController(s.uc.SessionCaseUseCase(), rg, authMiddleware).Route()
 	controller.NewAttendanceController(s.uc.AttendanceUseCase(), rg, authMiddleware).Route()
+	controller.NewCsvController(s.uc.CsvCaseUseCase(s.csvService), rg).Route()
 }
 
 func (s *Server) Run() {
@@ -58,6 +60,7 @@ func NewServer() *Server {
 	}
 
 	repoManager := manager.NewRepoManager(infraManager)
+	cvsService := common.NewCsvCommon(cfg.CsvFileConfig)
 	useCaseManager := manager.NewUseCaseManager(repoManager)
 	engine := gin.Default()
 	host := fmt.Sprintf(":%s", cfg.ApiPort)
@@ -69,6 +72,7 @@ func NewServer() *Server {
 		engine:     engine,
 		host:       host,
 		logService: logService,
+		csvService: cvsService,
 		auth:       usecase.NewAuthUseCase(useCaseManager.UserUseCase(), useCaseManager.StudentUseCase(), jwtService),
 		jwtService: jwtService,
 	}

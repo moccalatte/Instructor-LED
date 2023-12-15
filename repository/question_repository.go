@@ -12,6 +12,7 @@ import (
 type QuestionRepository interface {
 	Create(payload model.Question) (model.Question, error)
 	GetById(id string) (model.Question, error)
+	GetByStudentId(id string) (model.Question, error)
 	Update(payload model.Question, id string) (model.Question, error)
 	Delete(id string) (model.Question, error)
 	GetAll() ([]model.Question, error)
@@ -85,6 +86,32 @@ func (q *questionRepository) GetById(id string) (model.Question, error) {
 	)
 
 	if err != nil {
+		return model.Question{}, err
+	}
+
+	return question, nil
+}
+
+func (q *questionRepository) GetByStudentId(id string) (model.Question, error) {
+	var question model.Question
+	err := q.db.QueryRow(common.GetQuestionByStudentId, id).Scan(
+		&question.QuestionID,
+		&question.SessionID,
+		&question.StudentID,
+		&question.TrainerID,
+		&question.Title,
+		&question.Description,
+		&question.CourseID,
+		&question.Image,
+		&question.Answer,
+		&question.Status,
+		&question.CreatedAt,
+		&question.UpdatedAt,
+		&question.IsDeleted,
+	)
+
+	if err != nil {
+		fmt.Println("Error in repo question ", err.Error())
 		return model.Question{}, err
 	}
 

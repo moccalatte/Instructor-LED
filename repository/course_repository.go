@@ -118,7 +118,7 @@ func (c *courseRepository) Update(payload model.Course, id string) (model.Course
 		payload.CourseName,
 		payload.Description,
 		time.Now(),
-		true,
+		false,
 		id).Scan(
 		&course.CourseID,
 		&course.CourseName,
