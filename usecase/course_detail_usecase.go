@@ -55,7 +55,7 @@ func (c *courseDetailUseCase) UpdateAttendance(payload dto.CourseDetailRequestDt
 	UpdateCourse, err := c.repo.Update(newCourse, id)
 
 	if err != nil {
-		return model.CourseDetail{}, fmt.Errorf("failed to Update Course : %s", err.Error())
+		return model.CourseDetail{}, fmt.Errorf("failed to Update Course Detail : %s", err.Error())
 	}
 
 	return UpdateCourse, nil

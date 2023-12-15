@@ -1,11 +1,13 @@
-package usecase
+package testingUsecase
 
 import (
 	"errors"
 	repomock "final-project-kelompok-1/mock/repo_mock"
 	"final-project-kelompok-1/model"
 	"final-project-kelompok-1/model/dto"
+	"final-project-kelompok-1/usecase"
 	"fmt"
+	"time"
 
 	"testing"
 
@@ -17,12 +19,12 @@ import (
 type UserUseCaseTestSuite struct {
 	suite.Suite
 	urm *repomock.UserRepoMock
-	uu  UserUseCase
+	uu  usecase.UserUseCase
 }
 
 func (suite *UserUseCaseTestSuite) SetupTest() {
 	suite.urm = new(repomock.UserRepoMock)
-	suite.uu = NewUserUseCase(suite.urm)
+	suite.uu = usecase.NewUserUseCase(suite.urm)
 }
 
 // func NewUserUseCase(userRepoMock *repomock.UserRepoMock) {
@@ -107,6 +109,41 @@ func (suite *UserUseCaseTestSuite) TestFindStudentByIDNegative() {
 	assert.Equal(suite.T(), model.Users{}, resultStudent)
 
 	suite.urm.AssertExpectations(suite.T())
+}
+
+func (suite *UserUseCaseTestSuite) TestGetAllUser_Success() {
+	expectedUsers := []model.Users{
+		{
+			UserID:    "1",
+			Fullname:  "John Doe",
+			Role:      "user",
+			Email:     "john.doe@example.com",
+			Password:  "hashed_password",
+			CreatedAt: time.Now(),
+			UpdatedAt: time.Now(),
+			IsDeleted: false,
+		},
+	}
+	suite.urm.On("FindAll").Return(expectedUsers, nil)
+
+	users, err := suite.uu.GetAllUser()
+
+	assert.NoError(suite.T(), err)
+	assert.Equal(suite.T(), expectedUsers, users)
+
+	suite.urm.AssertExpectations(suite.T())
+}
+
+func (suite *UserUseCaseTestSuite) TestGetAllUser_ErrorFromRepository() {
+	expectedErr := errors.New("repository error")
+	suite.urm.On("FindAll").Return([]model.Users{}, expectedErr)
+
+	users, err := suite.uu.GetAllUser()
+
+	assert.Error(suite.T(), err)
+	assert.EqualError(suite.T(), err, fmt.Sprintf("failed to find all data : %s", expectedErr.Error()))
+	assert.Nil(suite.T(), users)
+
 }
 
 func (suite *UserUseCaseTestSuite) TestUpdateStudentSuccess() {

@@ -48,7 +48,7 @@ func (u *userUseCase) FindUserByID(id string) (model.Users, error) {
 
 	if err != nil {
 		fmt.Println("Error inserting user di usecafe : ", err)
-		return model.Users{}, fmt.Errorf("failed to find data : %s", err.Error())
+		return model.Users{}, fmt.Errorf("failed to get User data : %s", err.Error())
 	}
 
 	return userWithId, nil
@@ -61,9 +61,6 @@ func (u *userUseCase) GetAllUser() ([]model.Users, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to find all data : %s", err.Error())
 	}
-	// for _, data := range userData {
-	// 	sliceUser = append(sliceUser, data)
-	// }
 	return append(sliceUser, userData...), nil
 
 }

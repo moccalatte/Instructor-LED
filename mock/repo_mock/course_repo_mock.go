@@ -20,6 +20,11 @@ func (s *CourseRepoMock) GetById(id string) (model.Course, error) {
 	return args.Get(0).(model.Course), args.Error(1)
 }
 
+func (u *CourseRepoMock) FindAll() ([]model.Course, error) {
+	args := u.Called()
+	return args.Get(0).([]model.Course), args.Error(1)
+}
+
 func (s *CourseRepoMock) Update(payload model.Course, id string) (model.Course, error) {
 	args := s.Called(payload, id)
 	return args.Get(0).(model.Course), args.Error(1)
@@ -27,5 +32,6 @@ func (s *CourseRepoMock) Update(payload model.Course, id string) (model.Course, 
 
 func (s *CourseRepoMock) Delete(id string) (model.Course, error) {
 	args := s.Called(id)
+
 	return args.Get(0).(model.Course), args.Error(1)
 }

@@ -1,10 +1,11 @@
-package usecase
+package testingUsecase
 
 import (
 	"errors"
 	repomock "final-project-kelompok-1/mock/repo_mock"
 	"final-project-kelompok-1/model"
 	"final-project-kelompok-1/model/dto"
+	"final-project-kelompok-1/usecase"
 	"fmt"
 
 	"testing"
@@ -17,12 +18,12 @@ import (
 type StudentUseCaseTestSuite struct {
 	suite.Suite
 	srm *repomock.StudentRepoMock
-	su  StudentUseCase
+	su  usecase.StudentUseCase
 }
 
 func (suite *StudentUseCaseTestSuite) SetupTest() {
 	suite.srm = new(repomock.StudentRepoMock)
-	suite.su = NewStudentUseCase(suite.srm)
+	suite.su = usecase.NewStudentUseCase(suite.srm)
 }
 
 func TestStudentUseCaseTestSuite(t *testing.T) {
@@ -122,6 +123,50 @@ func (suite *StudentUseCaseTestSuite) TestFindStudentByIDNegative() {
 	assert.Error(suite.T(), err)
 	assert.Equal(suite.T(), model.Student{}, resultStudent)
 
+	suite.srm.AssertExpectations(suite.T())
+}
+
+func (suite *StudentUseCaseTestSuite) TestGetAllStudent_Success() {
+	// Mock repository response
+	expectedStudents := []model.Student{
+		{
+			StudentID:   "1",
+			Fullname:    "John Doe",
+			BirthDate:   "2000-01-01",
+			BirthPlace:  "City",
+			Address:     "Street 123",
+			Education:   "Bachelor",
+			Institution: "University",
+			Job:         "Developer",
+			Email:       "john.doe@example.com",
+			Password:    "hashed_password",
+		},
+	}
+	suite.srm.On("FindAll").Return(expectedStudents, nil)
+
+	// Call the method being tested
+	students, err := suite.su.GetAllStudent()
+
+	// Assertions
+	assert.NoError(suite.T(), err)
+	assert.Equal(suite.T(), expectedStudents, students)
+
+	// Assert that the expected method was called
+	suite.srm.AssertExpectations(suite.T())
+}
+
+func (suite *StudentUseCaseTestSuite) TestGetAllStudent_ErrorFromRepository() {
+	// Mock repository response with an error
+	suite.srm.On("FindAll").Return([]model.Student{}, errors.New("repository error"))
+
+	// Call the method being tested
+	students, err := suite.su.GetAllStudent()
+
+	// Assertions
+	assert.Error(suite.T(), err)
+	assert.Empty(suite.T(), students)
+
+	// Assert that the expected method was called
 	suite.srm.AssertExpectations(suite.T())
 }
 

@@ -20,6 +20,10 @@ func (u *UserRepoMock) GetById(id string) (model.Users, error) {
 	return args.Get(0).(model.Users), args.Error(1)
 }
 
+func (u *UserRepoMock) FindAll() ([]model.Users, error) {
+	args := u.Called()
+	return args.Get(0).([]model.Users), args.Error(1)
+}
 func (u *UserRepoMock) Update(payload model.Users, id string) (model.Users, error) {
 	args := u.Called(payload, id)
 	return args.Get(0).(model.Users), args.Error(1)
@@ -31,7 +35,7 @@ func (u *UserRepoMock) Delete(id string) (model.Users, error) {
 }
 
 func (u *UserRepoMock) GetByUsername(username string) (model.Users, error) {
-		args := u.Called(username)
-		return args.Get(0).(model.Users), args.Error(1)
-	
+	args := u.Called(username)
+	return args.Get(0).(model.Users), args.Error(1)
+
 }

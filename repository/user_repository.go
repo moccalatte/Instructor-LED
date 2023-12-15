@@ -34,6 +34,7 @@ func (u *userRepository) Create(payload model.Users) (model.Users, error) {
 		payload.Email,
 		payload.Password,
 		time.Now(),
+		time.Now(),
 		false,
 	).Scan(
 		&user.UserID,
@@ -45,10 +46,9 @@ func (u *userRepository) Create(payload model.Users) (model.Users, error) {
 		&user.UpdatedAt,
 		&user.IsDeleted,
 	)
-	fmt.Print(err, "USER REPO")
 
 	if err != nil {
-		fmt.Println("Error di Repo user : ", err)
+		fmt.Println("Error Repo user : ", err)
 		return model.Users{}, tx.Rollback()
 	}
 
@@ -107,6 +107,7 @@ func (u *userRepository) Update(payload model.Users, id string) (model.Users, er
 		&user.UpdatedAt,
 		&user.IsDeleted,
 	)
+	fmt.Print(err)
 	if err != nil {
 		fmt.Println("Error inserting user di repo : ", err)
 		return model.Users{}, tx.Rollback()

@@ -10,6 +10,7 @@ import (
 type SessionUseCase interface {
 	AddSession(payload dto.SessionRequestDto) (model.Session, error)
 	FindSessionById(id string) (model.Session, error)
+	GetAllSession() ([]model.Session, error)
 	Update(payload dto.SessionRequestDto, id string) (model.Session, error)
 	Delete(id string) (model.Session, error)
 }
@@ -40,7 +41,7 @@ func (s *sessionUseCase) FindSessionById(id string) (model.Session, error) {
 	session, err := s.repo.GetById(id)
 
 	if err != nil {
-		return model.Session{}, fmt.Errorf("failed to get data by id : %s", err.Error())
+		return model.Session{}, fmt.Errorf("failed to get data session by id : %s", err.Error())
 	}
 	return session, nil
 }
@@ -67,7 +68,7 @@ func (s *sessionUseCase) Update(payload dto.SessionRequestDto, id string) (model
 	session, err := s.repo.Update(sessions, id)
 
 	if err != nil {
-		return model.Session{}, fmt.Errorf("failed to update data : %s", err.Error())
+		return model.Session{}, fmt.Errorf("failed to Update Session : %s", err.Error())
 	}
 
 	return session, nil

@@ -20,6 +20,11 @@ func (s *StudentRepoMock) GetById(id string) (model.Student, error) {
 	return args.Get(0).(model.Student), args.Error(1)
 }
 
+func (s *StudentRepoMock) FindAll() ([]model.Student, error) {
+	args := s.Called()
+	return args.Get(0).([]model.Student), args.Error(1)
+}
+
 func (s *StudentRepoMock) Update(payload model.Student, id string) (model.Student, error) {
 	args := s.Called(payload, id)
 	return args.Get(0).(model.Student), args.Error(1)

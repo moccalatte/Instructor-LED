@@ -4,7 +4,7 @@ const (
 	CreateUser = `insert into users(fullname,role,email,password, updated_at, is_deleted) 
 	values ($1,$2,$3,$4,$5,$6) returning user_id, fullname, role, email, password, created_at, updated_at, is_deleted;`
 
-	GetUserById = `select * from users where user_id = $1 returning user_id, fullname, role, email, password, created_at, updated_at, is_deleted;`
+	GetUserById = `select * from users where user_id = $1;`
 
 	GetAllDataU = `select * from users where is_deleted = $1;`
 

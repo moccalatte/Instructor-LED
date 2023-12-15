@@ -10,6 +10,7 @@ import (
 type CourseUseCase interface {
 	AddCourse(payload dto.CourseRequestDto) (model.Course, error)
 	FindCourseByID(id string) (model.Course, error)
+	GetAllCourse() ([]model.Course, error)
 	UpdateCourse(payload dto.CourseRequestDto, id string) (model.Course, error)
 	DeleteCourse(id string) (model.Course, error)
 }

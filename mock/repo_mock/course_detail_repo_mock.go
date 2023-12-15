@@ -27,5 +27,6 @@ func (s *CourseDetailRepoMock) Update(payload model.CourseDetail, id string) (mo
 
 func (s *CourseDetailRepoMock) Delete(id string) (model.CourseDetail, error) {
 	args := s.Called(id)
+
 	return args.Get(0).(model.CourseDetail), args.Error(1)
 }
