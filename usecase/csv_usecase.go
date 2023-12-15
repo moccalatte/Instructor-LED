@@ -42,7 +42,7 @@ func (c *csvUseCase) WriteCsv() ([]string, error) {
 			fmt.Println(err.Error())
 			continue
 		}
-		attandance, err := c.at.FindAttendanceByID(dataSession.SessionID)
+		attandance, err := c.at.FindAttendanceBySessionId(dataSession.SessionID)
 		if err != nil {
 			fmt.Println(err.Error())
 			continue

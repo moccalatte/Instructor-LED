@@ -55,7 +55,7 @@ func (s *questionUseCase) FindQuestionByStudentId(id string) (model.Question, er
 	Question, err := s.repo.GetByStudentId(id)
 
 	if err != nil {
-		return model.Question{}, fmt.Errorf("failed to get data by id in question use case : %s", err.Error())
+		return model.Question{}, fmt.Errorf("failed to get data by id in question use case student id : %s", err.Error())
 	}
 	return Question, nil
 }

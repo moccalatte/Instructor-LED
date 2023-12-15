@@ -84,13 +84,12 @@ func (s *studentRepository) GetById(id string) (model.Student, error) {
 		&student.Job,
 		&student.Email,
 		&student.Password,
-		&student.Role,
 		&student.CreatedAt,
 		&student.UpdatedAt,
 		&student.IsDeleted,
+		&student.Role,
 	)
 	if err != nil {
-		fmt.Println("Error in Repi student : ", err.Error())
 		return model.Student{}, err
 	}
 	return student, nil
@@ -154,6 +153,7 @@ func (s *studentRepository) Update(payload model.Student, id string) (model.Stud
 		payload.Password,
 		time.Now(),
 		false,
+		"student",
 		id).Scan(
 		&student.StudentID,
 		&student.Fullname,
@@ -168,6 +168,7 @@ func (s *studentRepository) Update(payload model.Student, id string) (model.Stud
 		&student.CreatedAt,
 		&student.UpdatedAt,
 		&student.IsDeleted,
+		&student.Role,
 	)
 	if err != nil {
 		return model.Student{}, tx.Rollback()

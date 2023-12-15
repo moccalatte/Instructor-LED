@@ -69,7 +69,7 @@ func (a *attendanceRepository) GetById(id string) (model.Attendance, error) {
 		&attendance.IsDeleted,
 	)
 	if err != nil {
-		fmt.Println("Error attendance in repo : ", err.Error())
+		fmt.Println(" Error attendance in repo getbyid: ", err.Error())
 		return model.Attendance{}, err
 	}
 	return attendance, nil
@@ -88,7 +88,7 @@ func (a *attendanceRepository) GetBySessionId(id string) (model.Attendance, erro
 		&attendance.IsDeleted,
 	)
 	if err != nil {
-		fmt.Println("Error in repo attendance : ", err.Error())
+		fmt.Println("Error in repo getbysessioid : ", err.Error())
 		return model.Attendance{}, err
 	}
 	return attendance, nil
