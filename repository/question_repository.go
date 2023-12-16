@@ -4,7 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 	"time"
-
+	"encoding/base64"
+    "os"
 	"final-project-kelompok-1/model"
 	"final-project-kelompok-1/utils/common"
 )
@@ -17,6 +18,7 @@ type QuestionRepository interface {
 	Delete(id string) (model.Question, error)
 	GetAll() ([]model.Question, error)
 	Answer(payload model.Question, id string) (model.Question, error)
+	GetImagePath(questionID string) (string, error)
 }
 type questionRepository struct {
 	db *sql.DB
@@ -59,6 +61,13 @@ func (q *questionRepository) Create(payload model.Question) (model.Question, err
 	if err != nil {
 		return model.Question{}, tx.Rollback()
 	}
+
+	// Simpan gambar dan atur path di struct Question
+    imageFilePath, err := saveImage(payload.Image)
+    if err != nil {
+        return model.Question{}, tx.Rollback()
+    }
+    payload.ImagePath = imageFilePath
 
 	if err := tx.Commit(); err != nil {
 		return model.Question{}, err
@@ -290,6 +299,46 @@ func (q *questionRepository) Answer(payload model.Question, id string) (model.Qu
 
 	return question, nil
 
+}
+
+func saveImage(imageData string) (string, error) {
+    // Decode data gambar dari base64
+    data, err := base64.StdEncoding.DecodeString(imageData)
+    if err != nil {
+        return "", err
+    }
+
+    // Generate nama unik untuk file gambar
+    fileName := generateUniqueFileName()
+
+    // Path untuk menyimpan gambar (sesuaikan dengan kebutuhan Anda)
+    imagePath := "uploads/" + fileName
+
+    // Simpan file gambar ke sistem penyimpanan (filesystem)
+    err = os.WriteFile(imagePath, data, 0644)
+    if err != nil {
+        return "", err
+    }
+
+    // Return path relatif dari root folder proyek
+    return imagePath, nil
+}
+
+// Fungsi helper untuk menghasilkan nama unik file
+func generateUniqueFileName() string {
+    timestamp := time.Now().UnixNano() / int64(time.Millisecond)
+    return fmt.Sprintf("image_%d.png", timestamp)
+}
+
+// Implementasi metode GetImagePath pada questionRepository
+func (q *questionRepository) GetImagePath(questionID string) (string, error) {
+    var imagePath string
+    err := q.db.QueryRow(common.GetImagePathById, questionID).Scan(&imagePath)
+    if err != nil {
+        return "", err
+    }
+
+    return imagePath, nil
 }
 
 func NewQuestionRepository(db *sql.DB) QuestionRepository {

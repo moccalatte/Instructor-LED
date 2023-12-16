@@ -15,6 +15,7 @@ type QuestionUseCase interface {
 	Update(payload dto.QuestionRequestDto, id string) (model.Question, error)
 	Delete(id string) (model.Question, error)
 	Answer(payload dto.QuestionRequestDto, id string) (model.Question, error)
+	GetImagePath(questionID string) (string, error)
 }
 
 type questionUseCase struct {
@@ -32,6 +33,7 @@ func (s *questionUseCase) AddQuestion(payload dto.QuestionRequestDto) (model.Que
 		Image:       payload.Image,
 		Answer:      payload.Answer,
 		Status:      payload.Status,
+		ImagePath: payload.ImagePath,
 	}
 
 	createsQuestion, err := s.repo.Create(newSession)
@@ -100,6 +102,7 @@ func (s *questionUseCase) Update(payload dto.QuestionRequestDto, id string) (mod
 		Image:       payload.Image,
 		Answer:      payload.Answer,
 		Status:      payload.Status,
+		
 	}
 
 	question, err := s.repo.Update(question, id)
@@ -133,6 +136,19 @@ func (s *questionUseCase) Answer(payload dto.QuestionRequestDto, id string) (mod
 
 	return answered, nil
 
+}
+
+func (q *questionUseCase) GetImagePath(questionID string) (string, error) {
+    // Logika untuk mendapatkan path gambar dari repository
+    question, err := q.repo.GetById(questionID)
+    if err != nil {
+        return "", fmt.Errorf("failed to get question: %s", err.Error())
+    }
+
+    // Menggunakan path gambar dari model.Question
+    imagePath := question.Image
+
+    return imagePath, nil
 }
 
 func NewQuestion(repo repository.QuestionRepository) QuestionUseCase {

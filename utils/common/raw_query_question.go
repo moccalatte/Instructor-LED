@@ -12,4 +12,9 @@ const (
 	DeleteQuestionById = `update question set is_deleted = $1 where question_id = $2 returning question_id, session_id, student_id, trainer_id, title, description, course_id, image, answer, status, created_at, updated_at, is_deleted;`
 
 	AnswerQuestionById = `update question set answer = $1, updated_at = $2 where question_id = $3 returning question_id, session_id, student_id, trainer_id, title, description, course_id, image, answer, status, created_at, updated_at, is_deleted;`
+
+	GetImagePathById = `
+    SELECT image FROM questions
+    WHERE question_id = $1
+`
 )

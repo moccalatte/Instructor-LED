@@ -11,4 +11,5 @@ type QuestionRequestDto struct {
 	Answer      string `json:"answer"`
 	Status      string `json:"status"`
 	IsDeleted   bool   `json:"is_deleted"`
+	ImagePath string `json:"image_path"`
 }
