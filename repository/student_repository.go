@@ -39,6 +39,7 @@ func (s *studentRepository) Create(payload model.Student) (model.Student, error)
 		payload.Email,
 		payload.Password,
 		time.Now(),
+		time.Now(),
 		"student",
 		false).Scan(
 		&student.StudentID,

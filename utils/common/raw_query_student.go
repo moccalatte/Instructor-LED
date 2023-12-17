@@ -1,7 +1,7 @@
 package common
 
 const (
-	CreateStudent = `insert into student (fullname, birth_date, birth_place, address, education, institution, job, email, password, updated_at, is_deleted, role) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) returning student_id, fullname, birth_date, birth_place, address, education, institution, job, email, password, created_at, updated_at,is_deleted, role;`
+	CreateStudent = `insert into student (fullname, birth_date, birth_place, address, education, institution, job, email, password, created_at, updated_at, is_deleted, role) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) returning student_id, fullname, birth_date, birth_place, address, education, institution, job, email, password, created_at, updated_at,is_deleted, role;`
 
 	GetStudentByid    = `SELECT * FROM student WHERE student_id = $1;`
 	GetAllDataStd     = `select * from student where is_deleted = $1;`
