@@ -97,7 +97,7 @@ func (s *studentRepository) GetById(id string) (model.Student, error) {
 func (s *studentRepository) GetAll() ([]model.Student, error) {
 	var students []model.Student
 
-	rows, err := s.db.Query(common.GetAllDataStd)
+	rows, err := s.db.Query(common.GetAllStudent)
 
 	if err != nil {
 		return students, err
@@ -170,6 +170,7 @@ func (s *studentRepository) Update(payload model.Student, id string) (model.Stud
 		&student.Role,
 	)
 	if err != nil {
+		fmt.Println("Error in repo student update : ", err.Error())
 		return model.Student{}, tx.Rollback()
 	}
 

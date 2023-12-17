@@ -45,6 +45,9 @@ type Config struct {
 	TokenConfig
 }
 
+const BaseURL = "http://localhost:8080"
+const ImageUploadDirectory = "./uploads"
+
 func (c *Config) readConfig() error {
 	if err := godotenv.Load(); err != nil {
 		panic("Error loading .env file")

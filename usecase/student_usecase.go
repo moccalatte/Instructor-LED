@@ -72,8 +72,7 @@ func (s *studentUseCase) GetAllStudent() ([]model.Student, error) {
 
 func (s *studentUseCase) UpdateStudent(payload dto.StudentRequestDto, id string) (model.Student, error) {
 	newStudent := model.Student{
-		Fullname: payload.Fullname,
-
+		Fullname:    payload.Fullname,
 		BirthDate:   payload.BirthDate,
 		BirthPlace:  payload.BirthPlace,
 		Address:     payload.Address,
@@ -85,6 +84,7 @@ func (s *studentUseCase) UpdateStudent(payload dto.StudentRequestDto, id string)
 	}
 	newPassword, err := common.GeneratePasswordHash(payload.Password)
 	if err != nil {
+		fmt.Println("Error for generate password : ", err.Error())
 		return model.Student{}, err
 	}
 
