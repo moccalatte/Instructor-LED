@@ -1,11 +1,10 @@
-package testingUsecase
+package usecase
 
 import (
 	"errors"
 	repomock "final-project-kelompok-1/mock/repo_mock"
 	"final-project-kelompok-1/model"
 	"final-project-kelompok-1/model/dto"
-	"final-project-kelompok-1/usecase"
 	"fmt"
 
 	"testing"
@@ -18,12 +17,12 @@ import (
 type StudentUseCaseTestSuite struct {
 	suite.Suite
 	srm *repomock.StudentRepoMock
-	su  usecase.StudentUseCase
+	su  StudentUseCase
 }
 
 func (suite *StudentUseCaseTestSuite) SetupTest() {
 	suite.srm = new(repomock.StudentRepoMock)
-	suite.su = usecase.NewStudentUseCase(suite.srm)
+	suite.su = NewStudentUseCase(suite.srm)
 }
 
 func TestStudentUseCaseTestSuite(t *testing.T) {

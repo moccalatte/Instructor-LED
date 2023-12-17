@@ -1,11 +1,10 @@
-package testingUsecase
+package usecase
 
 import (
 	"errors"
 	repomock "final-project-kelompok-1/mock/repo_mock"
 	"final-project-kelompok-1/model"
 	"final-project-kelompok-1/model/dto"
-	"final-project-kelompok-1/usecase"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -16,12 +15,12 @@ import (
 type QuestionUseCaseTestSuite struct {
 	suite.Suite
 	qrm *repomock.QuestionRepoMock
-	qu  usecase.QuestionUseCase
+	qu  QuestionUseCase
 }
 
 func (suite *QuestionUseCaseTestSuite) SetupTest() {
 	suite.qrm = new(repomock.QuestionRepoMock)
-	suite.qu = usecase.NewQuestion(suite.qrm)
+	suite.qu = NewQuestion(suite.qrm)
 }
 
 func TestQuestionUseCaseTestSuite(t *testing.T) {
@@ -123,36 +122,6 @@ func (suite *QuestionUseCaseTestSuite) TestFindQuestionByIdError() {
 	suite.qrm.AssertExpectations(suite.T())
 }
 
-func (suite *QuestionUseCaseTestSuite) TestGetAllQuestion_Success() {
-	expectedQuestions := []model.Question{
-		{
-			QuestionID: "1",
-			SessionID:  "1",
-			StudentID:  "1",
-			TrainerID:  "1",
-		},
-	}
-	suite.qrm.On("GetAll").Return(expectedQuestions, nil)
-
-	questions, err := suite.qu.GetAllQuestion()
-
-	assert.NoError(suite.T(), err)
-	assert.Equal(suite.T(), expectedQuestions, questions)
-
-	suite.qrm.AssertExpectations(suite.T())
-}
-
-func (suite *QuestionUseCaseTestSuite) TestGetAllQuestion_ErrorFromRepository() {
-	suite.qrm.On("GetAll").Return([]model.Question{}, errors.New("repository error"))
-
-	questions, err := suite.qu.GetAllQuestion()
-
-	assert.Error(suite.T(), err)
-	assert.Empty(suite.T(), questions)
-
-	suite.qrm.AssertExpectations(suite.T())
-}
-
 func (suite *QuestionUseCaseTestSuite) TestFindQuestionByStudentIdSuccess() {
 	targetID := "some-id"
 
@@ -187,6 +156,36 @@ func (suite *QuestionUseCaseTestSuite) TestFindQuestionByStudentIdError() {
 
 	assert.Error(suite.T(), err)
 	assert.Equal(suite.T(), model.Question{}, resultQuestion)
+	suite.qrm.AssertExpectations(suite.T())
+}
+
+func (suite *QuestionUseCaseTestSuite) TestGetAllQuestion_Success() {
+	expectedQuestions := []model.Question{
+		{
+			QuestionID: "1",
+			SessionID:  "1",
+			StudentID:  "1",
+			TrainerID:  "1",
+		},
+	}
+	suite.qrm.On("GetAll").Return(expectedQuestions, nil)
+
+	questions, err := suite.qu.GetAllQuestion()
+
+	assert.NoError(suite.T(), err)
+	assert.Equal(suite.T(), expectedQuestions, questions)
+
+	suite.qrm.AssertExpectations(suite.T())
+}
+
+func (suite *QuestionUseCaseTestSuite) TestGetAllQuestion_ErrorFromRepository() {
+	suite.qrm.On("GetAll").Return([]model.Question{}, errors.New("repository error"))
+
+	questions, err := suite.qu.GetAllQuestion()
+
+	assert.Error(suite.T(), err)
+	assert.Empty(suite.T(), questions)
+
 	suite.qrm.AssertExpectations(suite.T())
 }
 

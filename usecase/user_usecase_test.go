@@ -1,11 +1,11 @@
-package testingUsecase
+package usecase
 
 import (
 	"errors"
 	repomock "final-project-kelompok-1/mock/repo_mock"
 	"final-project-kelompok-1/model"
 	"final-project-kelompok-1/model/dto"
-	"final-project-kelompok-1/usecase"
+
 	"fmt"
 	"time"
 
@@ -19,12 +19,12 @@ import (
 type UserUseCaseTestSuite struct {
 	suite.Suite
 	urm *repomock.UserRepoMock
-	uu  usecase.UserUseCase
+	uu  UserUseCase
 }
 
 func (suite *UserUseCaseTestSuite) SetupTest() {
 	suite.urm = new(repomock.UserRepoMock)
-	suite.uu = usecase.NewUserUseCase(suite.urm)
+	suite.uu = NewUserUseCase(suite.urm)
 }
 
 // func NewUserUseCase(userRepoMock *repomock.UserRepoMock) {
@@ -227,4 +227,45 @@ func (suite *UserUseCaseTestSuite) TestDeleteStudentNegative() {
 	assert.Equal(suite.T(), model.Users{}, resultUser)
 
 	suite.urm.AssertExpectations(suite.T())
+}
+
+func (suite *UserUseCaseTestSuite) TestRegisterNewUser_Success() {
+	payload := dto.UserRequestDto{
+		Fullname: "yanto",
+		Role:     "Admin",
+		Email:    "yanto@gmail.com",
+		Password: "12345",
+	}
+
+	expectedUser := model.Users{
+		Fullname: payload.Fullname,
+		Role:     payload.Role,
+		Email:    payload.Email,
+		Password: payload.Password,
+	}
+
+	suite.urm.On("Create", mock.AnythingOfType("model.Users")).Return(expectedUser, nil)
+
+	createdUser, err := suite.uu.AddUser(payload)
+	assert.NoError(suite.T(), err)
+	assert.Equal(suite.T(), expectedUser, createdUser)
+	suite.urm.AssertExpectations(suite.T())
+}
+
+func (suite *UserUseCaseTestSuite) TestRegisterNewUser_InvalidRole() {
+	invalidPayload := model.Users{
+		Fullname: "yanto",
+		Role:     "Admin",
+		Email:    "yanto@gmail.com",
+		Password: "12345",
+	}
+
+	suite.urm.On("Create", mock.AnythingOfType("model.Users")).Return(model.Users{}, fmt.Errorf("Create should not be called")).Once()
+
+	createdUser, err := suite.uu.RegisterNewUser(invalidPayload)
+
+	assert.Error(suite.T(), err)
+	assert.Equal(suite.T(), model.Users{}, createdUser)
+
+	// suite.urm.AssertExpectations(suite.T())
 }

@@ -1,11 +1,10 @@
-package testingUsecase
+package usecase
 
 import (
 	"errors"
 	repomock "final-project-kelompok-1/mock/repo_mock"
 	"final-project-kelompok-1/model"
 	"final-project-kelompok-1/model/dto"
-	"final-project-kelompok-1/usecase"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -16,12 +15,12 @@ import (
 type CourseDetailUseCaseTestSuite struct {
 	suite.Suite
 	cdrm *repomock.CourseDetailRepoMock
-	cdu  usecase.CourseDetailUseCase
+	cdu  CourseDetailUseCase
 }
 
 func (suite *CourseDetailUseCaseTestSuite) SetupTest() {
 	suite.cdrm = new(repomock.CourseDetailRepoMock)
-	suite.cdu = usecase.NewCourseDetailUseCase(suite.cdrm)
+	suite.cdu = NewCourseDetailUseCase(suite.cdrm)
 }
 
 func TestCourseDetailUseCaseTestSuite(t *testing.T) {

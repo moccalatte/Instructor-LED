@@ -1,11 +1,10 @@
-package testingUsecase
+package usecase
 
 import (
 	"errors"
 	repomock "final-project-kelompok-1/mock/repo_mock"
 	"final-project-kelompok-1/model"
 	"final-project-kelompok-1/model/dto"
-	"final-project-kelompok-1/usecase"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -16,12 +15,12 @@ import (
 type AttendanceUseCaseTestSuite struct {
 	suite.Suite
 	arm *repomock.AttendanceRepoMock
-	au  usecase.AttendanceUseCase
+	au  AttendanceUseCase
 }
 
 func (suite *AttendanceUseCaseTestSuite) SetupTest() {
 	suite.arm = new(repomock.AttendanceRepoMock)
-	suite.au = usecase.NewAttendanceUseCase(suite.arm)
+	suite.au = NewAttendanceUseCase(suite.arm)
 }
 
 func TestAttendanceUseCaseTestSuite(t *testing.T) {
@@ -93,6 +92,37 @@ func (suite *AttendanceUseCaseTestSuite) TestFindAttendanceByIDError() {
 	suite.arm.On("GetById", invalidID).Return(model.Attendance{}, expectedError)
 
 	resultAttendance, err := suite.au.FindAttendanceByID(invalidID)
+
+	assert.Error(suite.T(), err)
+	assert.Equal(suite.T(), model.Attendance{}, resultAttendance)
+	suite.arm.AssertExpectations(suite.T())
+}
+
+func (suite *AttendanceUseCaseTestSuite) TestFindAttendanceBySessionIDSuccess() {
+	targetID := "some-id"
+
+	expectedAttendance := model.Attendance{
+		SessionID:         "session-1",
+		StudentID:         "student-1",
+		AttendanceStudent: true,
+	}
+
+	suite.arm.On("GetBySessionId", targetID).Return(expectedAttendance, nil)
+
+	resultAttendance, err := suite.au.FindAttendanceBySessionId(targetID)
+
+	assert.NoError(suite.T(), err)
+	assert.Equal(suite.T(), expectedAttendance, resultAttendance)
+	suite.arm.AssertExpectations(suite.T())
+}
+
+func (suite *AttendanceUseCaseTestSuite) TestFindAttendanceBySessionIDError() {
+	invalidID := "non-existent-id"
+
+	expectedError := errors.New("data not found")
+	suite.arm.On("GetBySessionId", invalidID).Return(model.Attendance{}, expectedError)
+
+	resultAttendance, err := suite.au.FindAttendanceBySessionId(invalidID)
 
 	assert.Error(suite.T(), err)
 	assert.Equal(suite.T(), model.Attendance{}, resultAttendance)

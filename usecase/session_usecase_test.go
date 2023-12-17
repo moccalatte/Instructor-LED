@@ -1,11 +1,10 @@
-package testingUsecase
+package usecase
 
 import (
 	"errors"
 	repomock "final-project-kelompok-1/mock/repo_mock"
 	"final-project-kelompok-1/model"
 	"final-project-kelompok-1/model/dto"
-	"final-project-kelompok-1/usecase"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -16,12 +15,12 @@ import (
 type SessionUseCaseTestSuite struct {
 	suite.Suite
 	srm *repomock.SessionRepoMock
-	su  usecase.SessionUseCase
+	su  SessionUseCase
 }
 
 func (suite *SessionUseCaseTestSuite) SetupTest() {
 	suite.srm = new(repomock.SessionRepoMock)
-	suite.su = usecase.NewSession(suite.srm)
+	suite.su = NewSession(suite.srm)
 }
 
 func TestSessionUseCaseTestSuite(t *testing.T) {
@@ -190,6 +189,43 @@ func (suite *SessionUseCaseTestSuite) TestUpdateSessionError() {
 	suite.srm.On("Update", mock.AnythingOfType("model.Session"), targetID).Return(model.Session{}, expectedError)
 
 	_, err := suite.su.Update(updatePayload, targetID)
+
+	assert.Error(suite.T(), err)
+	assert.EqualError(suite.T(), err, "failed to Update Session : failed update data by id : SomeError")
+	suite.srm.AssertExpectations(suite.T())
+}
+
+func (suite *SessionUseCaseTestSuite) TestUpdateSessionNoteSuccess() {
+	targetID := "some-id"
+
+	updatePayload := dto.SessionRequestDto{
+		Note: "mwehehehehehe",
+	}
+
+	updatedSession := model.Session{
+		Note: updatePayload.Note,
+	}
+
+	suite.srm.On("UpdateNote", mock.AnythingOfType("model.Session"), targetID).Return(updatedSession, nil)
+
+	resultSession, err := suite.su.UpdateNote(updatePayload, targetID)
+
+	assert.NoError(suite.T(), err)
+	assert.Equal(suite.T(), updatedSession, resultSession)
+	suite.srm.AssertExpectations(suite.T())
+}
+
+func (suite *SessionUseCaseTestSuite) TestUpdateSessionNoteError() {
+	targetID := "some-id"
+
+	updatePayload := dto.SessionRequestDto{
+		Note: "jjjjjjjjjjj",
+	}
+
+	expectedError := errors.New("failed update data by id : SomeError")
+	suite.srm.On("UpdateNote", mock.AnythingOfType("model.Session"), targetID).Return(model.Session{}, expectedError)
+
+	_, err := suite.su.UpdateNote(updatePayload, targetID)
 
 	assert.Error(suite.T(), err)
 	assert.EqualError(suite.T(), err, "failed to Update Session : failed update data by id : SomeError")

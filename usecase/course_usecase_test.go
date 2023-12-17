@@ -1,11 +1,10 @@
-package testingUsecase
+package usecase
 
 import (
 	"errors"
 	repomock "final-project-kelompok-1/mock/repo_mock"
 	"final-project-kelompok-1/model"
 	"final-project-kelompok-1/model/dto"
-	"final-project-kelompok-1/usecase"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -16,17 +15,17 @@ import (
 type CourseUseCaseTestSuite struct {
 	suite.Suite
 	crm *repomock.CourseRepoMock
-	cu  usecase.CourseUseCase
+	cu  CourseUseCase
 }
 
 func (suite *CourseUseCaseTestSuite) SetupTest() {
 	suite.crm = new(repomock.CourseRepoMock)
-	suite.cu = usecase.NewCourseUseCase(suite.crm)
+	suite.cu = NewCourseUseCase(suite.crm)
 }
 
-func NewCourseUseCase(courseRepoMock *repomock.CourseRepoMock) {
-	panic("unimplemented")
-}
+// func NewCourseUseCase(courseRepoMock *repomock.CourseRepoMock) {
+// 	panic("unimplemented")
+// }
 
 func TestCourseUseCaseTestSuite(t *testing.T) {
 	suite.Run(t, new(CourseUseCaseTestSuite))
