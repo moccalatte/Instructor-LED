@@ -7,7 +7,7 @@ type QuestionRequestDto struct {
 	Title       string `json:"title"`
 	Description string `json:"description"`
 	CourseID    string `json:"course_id"`
-	Image       string `json:"image"`
+	ImageURL       string `json:"image_url"`
 	Answer      string `json:"answer"`
 	Status      string `json:"status"`
 	IsDeleted   bool   `json:"is_deleted"`

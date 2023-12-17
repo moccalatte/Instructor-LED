@@ -30,7 +30,7 @@ func (s *questionUseCase) AddQuestion(payload dto.QuestionRequestDto) (model.Que
 		Title:       payload.Title,
 		Description: payload.Description,
 		CourseID:    payload.CourseID,
-		Image:       payload.Image,
+		ImageURL:       payload.ImageURL,
 		Answer:      payload.Answer,
 		Status:      payload.Status,
 		ImagePath: payload.ImagePath,
@@ -99,7 +99,7 @@ func (s *questionUseCase) Update(payload dto.QuestionRequestDto, id string) (mod
 		Title:       payload.Title,
 		Description: payload.Description,
 		CourseID:    payload.CourseID,
-		Image:       payload.Image,
+		ImageURL:       payload.ImageURL,
 		Answer:      payload.Answer,
 		Status:      payload.Status,
 		
@@ -146,7 +146,7 @@ func (q *questionUseCase) GetImagePath(questionID string) (string, error) {
     }
 
     // Menggunakan path gambar dari model.Question
-    imagePath := question.Image
+    imagePath := question.ImageURL
 
     return imagePath, nil
 }

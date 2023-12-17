@@ -23,18 +23,45 @@ type QuestionController struct {
 
 func (q *QuestionController) CreateHandler(ctx *gin.Context) {
 	var payload dto.QuestionRequestDto
-	if err := ctx.ShouldBindJSON(&payload); err != nil {
-		dto.SendSingleResponse(ctx, http.StatusBadRequest, err.Error(), nil)
-		return
-	}
+    if err := ctx.ShouldBindJSON(&payload); err != nil {
+        dto.SendSingleResponse(ctx, http.StatusBadRequest, err.Error(), nil)
+        return
+    }
 
-	createdQuestion, err := q.uc.AddQuestion(payload)
-	if err != nil {
-		dto.SendSingleResponse(ctx, http.StatusInternalServerError, err.Error(), nil)
-		return
-	}
+    // Handle upload gambar di sini
+    file, err := ctx.FormFile("image")
+    if err != nil {
+        ctx.JSON(http.StatusInternalServerError, gin.H{"error": "failed to get image"})
+        return
+    }
 
-	dto.SendSingleResponse(ctx, http.StatusCreated, "Question successfully created", createdQuestion)
+    // Buat nama unik untuk gambar
+    newImageName := generateUniqueFileName(file.Filename)
+
+    // Simpan gambar dengan nama unik
+    err = ctx.SaveUploadedFile(file, filepath.Join(config.ImageUploadDirectory, newImageName))
+    if err != nil {
+        // Handle error saat menyimpan gambar
+        ctx.JSON(http.StatusInternalServerError, gin.H{"error": "failed to save image"})
+        return
+    }
+
+    // Simpan pertanyaan ke PostgreSQL dengan URL gambar yang sesuai
+    createdQuestion, err := q.uc.AddQuestion(dto.QuestionRequestDto{
+        // Isi data pertanyaan sesuai kebutuhan
+        ImageURL: newImageName, // Simpan nama gambar sebagai URL atau path gambar
+        // ...
+    })
+    if err != nil {
+        // Handle error saat menyimpan pertanyaan
+        ctx.JSON(http.StatusInternalServerError, gin.H{"error": "failed to save question"})
+        return
+    }
+
+    // Setelah berhasil menyimpan, atur URL gambar pada respons
+    createdQuestion.ImageURL = fmt.Sprintf("/api/v1/question/image/%s", newImageName)
+
+    dto.SendSingleResponse(ctx, http.StatusCreated, "Question successfully created", createdQuestion)
 }
 
 func (q *QuestionController) GetHandlerByID(ctx *gin.Context) {
@@ -152,17 +179,6 @@ func generateUniqueFileName(originalName string) string {
     return fmt.Sprintf("%s_%d%s", baseName, timestamp, filepath.Ext(originalName))
 }
 
-func (q *QuestionController) UploadImageHandler(ctx *gin.Context) {
-    // Handle upload gambar di sini
-    imageData, err := extractImageData(ctx)
-    if err != nil {
-        ctx.JSON(http.StatusInternalServerError, gin.H{"error": "failed to extract image data"})
-        return
-    }
-
-    ctx.JSON(http.StatusOK, gin.H{"message": "Image successfully uploaded", "imageData": imageData})
-}
-
 func (q *QuestionController) DownloadImageHandler(ctx *gin.Context) {
 	questionID := ctx.Param("id")
 
@@ -209,7 +225,7 @@ func (q *QuestionController) Route() {
 	q.rg.PUT("/question/:id", q.authMiddleware.RequireToken("student"), q.UpdateHandler)
 	q.rg.DELETE("/question/:id", q.authMiddleware.RequireToken("student"), q.DeleteHandler)
 	q.rg.PUT("/question-answer/:id", q.authMiddleware.RequireToken("trainer"), q.AnswerHandler)
-	q.rg.POST("/question/upload", q.authMiddleware.RequireToken("student"), q.UploadImageHandler)
+	//q.rg.POST("/question/upload", q.authMiddleware.RequireToken("student"), q.UploadImageHandler)
 	q.rg.GET("/question/:id/download", q.authMiddleware.RequireToken("student", "trainer"), q.DownloadImageHandler)
 	q.rg.GET("/question/:id/image", q.GetImagePathHandler)
 }

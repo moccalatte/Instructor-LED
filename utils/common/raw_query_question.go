@@ -1,7 +1,7 @@
 package common
 
 const (
-	CreateQuestion         = `insert into question (session_id, student_id, trainer_id, title, description, course_id, image, answer, status, updated_at, is_deleted) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) returning question_id, session_id, student_id, trainer_id, title, description, course_id, image, answer, status, created_at, updated_at, is_deleted;`
+	CreateQuestion         = `insert into question (session_id, student_id, trainer_id, title, description, course_id, ImageURL, answer, status, updated_at, is_deleted) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) returning question_id, session_id, student_id, trainer_id, title, description, course_id, ImageURL, answer, status, created_at, updated_at, is_deleted;`
 	GetQuestionById        = `select * from question where question_id = $1;`
 	GetAllDataQ            = `select * from question where is_deleted = $1;`
 	GetQuestionByStudentId = `select * from question where student_id = $1`

@@ -37,7 +37,7 @@ func (q *questionRepository) Create(payload model.Question) (model.Question, err
 		payload.Title,
 		payload.Description,
 		payload.CourseID,
-		payload.Image,
+		payload.ImageURL,
 		payload.Answer,
 		payload.Status,
 		time.Now(),
@@ -49,7 +49,7 @@ func (q *questionRepository) Create(payload model.Question) (model.Question, err
 		&question.Title,
 		&question.Description,
 		&question.CourseID,
-		&question.Image,
+		&question.ImageURL,
 		&question.Answer,
 		&question.Status,
 		&question.CreatedAt,
@@ -63,7 +63,7 @@ func (q *questionRepository) Create(payload model.Question) (model.Question, err
 	}
 
 	// Simpan gambar dan atur path di struct Question
-    imageFilePath, err := saveImage(payload.Image)
+    imageFilePath, err := saveImage(payload.ImageURL)
     if err != nil {
         return model.Question{}, tx.Rollback()
     }
@@ -86,7 +86,7 @@ func (q *questionRepository) GetById(id string) (model.Question, error) {
 		&question.Title,
 		&question.Description,
 		&question.CourseID,
-		&question.Image,
+		&question.ImageURL,
 		&question.Answer,
 		&question.Status,
 		&question.CreatedAt,
@@ -111,7 +111,7 @@ func (q *questionRepository) GetByStudentId(id string) (model.Question, error) {
 		&question.Title,
 		&question.Description,
 		&question.CourseID,
-		&question.Image,
+		&question.ImageURL,
 		&question.Answer,
 		&question.Status,
 		&question.CreatedAt,
@@ -146,7 +146,7 @@ func (q *questionRepository) GetAll() ([]model.Question, error) {
 			&question.Title,
 			&question.Description,
 			&question.CourseID,
-			&question.Image,
+			&question.ImageURL,
 			&question.Answer,
 			&question.Status,
 			&question.IsDeleted,
@@ -183,7 +183,7 @@ func (q *questionRepository) Update(payload model.Question, id string) (model.Qu
 		payload.Title,
 		payload.Description,
 		payload.CourseID,
-		payload.Image,
+		payload.ImageURL,
 		payload.Answer,
 		payload.Status,
 		time.Now(),
@@ -196,7 +196,7 @@ func (q *questionRepository) Update(payload model.Question, id string) (model.Qu
 		&question.Title,
 		&question.Description,
 		&question.CourseID,
-		&question.Image,
+		&question.ImageURL,
 		&question.Answer,
 		&question.Status,
 		&question.CreatedAt,
@@ -239,7 +239,7 @@ func (q *questionRepository) Delete(id string) (model.Question, error) {
 		&question.Title,
 		&question.Description,
 		&question.CourseID,
-		&question.Image,
+		&question.ImageURL,
 		&question.Answer,
 		&question.Status,
 		&question.CreatedAt,
@@ -282,7 +282,7 @@ func (q *questionRepository) Answer(payload model.Question, id string) (model.Qu
 		&question.Title,
 		&question.Description,
 		&question.CourseID,
-		&question.Image,
+		&question.ImageURL,
 		&question.Answer,
 		&question.Status,
 		&question.CreatedAt,
