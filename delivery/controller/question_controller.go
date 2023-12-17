@@ -6,6 +6,7 @@ import (
 	"final-project-kelompok-1/model/dto"
 	"final-project-kelompok-1/usecase"
 	"net/http"
+	"net/url"
 	"time"
 	"io"
 	"os"
@@ -154,13 +155,28 @@ func generateUniqueFileName(originalName string) string {
 
 func (q *QuestionController) UploadImageHandler(ctx *gin.Context) {
     // Handle upload gambar di sini
-    imageData, err := extractImageData(ctx)
+    imagePath, err := extractImageData(ctx)
     if err != nil {
         ctx.JSON(http.StatusInternalServerError, gin.H{"error": "failed to extract image data"})
         return
     }
 
-    ctx.JSON(http.StatusOK, gin.H{"message": "Image successfully uploaded", "imageData": imageData})
+    // Membuat URL gambar berdasarkan path gambar
+    imageURL := generateImageURL(imagePath)
+
+    ctx.JSON(http.StatusOK, gin.H{"message": "Image successfully uploaded", "imageURL": imageURL})
+}
+
+// Fungsi untuk membuat URL gambar berdasarkan path gambar
+func generateImageURL(imagePath string) string {
+    // Mendapatkan nama file dari path gambar
+    fileName := filepath.Base(imagePath)
+
+    // Melakukan encoding pada nama file untuk mengatasi spasi
+    encodedFileName := url.PathEscape(fileName)
+
+    // Bentuk URL gambar berdasarkan nama file yang telah diencode
+    return config.BaseURL + "/uploads/" + encodedFileName
 }
 
 func (q *QuestionController) DownloadImageHandler(ctx *gin.Context) {
