@@ -165,19 +165,13 @@ func generateImageURL(imagePath string) string {
 }
 
 func (q *QuestionController) CreateHandler(ctx *gin.Context) {
-	// handle upload image
-	imageData, err := extractImageData(ctx)
-	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "failed to extract image data"})
-		return
-	}
+	
 
 	var payload dto.QuestionRequestDto
 	if err := ctx.ShouldBindJSON(&payload); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	payload.Image = imageData
 
 	createdQuestion, err := q.uc.AddQuestion(payload)
 	if err != nil {
@@ -213,19 +207,7 @@ func (q *QuestionController) DownloadImageHandler(ctx *gin.Context) {
 	ctx.Data(http.StatusOK, "image/jpeg", imageBytes)
 }
 
-func (q *QuestionController) GetImagePathHandler(ctx *gin.Context) {
-	questionID := ctx.Param("id")
 
-	// Mendapatkan path gambar dari use case
-	imagePath, err := q.uc.GetImagePath(questionID)
-	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-
-	// Menyediakan path gambar sebagai respons
-	ctx.JSON(http.StatusOK, gin.H{"imagePath": imagePath})
-}
 
 func (q *QuestionController) Route() {
 	q.rg.POST("/question", q.authMiddleware.RequireToken("student"), q.CreateHandler)
@@ -236,7 +218,6 @@ func (q *QuestionController) Route() {
 	q.rg.PUT("/question-answer/:id", q.authMiddleware.RequireToken("trainer"), q.AnswerHandler)
 	q.rg.POST("/question/upload", q.authMiddleware.RequireToken("student"), q.UploadImageHandler)
 	q.rg.GET("/question/:id/download", q.authMiddleware.RequireToken("student", "trainer"), q.DownloadImageHandler)
-	q.rg.GET("/question/:id/image", q.GetImagePathHandler)
 }
 
 func NewQuestionController(uc usecase.QuestionUseCase, rg *gin.RouterGroup, authMiddleware middleware.AuthMiddleware) *QuestionController {

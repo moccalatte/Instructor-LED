@@ -94,8 +94,8 @@ func (u *UserController) DeleteHandler(ctx *gin.Context) {
 // }
 
 func (u *UserController) Route() {
-	//u.rg.POST("/user", u.authMiddleware.RequireToken("admin"), u.CreateHandler)
-	u.rg.POST("/user", u.CreateHandler)
+	u.rg.POST("/user", u.authMiddleware.RequireToken("admin"), u.CreateHandler)
+	//u.rg.POST("/user", u.CreateHandler)
 	u.rg.GET("/user/:id", u.authMiddleware.RequireToken("admin"), u.GetHandlerByID)
 	u.rg.GET("/user", u.authMiddleware.RequireToken("admin"), u.GetHandlerAll)
 	u.rg.PUT("/user/:id", u.authMiddleware.RequireToken("admin"), u.UpdateHandler)
