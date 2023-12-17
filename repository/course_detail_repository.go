@@ -13,7 +13,7 @@ type CourseDetailRepository interface {
 	GetById(id string) (model.CourseDetail, error)
 	Update(payload model.CourseDetail, id string) (model.CourseDetail, error)
 	Delete(id string) (model.CourseDetail, error)
-	// FindAll(status bool) ([]model.CourseDetail, error)
+	// FindAll1() ([]model.CourseDetail, error)
 }
 
 type courseDetailRepository struct {
@@ -144,7 +144,7 @@ func (c *courseDetailRepository) Delete(id string) (model.CourseDetail, error) {
 	return course_detail, nil
 }
 
-// func (c *courseDetailRepository) FindAll(status bool) ([]model.CourseDetail, error) {
+// func (c *courseDetailRepository) FindAl1() ([]model.CourseDetail, error) {
 // 	rows, err := c.db.Query(common.GetAllDataActiveCd, false)
 // 	if err != nil {
 // 		return nil, err
