@@ -19,6 +19,12 @@ func (s *QuestionRepoMock) GetById(id string) (model.Question, error) {
 	args := s.Called(id)
 	return args.Get(0).(model.Question), args.Error(1)
 }
+
+func (s *QuestionRepoMock) GetImagePath(id string) (string, error) {
+	args := s.Called(id)
+	return args.Get(0).(string), args.Error(1)
+}
+
 func (s *QuestionRepoMock) GetByStudentId(id string) (model.Question, error) {
 	args := s.Called(id)
 	return args.Get(0).(model.Question), args.Error(1)
