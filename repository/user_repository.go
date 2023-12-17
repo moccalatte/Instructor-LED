@@ -196,6 +196,8 @@ func (u *userRepository) GetByUsername(email string) (model.Users, error) {
 		&user.Role,
 		&user.Email,
 		&user.Password,
+		&user.CreatedAt,
+		&user.UpdatedAt,
 		&user.IsDeleted,
 	)
 	if err != nil {

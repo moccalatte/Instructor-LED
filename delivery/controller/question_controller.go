@@ -1,14 +1,17 @@
 package controller
 
 import (
+	"final-project-kelompok-1/config"
 	"final-project-kelompok-1/delivery/middleware"
 	"final-project-kelompok-1/model/dto"
 	"final-project-kelompok-1/usecase"
 	"net/http"
-	"encoding/base64"
-	"bytes"
+	"time"
 	"io"
 	"os"
+	"fmt"
+	"strings"
+	"path/filepath"
 	"github.com/gin-gonic/gin"
 )
 
@@ -103,30 +106,50 @@ func (q *QuestionController) AnswerHandler(ctx *gin.Context) {
 	dto.SendSingleResponse(ctx, http.StatusOK, "Question Answered", answeredQuestion)
 }
 
+// Modifikasi fungsi extractImageData
 func extractImageData(ctx *gin.Context) (string, error) {
-	file, err := ctx.FormFile("image")
-	if err != nil {
-		return "", err
-	}
+    file, err := ctx.FormFile("image")
+    if err != nil {
+        return "", err
+    }
 
-	// Buka file gambar
-	src, err := file.Open()
-	if err != nil {
-		return "", err
-	}
-	defer src.Close()
+    // Buat direktori jika belum ada
+    if err := os.MkdirAll(config.ImageUploadDirectory, 0755); err != nil {
+        return "", err
+    }
 
-	// Buat buffer untuk menampung konten file
-	var buf bytes.Buffer
-	_, err = io.Copy(&buf, src)
-	if err != nil {
-		return "", err
-	}
+    // Buat path file unik untuk gambar
+    imagePath := filepath.Join(config.ImageUploadDirectory, generateUniqueFileName(file.Filename))
 
-	// Encode file gambar ke base64
-	imageData := base64.StdEncoding.EncodeToString(buf.Bytes())
+    // Buka file gambar
+    src, err := file.Open()
+    if err != nil {
+        return "", err
+    }
+    defer src.Close()
 
-	return imageData, nil
+    // Buat file baru untuk menyimpan gambar
+    dst, err := os.Create(imagePath)
+    if err != nil {
+        return "", err
+    }
+    defer dst.Close()
+
+    // Salin konten file gambar
+    _, err = io.Copy(dst, src)
+    if err != nil {
+        return "", err
+    }
+
+    // Mengembalikan path file yang baru dibuat
+    return imagePath, nil
+}
+
+// Fungsi untuk membuat nama file yang unik
+func generateUniqueFileName(originalName string) string {
+    baseName := strings.TrimSuffix(originalName, filepath.Ext(originalName))
+    timestamp := time.Now().UnixNano()
+    return fmt.Sprintf("%s_%d%s", baseName, timestamp, filepath.Ext(originalName))
 }
 
 func (q *QuestionController) UploadImageHandler(ctx *gin.Context) {
