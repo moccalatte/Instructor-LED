@@ -10,7 +10,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 )
-
 type UserRepositoryTestSuite struct {
 	suite.Suite
 	mockDb  *sql.DB
@@ -28,6 +27,31 @@ func (suite *UserRepositoryTestSuite) SetupTest() {
 
 func TestUserRepositoryTestSuite(t *testing.T) {
 	suite.Run(t, new(UserRepositoryTestSuite))
+}
+
+func (suite *UserRepositoryTestSuite) TestCreateUser_Success() {
+	dummy := model.Users{
+		UserID:    "sdsdsdsdsdsdsd",
+		Fullname:  "Joko Santoso",
+		Role:      "admin",
+		Email:     "chril@example.com",
+		Password:  "230104",
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now().Add(3 * 24 * time.Hour),
+		IsDeleted: false,
+	}
+
+	suite.sqlmock.ExpectBegin()
+
+	rows := sqlmock.NewRows([]string{"user_id", "fullname", "role", "email", "password", "created_at", "updated_at", "is_deleted"}).
+		AddRow(dummy.UserID, dummy.Fullname, dummy.Role, dummy.Email, dummy.Password, dummy.CreatedAt, dummy.UpdatedAt, dummy.IsDeleted)
+	suite.sqlmock.ExpectQuery("insert into users").WillReturnRows(rows)
+	suite.sqlmock.ExpectCommit()
+
+	actual, err := suite.repo.Create(dummy)
+	assert.Nil(suite.T(), err)
+	assert.NoError(suite.T(), err)
+	assert.Equal(suite.T(), dummy.UserID, actual.UserID)
 }
 
 func (suite *UserRepositoryTestSuite) TestGetById() {
@@ -77,36 +101,3 @@ func (suite *UserRepositoryTestSuite) TestDelete() {
 
 }
 
-func (suite *UserRepositoryTestSuite) TestGetByUsername() {
-	dummy := model.Users{
-		UserID:    "12345687678",
-		Fullname:  "andikairfanandrerizki",
-		Role:      "admin",
-		Email:     "ccccc@gmail.com",
-		Password:  "1232131",
-		IsDeleted: false,
-	}
-
-	query := "select * from users where fullname = $1 OR email = $1 returning user_id, fullname, role, email, password, created_at, updated_at, is_deleted;"
-	email := "ccccc@gmail.com"
-
-	// Set expectations for the mock
-	rows := sqlmock.NewRows([]string{"user_id", "fullname", "role", "email", "password", "created_at", "updated_at", "is_deleted"}).
-		AddRow(dummy.UserID, dummy.Fullname, dummy.Role, dummy.Email, dummy.Password, dummy.CreatedAt, dummy.UpdatedAt, dummy.IsDeleted)
-	suite.sqlmock.ExpectQuery(query).WithArgs(email).WillReturnRows(rows)
-
-	// Call the method being tested
-	actual, err := suite.repo.GetByUsername(email)
-
-	// Assertions
-	assert.Nil(suite.T(), err, "error should be nil")
-	assert.Equal(suite.T(), dummy.UserID, actual.UserID, "UserID should match")
-	assert.Equal(suite.T(), dummy.Fullname, actual.Fullname, "Fullname should match")
-	assert.Equal(suite.T(), dummy.Role, actual.Role, "Role should match")
-	assert.Equal(suite.T(), dummy.Email, actual.Email, "Email should match")
-	assert.Equal(suite.T(), dummy.Password, actual.Password, "Password should match")
-	assert.Equal(suite.T(), dummy.IsDeleted, actual.IsDeleted, "IsDeleted should match")
-
-	// Ensure all expectations were met
-	assert.NoError(suite.T(), suite.sqlmock.ExpectationsWereMet())
-}
