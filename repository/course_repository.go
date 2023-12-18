@@ -72,7 +72,7 @@ func (c *courseRepository) GetById(id string) (model.Course, error) {
 func (c *courseRepository) GetAll() ([]model.Course, error) {
 	var courses []model.Course
 
-	rows, err := c.db.Query(common.GetAllCourse)
+	rows, err := c.db.Query(common.GetAllDataC)
 
 	if err != nil {
 		return courses, err
@@ -84,6 +84,7 @@ func (c *courseRepository) GetAll() ([]model.Course, error) {
 			&course.CourseName,
 			&course.Description,
 			&course.CreatedAt,
+			&course.UpdatedAt,
 			&course.IsDeleted,
 		)
 
