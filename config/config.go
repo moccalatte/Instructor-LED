@@ -45,7 +45,7 @@ type Config struct {
 	TokenConfig
 }
 
-const BaseURL = "http://localhost:8080"
+const BaseURL = "https://108.136.239.242"
 const ImageUploadDirectory = "./uploads"
 
 func (c *Config) readConfig() error {

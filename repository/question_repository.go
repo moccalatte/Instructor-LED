@@ -62,21 +62,6 @@ func (q *questionRepository) Create(payload model.Question) (model.Question, err
 		return model.Question{}, tx.Rollback()
 	}
 
-	// Simpan gambar dan atur path di struct Question
-	imageFilePath, err := saveImage(payload.Image)
-	if err != nil {
-		fmt.Println("Error upload image in repo : ", err.Error())
-		return model.Question{}, tx.Rollback()
-	}
-	payload.ImagePath = imageFilePath
-
-	_, err = tx.Exec(common.SaveImagePath, payload.ImagePath, question.QuestionID)
-
-	if err != nil {
-		fmt.Println("Error upload save image in repo : ", err.Error())
-		return model.Question{}, tx.Rollback()
-	}
-
 	if err := tx.Commit(); err != nil {
 		return model.Question{}, err
 	}
