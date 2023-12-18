@@ -42,7 +42,9 @@ func (a *attendanceRepository) Create(payload model.Attendance) (model.Attendanc
 		&attendance.CreatedAt,
 		&attendance.UpdatedAt,
 		&attendance.IsDeleted,
+		
 	)
+	fmt.Println("well")
 	if err != nil {
 		fmt.Println("Error attendance in repo : ", err.Error())
 		return model.Attendance{}, tx.Rollback()
@@ -97,7 +99,7 @@ func (a *attendanceRepository) GetBySessionId(id string) (model.Attendance, erro
 func (a *attendanceRepository) GetAll() ([]model.Attendance, error) {
 	var attendances []model.Attendance
 
-	rows, err := a.db.Query(common.GetAllAttendance)
+	rows, err := a.db.Query(common.GetAllDataActive)
 
 	if err != nil {
 		return attendances, err

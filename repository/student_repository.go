@@ -28,7 +28,7 @@ func (s *studentRepository) Create(payload model.Student) (model.Student, error)
 		return model.Student{}, err
 	}
 	var student model.Student
-	err = tx.QueryRow(common.CreateStudent,
+	err = tx.QueryRow(common.CreateStudents,
 		payload.Fullname,
 		payload.BirthDate,
 		payload.BirthPlace,
@@ -38,7 +38,6 @@ func (s *studentRepository) Create(payload model.Student) (model.Student, error)
 		payload.Job,
 		payload.Email,
 		payload.Password,
-		time.Now(),
 		time.Now(),
 		"student",
 		false).Scan(
@@ -58,8 +57,8 @@ func (s *studentRepository) Create(payload model.Student) (model.Student, error)
 		&student.IsDeleted,
 	)
 
+	fmt.Print(err, "STUDENT REPO")
 	if err != nil {
-		fmt.Print("Error student in repo : ", err.Error())
 		return model.Student{}, tx.Rollback()
 	}
 
@@ -68,6 +67,7 @@ func (s *studentRepository) Create(payload model.Student) (model.Student, error)
 	}
 
 	return student, nil
+	
 
 }
 

@@ -72,10 +72,10 @@ func (s *sessionRepository) GetById(id string) (model.Session, error) {
 		&session.SessionTime,
 		&session.SessionLink,
 		&session.TrainerID,
+		&session.Note,
 		&session.CreatedAt,
 		&session.UpdatedAt,
 		&session.IsDeleted,
-		&session.Note,
 	)
 	if err != nil {
 		return model.Session{}, err

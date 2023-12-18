@@ -13,7 +13,7 @@ type CourseDetailRepository interface {
 	GetById(id string) (model.CourseDetail, error)
 	Update(payload model.CourseDetail, id string) (model.CourseDetail, error)
 	Delete(id string) (model.CourseDetail, error)
-	// FindAll1() ([]model.CourseDetail, error)
+	GetAll() ([]model.CourseDetail, error)
 }
 
 type courseDetailRepository struct {
@@ -144,37 +144,37 @@ func (c *courseDetailRepository) Delete(id string) (model.CourseDetail, error) {
 	return course_detail, nil
 }
 
-// func (c *courseDetailRepository) FindAl1() ([]model.CourseDetail, error) {
-// 	rows, err := c.db.Query(common.GetAllDataActiveCd, false)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	defer rows.Close()
+func (c *courseDetailRepository) GetAll() ([]model.CourseDetail, error) {
+	rows, err := c.db.Query(common.GetAllDataActiveCd, false)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
 
-// 	var courseDetails []model.CourseDetail
-// 	for rows.Next() {
-// 		var courseDetail model.CourseDetail
-// 		err := rows.Scan(
-// 			&courseDetail.CourseDetailID,
-// 			&courseDetail.CourseID,
-// 			&courseDetail.CourseChapter,
-// 			&courseDetail.CourseContent,
-// 			&courseDetail.CreatedAt,
-// 			&courseDetail.UpdatedAt,
-// 			&courseDetail.IsDeleted,
-// 		)
-// 		if err != nil {
-// 			return nil, err
-// 		}
-// 		courseDetails = append(courseDetails, courseDetail)
-// 	}
+	var courseDetails []model.CourseDetail
+	for rows.Next() {
+		var courseDetail model.CourseDetail
+		err := rows.Scan(
+			&courseDetail.CourseDetailID,
+			&courseDetail.CourseID,
+			&courseDetail.CourseChapter,
+			&courseDetail.CourseContent,
+			&courseDetail.CreatedAt,
+			&courseDetail.UpdatedAt,
+			&courseDetail.IsDeleted,
+		)
+		if err != nil {
+			return nil, err
+		}
+		courseDetails = append(courseDetails, courseDetail)
+	}
 
-// 	if err := rows.Err(); err != nil {
-// 		return nil, err
-// 	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
 
-// 	return courseDetails, nil
-// }
+	return courseDetails, nil
+}
 
 func NewCourseDetailRepository(db *sql.DB) CourseDetailRepository {
 	return &courseDetailRepository{db: db}

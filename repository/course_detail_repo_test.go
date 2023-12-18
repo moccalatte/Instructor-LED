@@ -59,14 +59,92 @@ func (suite *CourseDetailRepositoryTestSuite) TestGetById() {
 
 }
 
-func (suite *CourseDetailRepositoryTestSuite)TestGetAll(){
+func (suite *CourseDetailRepositoryTestSuite) TestGetAll() {
+	dummyResult := []model.CourseDetail{
+		{
+			CourseDetailID: "09809328402934",
+			CourseID:       "0980239842342",
+			CourseChapter:  "golang database",
+			CourseContent:  "Api connect datbase",
+			CreatedAt:      time.Now(),
+			UpdatedAt:      time.Now(),
+			IsDeleted:      false,
+		},
+		{
+			CourseDetailID: "09809998402934",
+			CourseID:       "0980239842342",
+			CourseChapter:  "golang database",
+			CourseContent:  "Api connect datbase",
+			CreatedAt:      time.Now(),
+			UpdatedAt:      time.Now(),
+			IsDeleted:      false,
+		},
+	}
+	query := "select \\* from course_detail where is_deleted = \\$1;"
+
+	rows := sqlmock.NewRows([]string{"course_detail_id", "course_id", "course_chapter", "course_content", "created_at", "updated_at", "is_deleted"})
+
+	for _, result := range dummyResult {
+		rows.AddRow(
+			result.CourseDetailID,
+			result.CourseID,
+			result.CourseChapter,
+			result.CourseContent,
+			result.CreatedAt,
+			result.UpdatedAt,
+			result.IsDeleted,
+		)
+	}
+
+	suite.sqlmock.ExpectQuery(query).WithArgs(false).WillReturnRows(rows)
+
+	actual, err := suite.repo.GetAll()
+
+	assert.Nil(suite.T(), err)
+	assert.Len(suite.T(), actual, len(dummyResult))
+
+	for i, expected := range dummyResult {
+		assert.Equal(suite.T(), expected, actual[i])
+
+	}
+}
+
+func (suite *CourseDetailRepositoryTestSuite) TestDelete() {
+	dummy := model.CourseDetail{
+		CourseDetailID: "09809328402934",
+		CourseID:       "0980239842342",
+		CourseChapter:  "golang database",
+		CourseContent:  "Api connect datbase",
+		CreatedAt:      time.Now(),
+		UpdatedAt:      time.Now(),
+		IsDeleted:      true,
+	}
+
+	query := "update course_detail set is_deleted \\= \\$1 where course_detail_id \\= \\$2 returning course_detail_id, course_id, course_chapter, course_content, created_at, updated_at, is_deleted;"
+	suite.sqlmock.ExpectBegin()
+
+	rows := sqlmock.NewRows([]string{"course_detail_id", "course_id", "course_chapter", "course_content", "created_at", "updated_at", "is_deleted"}).AddRow(
+		dummy.CourseDetailID,
+		dummy.CourseID,
+		dummy.CourseChapter,
+		dummy.CourseContent,
+		dummy.CreatedAt,
+		dummy.UpdatedAt,
+		dummy.IsDeleted,
+	)
+
+	suite.sqlmock.ExpectQuery(query).WithArgs(
+		true,
+		dummy.CourseDetailID,
+	).WillReturnRows(rows)
+
+	suite.sqlmock.ExpectCommit()
+
+	actual, err := suite.repo.Delete(dummy.CourseDetailID)
+
+	assert.Nil(suite.T(), err)
+	assert.NoError(suite.T(), err)
+	assert.Equal(suite.T(), dummy.CourseDetailID, actual.CourseDetailID)
 
 }
 
-func (suite *CourseDetailRepositoryTestSuite)TestDelete(){
-
-}
-
-func (suite *CourseDetailRepositoryTestSuite)TestUpdate(){
-
-}

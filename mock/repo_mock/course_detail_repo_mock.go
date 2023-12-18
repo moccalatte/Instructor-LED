@@ -30,3 +30,9 @@ func (s *CourseDetailRepoMock) Delete(id string) (model.CourseDetail, error) {
 
 	return args.Get(0).(model.CourseDetail), args.Error(1)
 }
+
+func (s *CourseDetailRepoMock) GetAll() ([]model.CourseDetail, error) {
+	args := s.Called()
+
+	return args.Get(0).([]model.CourseDetail), args.Error(1)
+}
