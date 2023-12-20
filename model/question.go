@@ -1,13 +1,21 @@
 package model
 
 import (
-    "github.com/google/uuid"
+	"time"
 )
 
 type Question struct {
-    QuestionID uuid.UUID `json:"question_id"`
-    UserID      uuid.UUID `json:"user_id"`
-    Questionary string    `json:"questionary"`
-    Status      bool      `json:"status"`
-    IsDeleted   bool      `json:"is_deleted"`
+	QuestionID  string    `json:"question_id"`
+	SessionID   string    `json:"session_id"`
+	StudentID   string    `json:"student_id"`
+	TrainerID   string    `json:"trainer_id"`
+	Title       string    `json:"title"`
+	Description string    `json:"description"`
+	CourseID    string    `json:"course_id"`
+	Image       string    `json:"image"`
+	Answer      string    `json:"answer"`
+	Status      string    `json:"status"`
+	IsDeleted   bool      `json:"is_deleted"`
+	CreatedAt   time.Time `json:"createdAt"`
+	UpdatedAt   time.Time `json:"updatedAt"`
 }

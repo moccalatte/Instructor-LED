@@ -1,19 +1,24 @@
 package model
 
 import (
-    "github.com/google/uuid"
+	"time"
 )
 
 type Course struct {
-    CourseID      uuid.UUID `json:"course_id"`
-    CourseName    string    `json:"course_name"`
-    CourseDetailID uuid.UUID `json:"course_detail_id"`
-    IsDeleted     bool      `json:"is_deleted"`
+	CourseID    string    `json:"course_id"`
+	CourseName  string    `json:"course_name"`
+	Description string    `json:"description"`
+	IsDeleted   bool      `json:"is_deleted"`
+	CreatedAt   time.Time `json:"createdAt"`
+	UpdatedAt   time.Time `json:"updatedAt"`
 }
 
 type CourseDetail struct {
-    CourseDetailID uuid.UUID `json:"course_detail_id"`
-    Chapter       string    `json:"chapter"`
-    CourseID      uuid.UUID `json:"course_id"`
-    IsDeleted     bool      `json:"is_deleted"`
+	CourseDetailID string    `json:"course_detail_id"`
+	CourseID       string    `json:"course_id"`
+	CourseChapter  string    `json:"course_chapter"`
+	CourseContent  string    `json:"course_content"`
+	IsDeleted      bool      `json:"is_deleted"`
+	CreatedAt      time.Time `json:"createdAt"`
+	UpdatedAt      time.Time `json:"updatedAt"`
 }

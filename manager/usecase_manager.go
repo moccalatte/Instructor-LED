@@ -1,29 +1,68 @@
 package manager
 
-import "final-project-kelompok-1/usecase"
+import (
+	"final-project-kelompok-1/usecase"
+	"final-project-kelompok-1/utils/common"
+)
 
 type UseCaseManager interface {
 	StudentUseCase() usecase.StudentUseCase
-	AdminTrainerUseCase() usecase.AdminTrainerUseCase
-	RoleUseCase() usecase.RoleUseCase
+	UserUseCase() usecase.UserUseCase
+	CourseCase() usecase.CourseUseCase
+	CourseDetailUseCase() usecase.CourseDetailUseCase
+	QuestionUseCase() usecase.QuestionUseCase
+	SessionCaseUseCase() usecase.SessionUseCase
+	AttendanceUseCase() usecase.AttendanceUseCase
+	CsvCaseUseCase(csvService common.CvsCommon) usecase.CsvUseCase
 }
 
 type useCaseManager struct {
-	repo RepoManager
+	repo       RepoManager
+	csvService common.CvsCommon
 }
 
 func (u *useCaseManager) StudentUseCase() usecase.StudentUseCase {
 	return usecase.NewStudentUseCase(u.repo.StudentRepo())
 }
 
-func (u *useCaseManager) AdminTrainerUseCase() usecase.AdminTrainerUseCase {
-	return usecase.NewAdminTrainerUseCase(u.repo.AdminTrainerRepo())
+func (u *useCaseManager) UserUseCase() usecase.UserUseCase {
+	return usecase.NewUserUseCase(u.repo.UserRepo())
 }
 
-func (u *useCaseManager) RoleUseCase() usecase.RoleUseCase {
-	return usecase.NewRoleUseCase(u.repo.RoleRepo())
+func (u *useCaseManager) CourseCase() usecase.CourseUseCase {
+	return usecase.NewCourseUseCase(u.repo.CourseRepo())
 }
 
-func NewUseCaseManager(repo RepoManager) UseCaseManager {
-	return &useCaseManager{repo: repo}
+func (u *useCaseManager) CourseDetailUseCase() usecase.CourseDetailUseCase {
+	return usecase.NewCourseDetailUseCase(u.repo.CourseDetailRepo())
+}
+
+func (u *useCaseManager) QuestionUseCase() usecase.QuestionUseCase {
+	return usecase.NewQuestion(u.repo.Question())
+}
+
+func (u *useCaseManager) AttendanceUseCase() usecase.AttendanceUseCase {
+	return usecase.NewAttendanceUseCase(u.repo.Attendance())
+}
+
+func (u *useCaseManager) SessionCaseUseCase() usecase.SessionUseCase {
+	return usecase.NewSession(u.repo.Session())
+}
+
+func (u *useCaseManager) CsvCaseUseCase(csvService common.CvsCommon) usecase.CsvUseCase {
+	return usecase.NewCsvUsecase(
+		u.SessionCaseUseCase(),
+		u.AttendanceUseCase(),
+		u.StudentUseCase(),
+		u.UserUseCase(),
+		u.QuestionUseCase(),
+		u.CourseCase(),
+		csvService,
+		u.repo.CsvRepo(),
+	)
+}
+
+func NewUseCaseManager(repo RepoManager, csvService common.CvsCommon) UseCaseManager {
+	return &useCaseManager{repo: repo, csvService: csvService}
+
 }

@@ -40,3 +40,5 @@ func NewInfraManager(cfg *config.Config) (InfraManager, error) {
 	}
 	return conn, nil
 }
+
+// infra manager
