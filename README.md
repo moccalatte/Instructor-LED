@@ -3,7 +3,9 @@
 
 Setelah melakukan clone. Langkah selanjutnya adalah melakukan import libray yang digunakan seperti berikut:
 
-```go get -u ./...```
+```shell
+go get -u ./...
+```
 
 ## Config
 Silahkan buat file baru dengan nama .env yang di duplikasi dari .env.example kemudian isi pada bagian berikut:
