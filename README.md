@@ -1,7 +1,7 @@
 # Instructor LED
 ## Import library
 
-Setelah melakukan clone. Langkah selanjutnya adalah melakukan import libray yang digunakan seperti berikut:
+Setelah melakukan clone. Langkah selanjutnya adalah melakukan import semua dependensi yang digunakan seperti berikut:
 
 ```shell
 go get -u ./...
