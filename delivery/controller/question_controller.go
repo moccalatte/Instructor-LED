@@ -1,11 +1,11 @@
 package controller
 
 import (
-	"final-project-kelompok-1/config"
-	"final-project-kelompok-1/delivery/middleware"
-	"final-project-kelompok-1/model/dto"
-	"final-project-kelompok-1/usecase"
 	"fmt"
+	"instructor-led/config"
+	"instructor-led/delivery/middleware"
+	"instructor-led/model/dto"
+	"instructor-led/usecase"
 	"io"
 	"net/http"
 	"net/url"
@@ -94,78 +94,77 @@ func (q *QuestionController) AnswerHandler(ctx *gin.Context) {
 
 // Modifikasi fungsi extractImageData
 func extractImageData(ctx *gin.Context) (string, error) {
-    file, err := ctx.FormFile("image")
-    if err != nil {
-        return "", err
-    }
+	file, err := ctx.FormFile("image")
+	if err != nil {
+		return "", err
+	}
 
-    // Buat direktori jika belum ada
-    if err := os.MkdirAll(config.ImageUploadDirectory, 0755); err != nil {
-        return "", err
-    }
+	// Buat direktori jika belum ada
+	if err := os.MkdirAll(config.ImageUploadDirectory, 0755); err != nil {
+		return "", err
+	}
 
-    // Buat path file unik untuk gambar
-    imagePath := filepath.Join(config.ImageUploadDirectory, generateUniqueFileName(file.Filename))
+	// Buat path file unik untuk gambar
+	imagePath := filepath.Join(config.ImageUploadDirectory, generateUniqueFileName(file.Filename))
 
-    // Buka file gambar
-    src, err := file.Open()
-    if err != nil {
-        return "", err
-    }
-    defer src.Close()
+	// Buka file gambar
+	src, err := file.Open()
+	if err != nil {
+		return "", err
+	}
+	defer src.Close()
 
-    // Buat file baru untuk menyimpan gambar
-    dst, err := os.Create(imagePath)
-    if err != nil {
-        return "", err
-    }
-    defer dst.Close()
+	// Buat file baru untuk menyimpan gambar
+	dst, err := os.Create(imagePath)
+	if err != nil {
+		return "", err
+	}
+	defer dst.Close()
 
-    // Salin konten file gambar
-    _, err = io.Copy(dst, src)
-    if err != nil {
-        return "", err
-    }
+	// Salin konten file gambar
+	_, err = io.Copy(dst, src)
+	if err != nil {
+		return "", err
+	}
 
-    // Mengembalikan path file yang baru dibuat
-    return imagePath, nil
+	// Mengembalikan path file yang baru dibuat
+	return imagePath, nil
 }
 
 // Fungsi untuk membuat nama file yang unik
 func generateUniqueFileName(originalName string) string {
-    baseName := strings.TrimSuffix(originalName, filepath.Ext(originalName))
-    timestamp := time.Now().UnixNano()
-    return fmt.Sprintf("%s_%d%s", baseName, timestamp, filepath.Ext(originalName))
+	baseName := strings.TrimSuffix(originalName, filepath.Ext(originalName))
+	timestamp := time.Now().UnixNano()
+	return fmt.Sprintf("%s_%d%s", baseName, timestamp, filepath.Ext(originalName))
 }
 
 func (q *QuestionController) UploadImageHandler(ctx *gin.Context) {
-    // Handle upload gambar di sini
-    imagePath, err := extractImageData(ctx)
-    if err != nil {
-        ctx.JSON(http.StatusInternalServerError, gin.H{"error": "failed to extract image data"})
-        return
-    }
+	// Handle upload gambar di sini
+	imagePath, err := extractImageData(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "failed to extract image data"})
+		return
+	}
 
-    // Membuat URL gambar berdasarkan path gambar
-    imageURL := generateImageURL(imagePath)
+	// Membuat URL gambar berdasarkan path gambar
+	imageURL := generateImageURL(imagePath)
 
-    ctx.JSON(http.StatusOK, gin.H{"message": "Image successfully uploaded", "imageURL": imageURL})
+	ctx.JSON(http.StatusOK, gin.H{"message": "Image successfully uploaded", "imageURL": imageURL})
 }
 
 // Fungsi untuk membuat URL gambar berdasarkan path gambar
 func generateImageURL(imagePath string) string {
-    // Mendapatkan nama file dari path gambar
-    fileName := filepath.Base(imagePath)
+	// Mendapatkan nama file dari path gambar
+	fileName := filepath.Base(imagePath)
 
-    // Melakukan encoding pada nama file untuk mengatasi spasi
-    encodedFileName := url.PathEscape(fileName)
+	// Melakukan encoding pada nama file untuk mengatasi spasi
+	encodedFileName := url.PathEscape(fileName)
 
-    // Bentuk URL gambar berdasarkan nama file yang telah diencode
-    return config.BaseURL + "/uploads/" + encodedFileName
+	// Bentuk URL gambar berdasarkan nama file yang telah diencode
+	return config.BaseURL + "/uploads/" + encodedFileName
 }
 
 func (q *QuestionController) CreateHandler(ctx *gin.Context) {
-	
 
 	var payload dto.QuestionRequestDto
 	if err := ctx.ShouldBindJSON(&payload); err != nil {
@@ -206,8 +205,6 @@ func (q *QuestionController) DownloadImageHandler(ctx *gin.Context) {
 	// Kirim file gambar sebagai respons
 	ctx.Data(http.StatusOK, "image/jpeg", imageBytes)
 }
-
-
 
 func (q *QuestionController) Route() {
 	q.rg.POST("/question", q.authMiddleware.RequireToken("student"), q.CreateHandler)

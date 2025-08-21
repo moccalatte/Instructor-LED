@@ -1,13 +1,13 @@
 package delivery
 
 import (
-	"final-project-kelompok-1/config"
-	"final-project-kelompok-1/delivery/controller"
-	"final-project-kelompok-1/delivery/middleware"
-	"final-project-kelompok-1/manager"
-	"final-project-kelompok-1/usecase"
-	"final-project-kelompok-1/utils/common"
 	"fmt"
+	"instructor-led/config"
+	"instructor-led/delivery/controller"
+	"instructor-led/delivery/middleware"
+	"instructor-led/manager"
+	"instructor-led/usecase"
+	"instructor-led/utils/common"
 	"log"
 
 	"github.com/gin-gonic/gin"

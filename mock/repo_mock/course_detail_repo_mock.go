@@ -1,7 +1,7 @@
 package repo_mock
 
 import (
-	"final-project-kelompok-1/model"
+	"instructor-led/model"
 
 	"github.com/stretchr/testify/mock"
 )

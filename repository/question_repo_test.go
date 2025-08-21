@@ -2,7 +2,7 @@ package repository
 
 import (
 	"database/sql"
-	"final-project-kelompok-1/model"
+	"instructor-led/model"
 	"testing"
 	"time"
 
@@ -71,7 +71,6 @@ func (suite *QuestionRepositoryTestSuite) TestGetById() {
 	assert.Equal(suite.T(), dummy.UpdatedAt, actual.UpdatedAt, "UpdatedAt")
 	assert.Equal(suite.T(), dummy.IsDeleted, actual.IsDeleted, "IsDeleted")
 }
-
 
 func (suite *QuestionRepositoryTestSuite) TestByStudentId() {
 	dummy := model.Question{
@@ -187,8 +186,6 @@ func (suite *QuestionRepositoryTestSuite) TestGetall() {
 
 }
 
-
-
 func (suite *QuestionRepositoryTestSuite) TestDelete() {
 	dummy := model.Question{
 		QuestionID:  "12123123",
@@ -249,4 +246,3 @@ func (suite *QuestionRepositoryTestSuite) TestDelete() {
 	assert.Equal(suite.T(), dummy.IsDeleted, actual.IsDeleted, "IsDeleted")
 
 }
-

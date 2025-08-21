@@ -2,10 +2,10 @@ package usecase
 
 import (
 	"errors"
-	repomock "final-project-kelompok-1/mock/repo_mock"
-	"final-project-kelompok-1/model"
-	"final-project-kelompok-1/model/dto"
 	"fmt"
+	repomock "instructor-led/mock/repo_mock"
+	"instructor-led/model"
+	"instructor-led/model/dto"
 
 	"testing"
 

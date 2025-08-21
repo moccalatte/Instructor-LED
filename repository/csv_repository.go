@@ -2,8 +2,8 @@ package repository
 
 import (
 	"database/sql"
-	"final-project-kelompok-1/utils/common"
 	"fmt"
+	"instructor-led/utils/common"
 )
 
 type CsvRepository interface {

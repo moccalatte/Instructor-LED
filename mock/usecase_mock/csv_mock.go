@@ -1,7 +1,7 @@
 package usecase_mock
 
 import (
-	"final-project-kelompok-1/config"
+	"instructor-led/config"
 
 	"github.com/stretchr/testify/mock"
 )

@@ -1,7 +1,7 @@
 package common
 
 import (
-	modelutil "final-project-kelompok-1/utils/common/model_util"
+	modelutil "instructor-led/utils/common/model_util"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

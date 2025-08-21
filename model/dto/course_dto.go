@@ -1,6 +1,6 @@
 package dto
 
-import "final-project-kelompok-1/model"
+import "instructor-led/model"
 
 type CourseRequestDto struct {
 	CourseName   string               `json:"course_name"`

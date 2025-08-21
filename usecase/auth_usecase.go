@@ -1,11 +1,11 @@
 package usecase
 
 import (
-	"final-project-kelompok-1/model"
-	"final-project-kelompok-1/model/dto"
+	"instructor-led/model"
+	"instructor-led/model/dto"
 
-	// "final-project-kelompok-1/model/dto"
-	"final-project-kelompok-1/utils/common"
+	// "instructor-led/model/dto"
+	"instructor-led/utils/common"
 )
 
 type AuthUseCase interface {

@@ -2,7 +2,7 @@ package repository
 
 import (
 	"database/sql"
-	"final-project-kelompok-1/model"
+	"instructor-led/model"
 	"testing"
 	"time"
 

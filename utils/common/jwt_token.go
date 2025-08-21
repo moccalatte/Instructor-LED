@@ -2,10 +2,10 @@ package common
 
 import (
 	"errors"
-	"final-project-kelompok-1/config"
-	"final-project-kelompok-1/model"
-	"final-project-kelompok-1/model/dto"
-	modelutil "final-project-kelompok-1/utils/common/model_util"
+	"instructor-led/config"
+	"instructor-led/model"
+	"instructor-led/model/dto"
+	modelutil "instructor-led/utils/common/model_util"
 
 	"time"
 

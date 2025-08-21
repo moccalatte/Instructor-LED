@@ -1,8 +1,8 @@
 package usecase_mock
 
 import (
-	"final-project-kelompok-1/model"
-	"final-project-kelompok-1/model/dto"
+	"instructor-led/model"
+	"instructor-led/model/dto"
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/stretchr/testify/mock"

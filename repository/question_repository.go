@@ -3,9 +3,9 @@ package repository
 import (
 	"database/sql"
 	"encoding/base64"
-	"final-project-kelompok-1/model"
-	"final-project-kelompok-1/utils/common"
 	"fmt"
+	"instructor-led/model"
+	"instructor-led/utils/common"
 	"os"
 	"time"
 )

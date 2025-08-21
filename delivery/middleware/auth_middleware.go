@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"final-project-kelompok-1/utils/common"
+	"instructor-led/utils/common"
 	"net/http"
 	"strings"
 

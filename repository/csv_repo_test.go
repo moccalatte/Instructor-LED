@@ -34,14 +34,10 @@ func (c *CsvRepositoryTestSuite) TestCsvStart() {
 
 	c.sqlmock.ExpectQuery("SELECT session_id FROM session").WillReturnRows(sqlmock.NewRows([]string{"sessionId"}).AddRow(expectedSessionIDs[0]).AddRow(expectedSessionIDs[1]))
 
-
 	result, err := c.repo.CsvStart()
 
-	
 	assert.NoError(c.T(), err)
 	assert.Equal(c.T(), expectedSessionIDs, result)
 
 	assert.NoError(c.T(), c.sqlmock.ExpectationsWereMet())
 }
-
-

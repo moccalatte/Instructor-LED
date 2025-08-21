@@ -1,11 +1,11 @@
 package controller
 
 import (
-	// "final-project-kelompok-1/model"
-	"final-project-kelompok-1/model"
-	"final-project-kelompok-1/model/dto"
-	"final-project-kelompok-1/usecase"
-	"final-project-kelompok-1/utils/common"
+	// "instructor-led/model"
+	"instructor-led/model"
+	"instructor-led/model/dto"
+	"instructor-led/usecase"
+	"instructor-led/utils/common"
 	"net/http"
 	"strings"
 

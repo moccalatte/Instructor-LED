@@ -2,11 +2,11 @@ package usecase
 
 import (
 	"errors"
-	"final-project-kelompok-1/model"
-	"final-project-kelompok-1/model/dto"
-	"final-project-kelompok-1/repository"
-	"final-project-kelompok-1/utils/common"
 	"fmt"
+	"instructor-led/model"
+	"instructor-led/model/dto"
+	"instructor-led/repository"
+	"instructor-led/utils/common"
 )
 
 type StudentUseCase interface {

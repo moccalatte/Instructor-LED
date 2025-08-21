@@ -1,8 +1,8 @@
 package manager
 
 import (
-	"final-project-kelompok-1/usecase"
-	"final-project-kelompok-1/utils/common"
+	"instructor-led/usecase"
+	"instructor-led/utils/common"
 )
 
 type UseCaseManager interface {

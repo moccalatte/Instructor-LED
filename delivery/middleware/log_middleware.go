@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"final-project-kelompok-1/utils/common"
-	modelutil "final-project-kelompok-1/utils/common/model_util"
+	"instructor-led/utils/common"
+	modelutil "instructor-led/utils/common/model_util"
 	"log"
 	"time"
 

@@ -1,8 +1,8 @@
 package common
 
 import (
-	"final-project-kelompok-1/config"
-	modelutil "final-project-kelompok-1/utils/common/model_util"
+	"instructor-led/config"
+	modelutil "instructor-led/utils/common/model_util"
 	"os"
 
 	"github.com/sirupsen/logrus"

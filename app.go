@@ -1,7 +1,7 @@
 package main
 
 import (
-	"final-project-kelompok-1/delivery"
+	"instructor-led/delivery"
 )
 
 func main() {

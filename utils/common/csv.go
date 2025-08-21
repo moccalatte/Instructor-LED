@@ -2,8 +2,8 @@ package common
 
 import (
 	"encoding/csv"
-	"final-project-kelompok-1/config"
 	"fmt"
+	"instructor-led/config"
 	"os"
 	"strings"
 )

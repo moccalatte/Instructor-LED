@@ -1,9 +1,9 @@
 package controller
 
 import (
-	"final-project-kelompok-1/delivery/middleware"
-	"final-project-kelompok-1/model/dto"
-	"final-project-kelompok-1/usecase"
+	"instructor-led/delivery/middleware"
+	"instructor-led/model/dto"
+	"instructor-led/usecase"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

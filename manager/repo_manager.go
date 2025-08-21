@@ -1,6 +1,6 @@
 package manager
 
-import "final-project-kelompok-1/repository"
+import "instructor-led/repository"
 
 type RepoManager interface {
 	StudentRepo() repository.StudentRepository

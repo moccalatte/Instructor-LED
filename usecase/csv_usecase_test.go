@@ -2,10 +2,10 @@ package usecase
 
 import (
 	"errors"
-	"final-project-kelompok-1/mock/repo_mock"
-	"final-project-kelompok-1/mock/usecase_mock"
+	"instructor-led/mock/repo_mock"
+	"instructor-led/mock/usecase_mock"
 
-	"final-project-kelompok-1/model"
+	"instructor-led/model"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

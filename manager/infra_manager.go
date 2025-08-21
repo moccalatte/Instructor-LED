@@ -2,8 +2,8 @@ package manager
 
 import (
 	"database/sql"
-	"final-project-kelompok-1/config"
 	"fmt"
+	"instructor-led/config"
 
 	_ "github.com/lib/pq"
 )

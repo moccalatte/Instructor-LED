@@ -1,9 +1,9 @@
 package usecase
 
 import (
-	"final-project-kelompok-1/repository"
-	"final-project-kelompok-1/utils/common"
 	"fmt"
+	"instructor-led/repository"
+	"instructor-led/utils/common"
 	"strconv"
 )
 

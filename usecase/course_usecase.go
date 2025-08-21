@@ -1,10 +1,10 @@
 package usecase
 
 import (
-	"final-project-kelompok-1/model"
-	"final-project-kelompok-1/model/dto"
-	"final-project-kelompok-1/repository"
 	"fmt"
+	"instructor-led/model"
+	"instructor-led/model/dto"
+	"instructor-led/repository"
 )
 
 type CourseUseCase interface {
